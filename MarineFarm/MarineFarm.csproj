@@ -7,62 +7,6 @@
     <UserSecretsId>aspnet-MarineFarm-2AB5431B-0BE4-4696-B174-8F8FAACA50EB</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="DTOs\AlmacenDTO.cs" />
-    <Content Include="DTOs\AlmacenDTO_in.cs" />
-    <Content Include="DTOs\AlmacenDTO_out.cs" />
-    <Content Include="DTOs\CalcularFechaDTO_in.cs" />
-    <Content Include="DTOs\CalcularFechaDTO_out.cs" />
-    <Content Include="DTOs\CargosDTO_in.cs" />
-    <Content Include="DTOs\CargosDTO_out.cs" />
-    <Content Include="DTOs\CostosMesDTO_out.cs" />
-    <Content Include="DTOs\DatosProduccionProductos_out.cs" />
-    <Content Include="DTOs\DatosProduccion_out.cs" />
-    <Content Include="DTOs\EquipoDTO_in.cs" />
-    <Content Include="DTOs\EquipoDTO_out.cs" />
-    <Content Include="DTOs\Err.cs" />
-    <Content Include="DTOs\GTipoDTO_in.cs" />
-    <Content Include="DTOs\GTipoDTO_out.cs" />
-    <Content Include="DTOs\HistorialMateriaPrimaDTO_out.cs" />
-    <Content Include="DTOs\MateriaPrimaDTO.cs" />
-    <Content Include="DTOs\MateriaPrimaDTO_in.cs" />
-    <Content Include="DTOs\MateriaPrimaDTO_out.cs" />
-    <Content Include="DTOs\Periodo.cs" />
-    <Content Include="DTOs\PivotProduccionDTO_in.cs" />
-    <Content Include="DTOs\PivotProductosProduccionDTO_in.cs" />
-    <Content Include="DTOs\ProduccionDTO_in.cs" />
-    <Content Include="DTOs\ProduccionDTO_out.cs" />
-    <Content Include="DTOs\ProductoDTO_Details.cs" />
-    <Content Include="DTOs\ProductoDTO_in.cs" />
-    <Content Include="DTOs\ProductoDTO_out.cs" />
-    <Content Include="Entitys\Almacen.cs" />
-    <Content Include="Entitys\Calibre.cs" />
-    <Content Include="Entitys\Cargos.cs" />
-    <Content Include="Entitys\CostosMes.cs" />
-    <Content Include="Entitys\Empaquetado.cs" />
-    <Content Include="Entitys\Equipo.cs" />
-    <Content Include="Entitys\HistorialMateriaPrima.cs" />
-    <Content Include="Entitys\Marisco.cs" />
-    <Content Include="Entitys\MateriaPrima.cs" />
-    <Content Include="Entitys\PMariscoProduccion.cs" />
-    <Content Include="Entitys\PProductoProduccion.cs" />
-    <Content Include="Entitys\Produccion.cs" />
-    <Content Include="Entitys\Producto.cs" />
-    <Content Include="Entitys\TipoProduccion.cs" />
-    <Content Include="Entitys\Turnos.cs" />
-    <Content Include="Entitys\Usuarios.cs" />
-    <Content Include="Helpers\AutoMapperProfile.cs" />
-    <Content Include="Helpers\DateGame.cs" />
-    <Content Include="Helpers\Iid.cs" />
-    <Content Include="Helpers\ProductoCosto.cs" />
-    <Content Include="Helpers\Tipo.cs" />
-    <Content Include="Helpers\TypeBinder.cs" />
-    <Content Include="Services\CalculoDiarioCostosServices.cs" />
-    <Content Include="Services\EmailSenderServices.cs" />
-    <Content Include="Services\IEmailSender.cs" />
-    <Content Include="Services\MailData.cs" />
-    <Content Include="Services\SmtpConfig.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.1" />
