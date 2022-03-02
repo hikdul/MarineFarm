@@ -4,6 +4,7 @@ using MarineFarm.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarineFarm.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220302164250_stock")]
+    partial class stock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,35 +111,6 @@ namespace MarineFarm.Data.Migrations
                     b.ToTable("Calibres");
                 });
 
-            modelBuilder.Entity("MarineFarm.Entitys.Cargos", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<int>("CantOperadoresNecesario")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Desc")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<bool>("act")
-                        .HasColumnType("bit");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Cargos");
-                });
-
             modelBuilder.Entity("MarineFarm.Entitys.Empaquetado", b =>
                 {
                     b.Property<int>("id")
@@ -161,27 +134,6 @@ namespace MarineFarm.Data.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Empaquetados");
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.Equipo", b =>
-                {
-                    b.Property<int>("Turnoid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Cargoid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CantCubierta")
-                        .HasColumnType("int");
-
-                    b.Property<double>("CostoOperario")
-                        .HasColumnType("float");
-
-                    b.HasKey("Turnoid", "Cargoid");
-
-                    b.HasIndex("Cargoid");
-
-                    b.ToTable("Equipos");
                 });
 
             modelBuilder.Entity("MarineFarm.Entitys.HistorialMateriaPrima", b =>
@@ -262,63 +214,6 @@ namespace MarineFarm.Data.Migrations
                     b.ToTable("MateriasPrimas");
                 });
 
-            modelBuilder.Entity("MarineFarm.Entitys.PMariscoProduccion", b =>
-                {
-                    b.Property<int>("Produccionid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Mariscoid")
-                        .HasColumnType("int");
-
-                    b.Property<double>("CantidadUtilizada")
-                        .HasColumnType("float");
-
-                    b.HasKey("Produccionid", "Mariscoid");
-
-                    b.HasIndex("Mariscoid");
-
-                    b.ToTable("MariscoProduccion");
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.PProductoProduccion", b =>
-                {
-                    b.Property<int>("Produccionid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Productoid")
-                        .HasColumnType("int");
-
-                    b.Property<double>("CantidadProducida")
-                        .HasColumnType("float");
-
-                    b.HasKey("Produccionid", "Productoid");
-
-                    b.HasIndex("Productoid");
-
-                    b.ToTable("ProductoProduccion");
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.Produccion", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Supervid")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("Supervid");
-
-                    b.ToTable("Produccion");
-                });
-
             modelBuilder.Entity("MarineFarm.Entitys.Producto", b =>
                 {
                     b.Property<int>("id")
@@ -378,32 +273,6 @@ namespace MarineFarm.Data.Migrations
                     b.HasKey("id");
 
                     b.ToTable("TiposProduccion");
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.Turnos", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<string>("Desc")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<bool>("act")
-                        .HasColumnType("bit");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Turnos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -630,25 +499,6 @@ namespace MarineFarm.Data.Migrations
                     b.Navigation("Producto");
                 });
 
-            modelBuilder.Entity("MarineFarm.Entitys.Equipo", b =>
-                {
-                    b.HasOne("MarineFarm.Entitys.Cargos", "Cargo")
-                        .WithMany()
-                        .HasForeignKey("Cargoid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MarineFarm.Entitys.Turnos", "Turno")
-                        .WithMany()
-                        .HasForeignKey("Turnoid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cargo");
-
-                    b.Navigation("Turno");
-                });
-
             modelBuilder.Entity("MarineFarm.Entitys.HistorialMateriaPrima", b =>
                 {
                     b.HasOne("MarineFarm.Entitys.Marisco", "Marisco")
@@ -677,55 +527,6 @@ namespace MarineFarm.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Marisco");
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.PMariscoProduccion", b =>
-                {
-                    b.HasOne("MarineFarm.Entitys.Marisco", "Marisco")
-                        .WithMany()
-                        .HasForeignKey("Mariscoid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MarineFarm.Entitys.Produccion", "Produccion")
-                        .WithMany("MariscosProduccion")
-                        .HasForeignKey("Produccionid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Marisco");
-
-                    b.Navigation("Produccion");
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.PProductoProduccion", b =>
-                {
-                    b.HasOne("MarineFarm.Entitys.Produccion", "Produccion")
-                        .WithMany("ProductoProduccion")
-                        .HasForeignKey("Produccionid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MarineFarm.Entitys.Producto", "Producto")
-                        .WithMany()
-                        .HasForeignKey("Productoid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Produccion");
-
-                    b.Navigation("Producto");
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.Produccion", b =>
-                {
-                    b.HasOne("MarineFarm.Auth.Usuario", "Superv")
-                        .WithMany()
-                        .HasForeignKey("Supervid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Superv");
                 });
 
             modelBuilder.Entity("MarineFarm.Entitys.Producto", b =>
@@ -812,13 +613,6 @@ namespace MarineFarm.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.Produccion", b =>
-                {
-                    b.Navigation("MariscosProduccion");
-
-                    b.Navigation("ProductoProduccion");
                 });
 #pragma warning restore 612, 618
         }

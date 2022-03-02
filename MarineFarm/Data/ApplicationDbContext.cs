@@ -57,6 +57,58 @@ namespace MarineFarm.Data
         public DbSet<Producto> Productos { get; set; }
 
 
+        // ## == Stock
+        // ## =====================================
+
+        /// <summary>
+        /// Para tener el inventario de materia prima
+        /// </summary>
+        public DbSet<MateriaPrima> MateriasPrimas { get; set; }
+        /// <summary>
+        /// para llevar el historial de materio prima
+        /// ingreso y egresos
+        /// </summary>
+        public DbSet<HistorialMateriaPrima> HistorialMateriaPrima { get; set; }
+
+        /// <summary>
+        /// de lo que hay en este momento en almacen
+        /// </summary>
+        public DbSet<Almacen> Almacen { get; set; }
+
+        // ## == Produccion
+        // ## =====================================
+
+        /// <summary>
+        /// produccion realizada
+        /// </summary>
+        public DbSet<Produccion> Produccion { get; set; }
+        /// <summary>
+        /// Mariscos usados en la produccion
+        /// </summary>
+        public DbSet<PMariscoProduccion> MariscoProduccion { get; set; }
+
+        /// <summary>
+        /// producto realizado en produccion
+        /// </summary>
+        public DbSet<PProductoProduccion> ProductoProduccion { get; set; }
+
+
+        // ## == Planta
+        // ## =====================================
+
+        /// <summary>
+        /// cargos
+        /// </summary>
+        public DbSet<Cargos> Cargos { get; set; }
+        /// <summary>
+        /// turnos
+        /// </summary>
+        public DbSet<Turnos> Turnos { get; set; }
+
+        /// <summary>
+        /// tabla de equipos
+        /// </summary>
+        public DbSet<Equipo> Equipos { get; set; }
 
 
         #endregion
@@ -67,7 +119,7 @@ namespace MarineFarm.Data
         /// <param name="builder"></param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            RolesYSU(builder);
+          //  RolesYSU(builder);
 
             BuildKey(builder);
 
@@ -81,9 +133,9 @@ namespace MarineFarm.Data
         /// <param name="builder"></param>
         private void BuildKey(ModelBuilder builder)
         {
-           // builder.Entity<PMariscoProduccion>().HasKey(x => new { x.Produccionid, x.Mariscoid });
-           // builder.Entity<PProductoProduccion>().HasKey(x => new { x.Produccionid, x.Productoid });
-           // builder.Entity<Equipo>().HasKey(x => new { x.Turnoid, x.Cargoid });
+            builder.Entity<PMariscoProduccion>().HasKey(x => new { x.Produccionid, x.Mariscoid });
+            builder.Entity<PProductoProduccion>().HasKey(x => new { x.Produccionid, x.Productoid });
+            builder.Entity<Equipo>().HasKey(x => new { x.Turnoid, x.Cargoid });
            // builder.Entity<CostosMes>().HasKey(x => new { x.Equipoid, x.Mariscoid, x.TipoProduccionid, x.Calibreid });
         }
 
