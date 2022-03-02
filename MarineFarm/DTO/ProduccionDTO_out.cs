@@ -1,4 +1,4 @@
-﻿namespace MarineFarm.DTOs
+﻿namespace MarineFarm.DTO
 {
     /// <summary>
     /// para enviar los datos de la produccion

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace MarineFarm.DTOs
+namespace MarineFarm.DTO
 {
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace MarineFarm.DTOs
+﻿namespace MarineFarm.DTO
 {
     /// <summary>
     /// detalles por porducto

@@ -1,4 +1,4 @@
-﻿namespace MarineFarm.DTOs
+﻿namespace MarineFarm.DTO
 {
     /// <summary>
     /// data que se entrega al hacer la consulta

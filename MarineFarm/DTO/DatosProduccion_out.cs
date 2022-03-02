@@ -1,4 +1,4 @@
-﻿namespace MarineFarm.DTOs
+﻿namespace MarineFarm.DTO
 {
     public class DatosProduccion_out
     {

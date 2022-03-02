@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MarineFarm.DTOs
+namespace MarineFarm.DTO
 {
     /// <summary>
     /// datos necesario para predecir una fecha de entrega.

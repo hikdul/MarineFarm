@@ -1,5 +1,5 @@
-﻿namespace MarineFarm.DTOs
-{
+﻿namespace MarineFarm.DTO
+{ 
     /// <summary>
     /// para mostrar elementos obtenidos y entregarlos fuera de la app
     /// </summary>

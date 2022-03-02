@@ -1,6 +1,6 @@
 ﻿using MarineFarm.Entitys;
 
-namespace MarineFarm.DTOs
+namespace MarineFarm.DTO
 {
     /// <summary>
     /// obtiene un producto con todo sus detalles

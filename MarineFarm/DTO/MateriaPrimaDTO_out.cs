@@ -1,4 +1,4 @@
-﻿namespace MarineFarm.DTOs
+﻿namespace MarineFarm.DTO
 {
     /// <summary>
     /// datos que se muestran sobre la materia prima

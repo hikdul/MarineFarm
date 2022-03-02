@@ -1,6 +1,6 @@
 ﻿using MarineFarm.Entitys;
 
-namespace MarineFarm.DTOs
+namespace MarineFarm.DTO
 {
     /// <summary>
     /// para mostrar los datos de las equipos

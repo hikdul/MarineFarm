@@ -1,6 +1,6 @@
 ﻿using MarineFarm.Entitys;
 
-namespace MarineFarm.DTOs
+namespace MarineFarm.DTO
 {
     /// <summary>
     /// una copia de lo que se puede entregar de este elemento en la entidad

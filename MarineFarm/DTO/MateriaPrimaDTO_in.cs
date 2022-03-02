@@ -4,7 +4,7 @@ using MarineFarm.Entitys;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace MarineFarm.DTOs
+namespace MarineFarm.DTO
 {
     public class MateriaPrimaDTO_in
     {
