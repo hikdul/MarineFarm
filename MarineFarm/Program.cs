@@ -1,4 +1,5 @@
 using MarineFarm.Data;
+using MarineFarm.Services.MailServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -138,6 +139,19 @@ builder.Services.AddControllersWithViews();
 
 // para controlar el error en el pipeline
 builder.Services.AddHealthChecks();
+
+// ## === ##
+// ## === ##
+// ## ===> para colocar mis servicios
+
+// para introduci r los valores de mi smtp settings, y envie mis correos
+builder.Services.Configure<SMTPConf>(Config.GetSection("MailSetup"));
+// aqui genero mi servicio, creo que deberia se ser transa..
+// pero lo recomiendan singleton. claro en el ejempo el email se enviar 
+// directamente desde un formulario. por tanto lo cambio a trans por eso!!>
+builder.Services.AddSingleton<IMailSender, EmailSenderServices>();
+
+// ==> arranca la app y construccion en pipeline
 
 var app = builder.Build();
 
