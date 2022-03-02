@@ -2,6 +2,8 @@
 using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +11,7 @@ namespace MarineFarm.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CargosController : BaseController
     {
 
