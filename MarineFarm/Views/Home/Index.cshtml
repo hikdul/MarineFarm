@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = ViewBag.heading = "Pagina Principal";
     // => este es sobre el boton para expandir y el grupo de botones
     ViewBag.HomeAriaExpanded = "true";
     ViewBag.InitiaGroupActive = "active";
@@ -13,6 +13,5 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Pagina Inicial</p>
 </div>
