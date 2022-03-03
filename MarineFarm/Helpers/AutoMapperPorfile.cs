@@ -63,6 +63,9 @@ namespace MarineFarm.Helpers
 
             CreateMap<GTipoDTO_out, Marisco>()
                 .ReverseMap();
+            CreateMap<Marisco, GTipoDTO_edit>();
+            CreateMap<GTipoDTO_edit,Marisco>()
+                .ForMember(e => e.act, opt => opt.MapFrom(ee => true));
 
         }
 
@@ -80,6 +83,11 @@ namespace MarineFarm.Helpers
 
             CreateMap<GTipoDTO_out, Calibre>()
                 .ReverseMap();
+
+            CreateMap<Calibre, GTipoDTO_edit>();
+            CreateMap<GTipoDTO_edit, Calibre>()
+                .ForMember(e => e.act, opt => opt.MapFrom(ee => true));
+
 
         }
 

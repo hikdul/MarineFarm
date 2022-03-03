@@ -4,17 +4,11 @@ using MarineFarm.DTO;
 using MarineFarm.Entitys;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace MarineFarm.Controllers
 {
-    /// <summary>
-    /// Controlador para manipular la data de los mariscos como elemento informativo
-    /// </summary>
-    public class MariscosController : Controller
+    public class CalibreController : Controller
     {
-
-
         #region ctor
 
         private readonly ApplicationDbContext context;
@@ -24,7 +18,7 @@ namespace MarineFarm.Controllers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="mapper"></param>
-        public MariscosController(ApplicationDbContext context, IMapper mapper)
+        public CalibreController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -44,7 +38,7 @@ namespace MarineFarm.Controllers
             try
             {
                 var ents = await context
-                    .Mariscos
+                    .Calibres
                     .Where(x => x.act == true)
                     .ToListAsync();
 
@@ -81,7 +75,7 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                var ent = mapper.Map<Marisco>(ins);
+                var ent = mapper.Map<Calibre>(ins);
                 context.Add(ent);
                 await context.SaveChangesAsync();
             }
@@ -107,7 +101,7 @@ namespace MarineFarm.Controllers
             try
             {
                 var ent = await context
-                    .Mariscos
+                    .Calibres
                     .Where(x => x.id == id)
                     .FirstOrDefaultAsync();
 
@@ -129,10 +123,10 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                var ent = await context.Mariscos
+                var ent = await context.Calibres
                     .Where(ee => ee.id == ins.id)
                     .FirstOrDefaultAsync();
-                 ent = mapper.Map(ins, ent);
+                ent = mapper.Map(ins, ent);
                 await context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -152,11 +146,11 @@ namespace MarineFarm.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Eliminar(int id)
         {
             try
             {
-                var ent = await context.Mariscos
+                var ent = await context.Calibres
                     .Where(e => e.id == id)
                     .FirstOrDefaultAsync();
                 if (ent != null)
