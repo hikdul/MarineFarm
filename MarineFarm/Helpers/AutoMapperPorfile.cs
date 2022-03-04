@@ -14,10 +14,11 @@ namespace MarineFarm.Helpers
         /// </summary>
         public AutoMapperPorfile()
         {
-            MariscosMap();
-            CalibresMap();
-            TipoProduccionsMap();
-            EmpaquetadosMap();
+           
+            CustamMapITipe<Empaquetado>();
+            CustamMapITipe<Marisco>();
+            CustamMapITipe<Calibre>();
+            CustamMapITipe<TipoProduccion>();
             ProductoMap();
             MateriaPrimaMap();
             AlmacenMap();
@@ -26,6 +27,18 @@ namespace MarineFarm.Helpers
             EquipoMap();
         }
 
+        private void CustamMapITipe<T>() where T : class, Iid
+        {
+            CreateMap<GTipoDTO_in, T>()
+                .ForMember(x => x.act, opt => opt.MapFrom(y => true));
+
+            CreateMap<GTipoDTO_out, T>()
+                .ReverseMap();
+            CreateMap<T, GTipoDTO_edit>();
+            CreateMap<GTipoDTO_edit, T>()
+                .ForMember(e => e.act, opt => opt.MapFrom(ee => true));
+
+        }
 
         #region equipo
 
@@ -46,82 +59,6 @@ namespace MarineFarm.Helpers
 
 
 
-
-        }
-
-
-
-        #endregion
-
-        #region Marisco
-
-
-        private void MariscosMap()
-        {
-            CreateMap<GTipoDTO_in, Marisco>()
-                .ForMember(x => x.act, opt => opt.MapFrom(y => true));
-
-            CreateMap<GTipoDTO_out, Marisco>()
-                .ReverseMap();
-            CreateMap<Marisco, GTipoDTO_edit>();
-            CreateMap<GTipoDTO_edit,Marisco>()
-                .ForMember(e => e.act, opt => opt.MapFrom(ee => true));
-
-        }
-
-
-
-        #endregion
-
-        #region Calibre
-
-
-        private void CalibresMap()
-        {
-            CreateMap<GTipoDTO_in, Calibre>()
-                .ForMember(x => x.act, opt => opt.MapFrom(y => true));
-
-            CreateMap<GTipoDTO_out, Calibre>()
-                .ReverseMap();
-
-            CreateMap<Calibre, GTipoDTO_edit>();
-            CreateMap<GTipoDTO_edit, Calibre>()
-                .ForMember(e => e.act, opt => opt.MapFrom(ee => true));
-
-
-        }
-
-
-
-        #endregion
-
-        #region TipoProduccion
-
-
-        private void TipoProduccionsMap()
-        {
-            CreateMap<GTipoDTO_in, TipoProduccion>()
-                .ForMember(x => x.act, opt => opt.MapFrom(y => true));
-
-            CreateMap<GTipoDTO_out, TipoProduccion>()
-                .ReverseMap();
-
-        }
-
-
-
-        #endregion
-
-        #region Empaquetado
-
-
-        private void EmpaquetadosMap()
-        {
-            CreateMap<GTipoDTO_in, Empaquetado>()
-                .ForMember(x => x.act, opt => opt.MapFrom(y => true));
-
-            CreateMap<GTipoDTO_out, Empaquetado>()
-                .ReverseMap();
 
         }
 

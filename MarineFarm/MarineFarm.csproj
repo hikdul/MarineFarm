@@ -28,4 +28,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="Views\TipoProduccion\Index.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

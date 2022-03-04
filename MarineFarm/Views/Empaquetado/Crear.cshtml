@@ -1,0 +1,44 @@
+﻿@using MarineFarm.DTO;
+@model GTipoDTO_in
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Nuevo Empaquetado";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.MariscosAriaExpanded = "true";
+    ViewBag.MariscosGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.MariscosColapseGroup = "show";
+    ViewBag.EmpaquetadoNavLink = "active";
+
+}
+
+
+<div class="card">
+  <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+    <h3 class="card-title">
+        Nuevo
+    </h3>
+  </div>
+
+  <div class="card-body pt-2">
+    <form asp-action="Guardar" method="post">
+         <div class="row">
+            <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="Name" class="control-label"> Nombre</label>
+                <input asp-for="Name" class="form-control text-to-upper-alau" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="Desc" class="control-label"> Breve Descripcion </label>
+                <input asp-for="Desc" class="form-control text-to-upper-alau" />
+                <span asp-validation-for="Desc" class="text-danger"></span>
+            </div>
+        </div>
+         <div class="card-footer form-group text-center m-0">
+             <input type="submit" value="Guardar" class="btn btn-primary rounded-pill" />
+             <a class="btn btn-danger rounded-pill" asp-action="Index">Volver</a>
+         </div>
+    </form>
+  
+  </div>
+</div>
