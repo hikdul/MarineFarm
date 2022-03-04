@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 namespace MarineFarm.Controllers
 {
     /// <summary>
-    /// calibre controller
+    /// Turno Controller
     /// </summary>
-    public class CalibreController : Controller
+    public class TurnoController : Controller
     {
         #region ctor
 
@@ -21,7 +21,7 @@ namespace MarineFarm.Controllers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="mapper"></param>
-        public CalibreController(ApplicationDbContext context, IMapper mapper)
+        public TurnoController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -41,7 +41,7 @@ namespace MarineFarm.Controllers
             try
             {
                 var ents = await context
-                    .Calibres
+                    .Turnos
                     .Where(x => x.act == true)
                     .ToListAsync();
 
@@ -77,7 +77,7 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                var ent = mapper.Map<Calibre>(ins);
+                var ent = mapper.Map<Turnos>(ins);
                 context.Add(ent);
                 await context.SaveChangesAsync();
             }
@@ -103,7 +103,7 @@ namespace MarineFarm.Controllers
             try
             {
                 var ent = await context
-                    .Calibres
+                    .Turnos
                     .Where(x => x.id == id)
                     .FirstOrDefaultAsync();
 
@@ -125,7 +125,7 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                var ent = await context.Calibres
+                var ent = await context.Turnos
                     .Where(ee => ee.id == ins.id)
                     .FirstOrDefaultAsync();
                 ent = mapper.Map(ins, ent);
@@ -151,7 +151,7 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                var ent = await context.Calibres
+                var ent = await context.Turnos
                     .Where(e => e.id == id)
                     .FirstOrDefaultAsync();
                 if (ent != null)
@@ -169,6 +169,5 @@ namespace MarineFarm.Controllers
 
 
         #endregion
-
     }
 }

@@ -19,6 +19,7 @@ namespace MarineFarm.Helpers
             CustamMapITipe<Marisco>();
             CustamMapITipe<Calibre>();
             CustamMapITipe<TipoProduccion>();
+            CustamMapITipe<Turnos>();
             ProductoMap();
             MateriaPrimaMap();
             AlmacenMap();
@@ -44,22 +45,15 @@ namespace MarineFarm.Helpers
 
         private void EquipoMap()
         {
-            CreateMap<GTipoDTO_in, Turnos>()
-                .ForMember(x => x.act, opt => opt.MapFrom(y => true));
-
-            CreateMap<GTipoDTO_out, Turnos>()
-                .ReverseMap();
-
             CreateMap<CargosDTO_in, Cargos>()
                                 .ForMember(x => x.act, opt => opt.MapFrom(y => true));
 
             CreateMap<CargosDTO_out, Cargos>()
                 .ReverseMap();
 
-
-
-
-
+            CreateMap<Cargos, CargoDTO_edit>();
+            CreateMap< CargoDTO_edit, Cargos>()
+                .ForMember(x => x.act, opt => opt.MapFrom(ee => true));
         }
 
 

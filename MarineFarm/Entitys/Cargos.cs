@@ -6,7 +6,7 @@ namespace MarineFarm.Entitys
     /// <summary>
     /// Cargos que se almacenan por equipo de trabajo
     /// </summary>
-    public class Cargos : Iid, ITipo
+    public class Cargos :  ITipo
     {
         #region props
         /// <summary>
