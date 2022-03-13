@@ -1,6 +1,5 @@
-﻿
-@using MarineFarm.DTO;
-@model IEnumerable<CargosDTO_out>
+﻿@using MarineFarm.DTO;
+@model IEnumerable<EquipoDTO_out>
 
 @{
     ViewData["Title"] = ViewBag.heading = "Cargos";
@@ -9,7 +8,7 @@
     ViewBag.EquipoGroupActive = "active";
     // => este es simplemente para que se vea la poscicion actual
     ViewBag.EquipoColapseGroup = "show";
-    ViewBag.CargoNavLink = "active";
+    ViewBag.EquipoNavLink = "active";
 
 }
 
@@ -30,6 +29,7 @@
                             <th>Nombre</th>
                             <th>Desc</th>
                             <th>O. Necesarios</th>
+                            <th>O. Cubiertos</th>
                             <th><i class="text-dark fa fa-gears"></i></th>
                         </tr>
                     </thead>
@@ -38,12 +38,13 @@
                             @foreach (var item in Model)
                             {
                                 <tr class="text-center">
-                                    <td class=" text-sm font-weight-bold">@item.Name</td>
-                                    <td class="text-sm font-weight-normal">@item.Desc</td>
-                                    <td class="text-sm font-weight-normal">@item.CantOperadoresNecesario</td>
+                                    <td class=" text-sm font-weight-bold">@item.NombreTurno</td>
+                                    <td class="text-sm font-weight-normal">@item.DescTurno</td>
+                                    <td class="text-sm font-weight-normal">@item.operadoresNecesarios</td>
+                                    <td class="text-sm font-weight-normal">@item.operadoresCubiertos</td>
                                     <td class="text-sm font-weight-light">
-                                        <a asp-action="Editar" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa fa-edit "></i></a>
-                                        <a asp-action="Eliminar" asp-controller="Cargo" asp-route-id="@item.id" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
+                                        <a asp-action="Editar" asp-route-id="@item.Turnoid" class="btn btn-primary btn-round"><i class="fa fa-edit "></i></a>
+                                        <a asp-action="Eliminar" asp-controller="Equipo" asp-route-id="@item.Turnoid" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
                                     </td>
                                 </tr>
                             }

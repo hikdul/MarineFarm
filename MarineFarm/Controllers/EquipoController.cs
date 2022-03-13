@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
 using MarineFarm.Data;
 using MarineFarm.DTO;
-using MarineFarm.Entitys;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarineFarm.Controllers
 {
     /// <summary>
-    /// Cargo Controller
+    /// para manipular los equipos por turnos
     /// </summary>
-    public class CargoController : Controller
+    public class EquipoController : Controller
     {
         #region ctor
         private readonly ApplicationDbContext context;
@@ -20,7 +19,7 @@ namespace MarineFarm.Controllers
         /// </summary>
         /// <param name="context"></param>
         /// <param name="mapper"></param>
-        public CargoController(ApplicationDbContext context, IMapper mapper )
+        public EquipoController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
@@ -34,13 +33,20 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {
-            List<CargosDTO_out> list = new();
+            List<EquipoDTO_out> list = new();
 
             try
             {
-                var ents = await context.Cargos.Where(x => x.act).ToListAsync();
-                if (ents != null)
-                    list = mapper.Map<List<CargosDTO_out>>(ents);
+                var turno = await context.Turnos.Where(x => x.act == true).ToListAsync();
+
+                if (turno != null && turno.Count > 0)
+                {
+                    var ent = await context.Equipos
+                        .Include(x => x.Cargo)
+                        .ToListAsync();
+
+                    list = EquipoDTO_out.Up(ent, turno);
+                }
             }
             catch (Exception ee)
             {
@@ -59,9 +65,29 @@ namespace MarineFarm.Controllers
         /// vista para crear un nueva cargo
         /// </summary>
         /// <returns></returns>
-        public IActionResult Crear()
+        public async Task<IActionResult> Crear()
         {
-            ViewBag.Sx = Cargos.SexoToSelect();
+            List<__inV> cargosVista = new();
+            try
+            {
+                var cargos = await context.Cargos.Where(x => x.act == true).ToListAsync();
+                foreach (var item in cargos)
+                {
+                    cargosVista.Add(new()
+                    {
+                        CantCubierta = 0,
+                        Cargoid = item.id,
+                        CargoName = item.Name,
+                        CostoOperario = 0
+                    });
+                }
+                ViewBag.Cargos = cargosVista;   
+
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
             return View();
         }
 
@@ -72,16 +98,7 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Guardar(CargosDTO_in ins)
         {
-            try
-            {
-                var ent = mapper.Map<Cargos>(ins);
-                context.Add(ent);
-                await context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine(ex.Message);
-            }
+           
             return RedirectToAction("Index");
         }
 
@@ -99,25 +116,9 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Editar(int id)
         {
-            CargoDTO_edit dto = new();
-            try
-            {
-                var ent = await context
-                    .Cargos
-                    .Where(x => x.id == id)
-                    .FirstOrDefaultAsync();
+          
 
-                dto = mapper.Map<CargoDTO_edit>(ent);
-
-            }
-            catch (Exception ee)
-            {
-                Console.Error.WriteLine(ee.Message);
-            }
-
-            ViewBag.Sx = Cargos.SexoToSelect();
-
-            return View(dto);
+            return View();
         }
 
         /// <summary>
@@ -171,6 +172,5 @@ namespace MarineFarm.Controllers
         }
 
         #endregion
-
     }
 }

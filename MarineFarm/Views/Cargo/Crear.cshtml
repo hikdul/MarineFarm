@@ -1,14 +1,14 @@
 ﻿@using MarineFarm.DTO;
-@model GTipoDTO_edit
+@model CargosDTO_in
 
 @{
-    ViewData["Title"] = ViewBag.heading = "Editar Turno";
+    ViewData["Title"] = ViewBag.heading = "Nuevo Carga";
     // => este es sobre el boton para expandir y el grupo de botones
-    ViewBag.EquipoAriaExpanded = "true";
+   ViewBag.EquipoAriaExpanded = "true";
     ViewBag.EquipoGroupActive = "active";
     // => este es simplemente para que se vea la poscicion actual
     ViewBag.EquipoColapseGroup = "show";
-    ViewBag.TurnoNavLink = "active";
+    ViewBag.CargoNavLink = "active";
 
 }
 
@@ -16,23 +16,32 @@
 <div class="card">
   <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
     <h3 class="card-title">
-        Editar
+        Nuevo
     </h3>
   </div>
 
   <div class="card-body pt-2">
-    <form asp-action="Save" method="post">
-        <input type="hidden" asp-for="id" value="@Model.id" />
+    <form asp-action="Guardar" method="post">
          <div class="row">
             <div class="form-group col-md-6 col-xs-12">
                 <label asp-for="Name" class="control-label"> Nombre</label>
-                <input asp-for="Name" class="form-control text-to-upper-alau" value=@Model.Name/>
+                <input asp-for="Name" class="form-control text-to-upper-alau" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group col-md-6 col-xs-12">
                 <label asp-for="Desc" class="control-label"> Breve Descripcion </label>
-                <input asp-for="Desc" class="form-control text-to-upper-alau" value=@Model.Desc />
+                <input asp-for="Desc" class="form-control text-to-upper-alau" />
                 <span asp-validation-for="Desc" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="CantOperadoresNecesario" class="control-label"> Cantidad De Operadores Necesarios </label>
+                <input type="number" asp-for="CantOperadoresNecesario" class="form-control text-to-upper-alau" />
+                <span asp-validation-for="CantOperadoresNecesario" class="text-danger"></span>
+            </div>
+             <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="sexo" class="control-label"> Seleccione Sexo Operador </label>
+                <select asp-for="sexo" asp-items=@ViewBag.Sx class="form-control" ></select>
+                <span asp-validation-for="sexo" class="text-danger"></span>
             </div>
         </div>
          <div class="card-footer form-group text-center m-0">

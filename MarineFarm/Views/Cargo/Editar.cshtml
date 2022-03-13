@@ -1,5 +1,5 @@
 ﻿@using MarineFarm.DTO;
-@model GTipoDTO_edit
+@model CargoDTO_edit
 
 @{
     ViewData["Title"] = ViewBag.heading = "Editar Turno";
@@ -26,13 +26,23 @@
          <div class="row">
             <div class="form-group col-md-6 col-xs-12">
                 <label asp-for="Name" class="control-label"> Nombre</label>
-                <input asp-for="Name" class="form-control text-to-upper-alau" value=@Model.Name/>
+                <input asp-for="Name" class="form-control text-to-upper-alau" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group col-md-6 col-xs-12">
                 <label asp-for="Desc" class="control-label"> Breve Descripcion </label>
-                <input asp-for="Desc" class="form-control text-to-upper-alau" value=@Model.Desc />
+                <input asp-for="Desc" class="form-control text-to-upper-alau" />
                 <span asp-validation-for="Desc" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="CantOperadoresNecesario" class="control-label"> Cantidad De Operadores Necesarios </label>
+                <input type="number" asp-for="CantOperadoresNecesario" class="form-control text-to-upper-alau" />
+                <span asp-validation-for="CantOperadoresNecesario" class="text-danger"></span>
+            </div>
+             <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="sexo" class="control-label"> Seleccione Sexo Operador </label>
+                <select asp-for="sexo" asp-items=@ViewBag.Sx class="form-control" ></select>
+                <span asp-validation-for="sexo" class="text-danger"></span>
             </div>
         </div>
          <div class="card-footer form-group text-center m-0">

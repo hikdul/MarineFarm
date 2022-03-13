@@ -24,6 +24,15 @@ namespace MarineFarm.DTO
         /// lista de cargos
         /// </summary>
         public List<CargoEquipo_out> Cargos{ get; set; }
+        /// <summary>
+        /// operadores que necesita el turno
+        /// </summary>
+        public int operadoresNecesarios { get; set; }
+        /// <summary>
+        /// operadores que estan activos
+        /// </summary>
+        public int operadoresCubiertos { get; set; }
+
         #endregion
 
         #region ctor
@@ -77,6 +86,8 @@ namespace MarineFarm.DTO
         /// <returns></returns>
         public static List<EquipoDTO_out> Up(List<Equipo> list, List<Turnos>  turnos)
         {
+            int SumOC = 0;
+            int SumON = 0;
             List<EquipoDTO_out> ret = new();
             if(turnos == null || turnos.Count == 0 || list == null || list.Count == 0)
                 return ret;
@@ -93,6 +104,7 @@ namespace MarineFarm.DTO
 
                 if (flag.Any())
                     foreach (var element in flag)
+                    {
                         aux.Cargos.Add(new()
                         {
                             CantCubierta = element.CantCubierta,
@@ -102,6 +114,11 @@ namespace MarineFarm.DTO
                             Name = element.Cargo.Name,
                             id = element.Cargo.id
                         });
+                        SumOC = element.CantCubierta;
+                        SumON = element.Cargo.CantOperadoresNecesario;
+                    }
+                aux.operadoresCubiertos = SumOC;
+                aux.operadoresNecesarios = SumON;
 
                 ret.Add(aux);
             }
