@@ -1,4 +1,5 @@
 ﻿using MarineFarm.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,6 +8,8 @@ namespace MarineFarm.Controllers
     /// <summary>
     /// controlador para la pagina inicial!!
     /// </summary>
+
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -32,6 +35,7 @@ namespace MarineFarm.Controllers
         /// politica de privacidad
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();

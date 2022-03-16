@@ -39,6 +39,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ClockSkew = TimeSpan.Zero
     };
 });
+
+// ## === ##
+// cookies conf
+// ## === ##
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = "/Cuentas/Login";
+    options.Cookie.Name = "YourAppCookieName";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    options.LoginPath = "/Cuentas/Login";
+    options.LogoutPath = "/Cuentas/Login";
+    options.SlidingExpiration = true;
+});
+
+
 // ## === ##
 // Politicas de cors
 // ## === ##
@@ -98,20 +114,7 @@ builder.Services.AddSwaggerGen(c =>
 // Configuro Automapper
 // ## === ##
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-// ## === ##
-// Configuro Cookies
-// ## === ##
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.AccessDeniedPath = "/landing";
-    options.Cookie.Name = "YourAppCookieName";
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromDays(6);
-    options.LoginPath = "/landing";
-    options.LogoutPath = "/landing";
-    options.SlidingExpiration = true;
-});
 
 // ## === ##
 // Configuro Base de datos

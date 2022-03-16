@@ -2,6 +2,7 @@
 using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace MarineFarm.Controllers
     /// <summary>
     /// Controlador para manipular la data de los mariscos como elemento informativo
     /// </summary>
+    [Authorize]
     public class MariscosController : Controller
     {
 

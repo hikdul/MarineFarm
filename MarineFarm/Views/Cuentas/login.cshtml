@@ -1,0 +1,64 @@
+﻿@using MarineFarm.Auth;
+@model UserInfo
+
+@{
+    ViewData["Title"] = "Iniciar Sesión || AsisPass";
+}
+
+
+
+
+<section>
+      <div class="page-header min-vh-75">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+              <div class="card card-plain mt-8">
+                <div class="card-header pb-0 text-start">
+                  <h3 class="font-weight-bolder text-info text-gradient">Bienvenido</h3>
+                  <p class="mb-0">Ingrese sus datos para acceder al sistema.</p>
+                </div>
+                <div class="card-body">
+                  <form role="form" class="text-start"  asp-action="Singin" method="post">
+                    <label>Correo Electronica</label>
+                    <div class="mb-3">
+                       <div class="login-imput-text">
+                           <input asp-for="@Model.Email" class="form-control" type="email" name="email" placeholder="Correo" />
+                        </div>
+                    </div>
+                    <label>Contraseña</label>
+                    <div class="mb-3">
+                       <div class="login-imput-text">
+                            <input type="password" asp-for="@Model.Password" name="password" class="form-control" placeholder="Contraseña" />
+                        </div>
+                    </div>
+                  
+                    <div class="text-center">
+                      <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Ingresar</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                  <p class="mb-4 text-sm mx-auto">
+                    Aun no tienes cuenta?
+                    <a href="javascript:;" class="text-info text-gradient font-weight-bold">Contactenos...</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
+                <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('/img/login.png')"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

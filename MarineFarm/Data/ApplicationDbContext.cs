@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MarineFarm.Data
 {
+    /// <summary>
+    /// configuracion del contexto de datos
+    /// </summary>
     public class ApplicationDbContext : IdentityDbContext
     {
         /// <summary>
