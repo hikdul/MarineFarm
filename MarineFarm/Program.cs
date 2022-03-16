@@ -45,12 +45,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 // ## === ##
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.AccessDeniedPath = "/cuentas/Login";
+    options.AccessDeniedPath = "/Cuentas/Login";
     options.Cookie.Name = "YourAppCookieName";
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(1);
-    options.LoginPath = "/cuentas/Login";
-    options.LogoutPath = "/cuentas/Login";
+    options.LoginPath = "/Cuentas/Login";
+    options.LogoutPath = "/Cuentas/Login";
     options.SlidingExpiration = true;
 });
 

@@ -1,0 +1,70 @@
+﻿
+@using MarineFarm.Auth;
+
+@{
+
+     ViewData["Title"] = ViewBag.heading = "Mi cuenta";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.UsuarioAriaExpanded = "true";
+    ViewBag.UsuarioGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.UsuarioColapseGroup = "show";
+    ViewBag.MiCuentaNavLink = "active";
+
+
+    Usuario us =  ViewBag.us;
+}
+
+
+
+@if(us == null)
+{
+    <h3>Hubo Un Error al Cargar los datos Personales</h3>
+}
+else{
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header">
+                <h5 class="mb-0">Datos De Mi Cuenta</h5>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center align-items-center">
+              <div class="col-sm-auto col-4">
+                <div class="avatar avatar-xl position-relative">
+                </div>
+              </div>
+              <div class="col-sm-auto col-8 my-auto">
+                <div class="h-100">
+                  <h5 class="mb-1 font-weight-bolder">
+                    @us.Nombre
+                  </h5>
+                  <p class="mb-0 font-weight-bold text-sm">
+                    @us.Email
+                  </p>
+                   <p class="mb-0 font-weight-bold text-sm">
+                    @us.Telefono
+                  </p>
+                </div>
+              </div>
+              <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
+                <label class="form-check-label mb-0">
+                  <small id="profileVisibility">Role: @us.Rol</small>
+                </label>
+                <div class="form-check form-switch ms-2">
+                </div>
+              </div>
+            </div>
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    <a asp-controller="Cuentas" asp-action="logout" class="btn btn-primary">
+                        Salir
+                    </a>
+                </div>
+            </div>
+            </div>
+      </div>            
+ </div>
+ }

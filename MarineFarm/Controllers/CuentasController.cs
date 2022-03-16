@@ -4,6 +4,7 @@ using MarineFarm.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarineFarm.Controllers
 {
@@ -52,8 +53,20 @@ namespace MarineFarm.Controllers
         /// vista inicial, vista de mi usuario
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            try
+            {
+                ViewBag.us = await context
+                    .AspNetUsuario
+                    .Where(ee => ee.Email.Trim().ToUpper() == User.Identity.Name.Trim().ToUpper())
+                    .FirstOrDefaultAsync();
+
+            }catch(Exception ee)
+            {
+                Console.Error.WriteLine(ee.Message);
+                return RedirectToAction("Logout", "Cuentas");
+            }
             return View();
         }
 
