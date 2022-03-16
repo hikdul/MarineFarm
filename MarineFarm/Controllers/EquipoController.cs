@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MarineFarm.Data;
 using MarineFarm.DTO;
+using MarineFarm.Entitys;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -78,7 +79,8 @@ namespace MarineFarm.Controllers
                         CantCubierta = 0,
                         Cargoid = item.id,
                         CargoName = item.Name,
-                        CostoOperario = 0
+                        CostoOperario = 0,
+                        CantOperadoresNecesario = item.CantOperadoresNecesario
                     });
                 }
                 ViewBag.Cargos = cargosVista;   
@@ -96,10 +98,40 @@ namespace MarineFarm.Controllers
         /// </summary>
         /// <param name="ins"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Guardar(CargosDTO_in ins)
+        public async Task<IActionResult> Guardar(EquipoDTO_in ins)
         {
-           
-            return RedirectToAction("Index");
+
+            try
+            {
+
+                var entT = mapper.Map<Turnos>(ins.turno);
+
+                context.Add(entT);
+
+                await context.SaveChangesAsync();
+
+                foreach (var item in ins.cargos)
+                {
+                    var ent = new Equipo()
+                    {
+                        CantCubierta = item.CantCubierta,
+                        Cargoid = item.Cargoid,
+                        CostoOperario = item.CostoOperario,
+                        Turnoid = entT.id
+                    };
+
+                    context.Add(ent);
+                }
+                await context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                ViewBag.Err = "Upps, algo salio mal. Verifique los datos ingresados";
+                return View("Crear", ins);
+            }
         }
 
         #endregion

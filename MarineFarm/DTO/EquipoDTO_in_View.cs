@@ -32,5 +32,9 @@ namespace MarineFarm.DTO
         /// Costo por operario
         /// </summary>
         public double CostoOperario { get; set; }
+        /// <summary>
+        /// para que indique la cantidad maxima de operadores que deberia de cubrir
+        /// </summary>
+        public int CantOperadoresNecesario { get; set; }
     }
 }

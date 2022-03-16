@@ -21,36 +21,44 @@
   </div>
 
   <div class="card-body pt-2">
-    <form asp-action="Guardar" method="post">
+    @*<form asp-action="Guardar" method="post">*@
          <div class="row">
             <div class="form-group col-md-6 col-xs-12">
                 <label asp-for="turno.Name" class="control-label"> Nombre</label>
-                <input asp-for="turno.Name" class="form-control text-to-upper-alau" />
+                <input id="Name" asp-for="turno.Name" class="form-control text-to-upper-alau" />
                 <span asp-validation-for="turno.Name" class="text-danger"></span>
             </div>
             <div class="form-group col-md-6 col-xs-12">
                 <label asp-for="turno.Desc" class="control-label"> Breve Descripcion </label>
-                <input asp-for="turno.Desc" class="form-control text-to-upper-alau" />
+                <input id="Descripcion" asp-for="turno.Desc" class="form-control text-to-upper-alau" />
                 <span asp-validation-for="turno.Desc" class="text-danger"></span>
             </div>
 
                 @foreach(var item in lista)
                 {
-                    
-                    <input type="hidden" value="@item.Cargoid" />
-                    
-                     <div class="form-group col-md-4 col-xs-12">
-                        <label  class="control-label">Cargo </label>
-                        <input disabled value="@item.CargoName" class="form-control text-to-upper-alau" />
-                    </div>
-                    
-                     <div class="form-group col-md-4 col-xs-12">
-                        <label  class="control-label">Cantidad Cubierta </label>
-                        <input type="number" value="@item.CantCubierta" class="form-control text-to-upper-alau" />
-                    </div>
-                     <div class="form-group col-md-4 col-xs-12">
-                        <label  class="control-label">Costo Mensual Por operario </label>
-                        <input type="number" value="@item.CostoOperario" class="form-control text-to-upper-alau" />
+                    <div class="CargoGoup row">
+                        <input type="hidden" value="@item.Cargoid" name="idCargo" />
+                        
+                         <div class="form-group col-md-4 col-xs-12">
+                            <label  class="control-label">Cargo </label>
+                            <input disabled value="@item.CargoName" class="form-control text-to-upper-alau" />
+                        </div>
+                        
+                         <div class="form-group col-md-4 col-xs-12">
+                            <label  class="control-label">Cantidad Cubierta </label>
+                            <input max=@item.CantOperadoresNecesario min='0' 
+                            type="number" value="@item.CantCubierta" 
+                            class="form-control text-to-upper-alau" 
+                            name="cantCubierta"
+                            />
+                        </div>
+                         <div class="form-group col-md-4 col-xs-12">
+                            <label  class="control-label">Costo Mensual Por operario </label>
+                            <input type="number" 
+                            value=@item.CostoOperario
+                            name="Coperativos" 
+                            class="form-control" />
+                        </div>
                     </div>
                     
                     
@@ -59,11 +67,75 @@
 
         </div>
          <div class="card-footer form-group text-center m-0">
-             <input type="submit" value="Guardar" class="btn btn-primary rounded-pill" />
+             <button class="btn btn-primary" onclick="sender()">
+                 Crear
+             </button>
              <a class="btn btn-danger rounded-pill" asp-action="Index">Volver</a>
          </div>
-    </form>
+    @*</form>*@
   
   </div>
 </div>
 
+
+<script>
+
+    
+
+    const sender = () => {
+            
+        //obtener datos
+        const name = document.getElementById('Name')
+        const desc = document.getElementById('Descripcion')
+        const cc = obtenerCargos()
+        //crear el bloque de datos para enviar
+        const turno = {
+            Name: name.value,
+            Desc: desc.value,
+        }
+        const datos = {
+                        turno: turno,
+                        cargos: JSON.stringify(cc),
+                }
+
+      
+        //enviar los datos
+            $.ajax({
+                data: datos,
+                url:   'Guardar', //archivo que recibe la peticion
+                type:  'post', //método de envio
+                success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                        alert('Elemento Enviado')
+                       console.log('Los datos ahora son => ', datos)
+                }
+        });
+
+
+    }
+
+
+    const obtenerCargos = () => {
+        let cargos = [];
+        const idCargos = document.getElementsByName('idCargo')
+        const CantCubiertas = document.getElementsByName('cantCubierta')
+        const Coperativos = document.getElementsByName('Coperativos')
+
+        console.log(idCargos.length)
+       
+
+        //organizar la data
+        let numero = idCargos.length
+        if(numero > 0){
+            for(let i =0; i < numero ; i++){
+                cargos.push({
+                    Cargoid: idCargos[i].value,
+                    CantCubierta: CantCubiertas[i].value,
+                    CostoOperario: Coperativos[i].value
+                })
+            }
+        }
+        return cargos
+
+    }
+
+</script>
