@@ -2,6 +2,7 @@
 using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace MarineFarm.Controllers
     /// <summary>
     /// Empaquetado controller
     /// </summary>
+    [Authorize]
     public class EmpaquetadoController : Controller
     {
 

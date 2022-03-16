@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MarineFarm.Data;
 using MarineFarm.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,8 @@ namespace MarineFarm.Controllers
     /// <summary>
     /// para manipular los equipos por turnos
     /// </summary>
+
+    [Authorize]
     public class EquipoController : Controller
     {
         #region ctor
