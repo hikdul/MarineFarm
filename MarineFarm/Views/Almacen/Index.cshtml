@@ -1,0 +1,62 @@
+﻿@using MarineFarm.DTO;
+@model IEnumerable<AlmacenDTO_out>
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Almacen";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.AlmacenAriaExpanded = "true";
+    ViewBag.AlmacenGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.AlmacenColapseGroup = "show";
+    ViewBag.AlamacenNavLink = "active";
+
+}
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header">
+               
+                <h5 class="mb-0">Listado De Productos</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-search">
+                    <thead class="thead-dark">
+                        <tr class="text-center">
+                            <th>Marisco</th>
+                            <th>Tipo De Producto</th>
+                            <th>Calibre</th>
+                            <th>Empaquetado</th>
+                            <th>Cantidad</th>
+                            <th><i class="text-dark fa fa-gears"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count() > 0)
+                            @foreach (var item in Model)
+                            {
+                                string name = $"cant{item.id}";
+
+                                <tr class="text-center">
+                                    <td class=" text-sm font-weight-bold">@item.Marisco</td>
+                                    <td class="text-sm font-weight-normal">@item.TipoProduccion</td>
+                                    <td class="text-sm font-weight-normal">@item.Calibre</td>
+                                    <td class="text-sm font-weight-normal">@item.Empaquetado</td>
+                                    <td class="text-sm font-weight-normal">@item.Cantidad</td>
+                                    <td class="text-sm font-weight-light">
+                                    </td>
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
