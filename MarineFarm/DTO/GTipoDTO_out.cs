@@ -1,4 +1,9 @@
-﻿namespace MarineFarm.DTO
+﻿using MarineFarm.Data;
+using MarineFarm.Helpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+
+namespace MarineFarm.DTO
 {
     /// <summary>
     /// tipos en general para mostrar sus datos
@@ -18,7 +23,7 @@
         /// <summary>
         /// descripcion
         /// </summary>
-        public string Desc { get; set; } 
+        public string Desc { get; set; }
         /// <summary>
         /// si esta o no activo en base de datos
         /// </summary>

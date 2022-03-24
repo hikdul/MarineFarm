@@ -1,0 +1,123 @@
+﻿@using MarineFarm.DTO;
+@model IEnumerable<MateriaPrimaDTO_out>
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Materia Prima";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.MateriaPrimaAriaExpanded = "true";
+    ViewBag.MateriaPrimaGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.MateriaPrimaColapseGroup = "show";
+    ViewBag.CalibreNavLink = "active";
+
+}
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header">
+                <p class="text-sm mb-0">
+                    <a asp-action="Ingreso" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
+                </p>
+                <h5 class="mb-0">Listado De Mariscos Que Aun No Han Sido Procesado</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-search">
+                    <thead class="thead-dark">
+                        <tr class="text-center">
+                            <th>Marisco</th>
+                            <th>Cantidad</th>
+                            <th><i class="text-dark fa fa-gears"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count() > 0)
+                            @foreach (var item in Model)
+                            {
+                                string name = $"cant{item.id}";
+
+                                <tr class="text-center">
+                                    <td class=" text-sm font-weight-bold">@item.Marisco</td>
+                                    <td class="text-sm font-weight-normal">@item.Cantidad</td>
+                                    <td class="text-sm font-weight-light">
+                                        <div >
+                                        <input type="number" value="0" min="0" id=@name class="form-control" />
+                                        @*<button class="btn btn-primary" onclick="agregar(@item.id)">+</button>*@
+                                        <button class="btn btn-primary" onclick="alerta('mensaje',true)">+</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="sweetalert2.all.min.js"></script>
+<script>
+    //para usal el sweet alert
+    function alerta (msg, positiva ) {
+    const Swal = require('sweetalert2')
+        
+        if(positiva)
+            return Swal.fire({
+                          position: 'top-end',
+                          icon: 'success',
+                          title: msg,
+                          showConfirmButton: false,
+                          timer: 1500
+                        })
+        return 
+            Swal.fire({
+                          icon: 'error',
+                          title: 'Oops...',
+                          text: 'Verifique los datos almacenados!',
+                          footer: ' '
+                        })
+    }
+    //para agregar elemento individual
+    const agregar = id => {
+        console.log(id)
+        const name = 'cant'+id
+        let cant = document.getElementById(name)
+        if(cant.value <= 0)
+            {
+                alerta('Valor No Valido', false)
+                return
+            }
+
+        const data = {
+            Mariscoid:id,
+            Cantidad: cant.value
+        }
+        $.ajax({
+           data: data,
+           url:   'MateriaPrima/add', //archivo que recibe la peticion
+           type:  'post', //método de envio
+           success: function(resp){
+               //let msg = resp == true ? "Datos Almacenados" : "No fue Posible almacenar los datos"
+               //alerta(msg,resp)
+           }
+        });   
+    }
+
+
+
+    //para usar el datatable
+
+    const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
+        searchable: true,
+        fixedHeight: true
+    });
+</script>
+
+
+

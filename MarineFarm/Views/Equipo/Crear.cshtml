@@ -36,6 +36,10 @@
 
                 @foreach(var item in lista)
                 {
+
+                @if (item.CantCubierta <= 0)
+                    item.CantCubierta = 1;
+
                     <div class="CargoGoup row">
                         <input type="hidden" value="@item.Cargoid" name="idCargo" />
                         

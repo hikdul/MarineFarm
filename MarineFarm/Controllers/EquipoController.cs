@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using MarineFarm.Data;
 using MarineFarm.DTO;
-<<<<<<< HEAD
 using MarineFarm.Entitys;
-=======
 using Microsoft.AspNetCore.Authorization;
->>>>>>> d96fa016f2c15bbf390fbeea8ec73d4ee2595ef4
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

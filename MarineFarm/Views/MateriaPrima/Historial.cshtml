@@ -1,0 +1,60 @@
+﻿@using MarineFarm.DTO;
+@model IEnumerable<HistorialMateriaPrimaDTO_out>
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Historial Materia Prima";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.MateriaPrimaAriaExpanded = "true";
+    ViewBag.MateriaPrimaGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.MateriaPrimaColapseGroup = "show";
+    ViewBag.HMateriaPrimaNavLink = "active";
+
+}
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header">
+                <h5 class="mb-0">Historial De Ingreso y Egresos de la materia prima</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="datatable-search">
+                    <thead class="thead-dark">
+                        <tr class="text-center">
+                            <th> Fecha </th>
+                            <th>Ingreso</th>
+                            <th>Marisco</th>
+                            <th>Cantidad</th>
+                            <th>Quien Registro</th>
+                            <th>RUT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count() > 0)
+                            @foreach (var item in Model)
+                            {
+                                string ingreso = item.Ingreso ? "Ingreso" : "Egreso";
+
+                                <tr class="text-center">
+                                    <td class=" text-sm font-weight-bold">@item.Fecha.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-sm font-weight-normal">@ingreso</td>
+                                    <td class="text-sm font-weight-normal">@item.Marisco</td>
+                                    <td class="text-sm font-weight-normal">@item.Cantidad</td>
+                                    <td class="text-sm font-weight-normal">@item.NombreQuienRegistro</td>
+                                    <td class="text-sm font-weight-normal">@item.rutQuienRegistro</td>
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

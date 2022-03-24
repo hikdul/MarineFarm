@@ -21,6 +21,27 @@ namespace MarineFarm.DTO
         public double Cantidad { get; set; } = 0;
         #endregion
 
+        #region ctor
+        /// <summary>
+        /// empty
+        /// </summary>
+        public MateriaPrimaDTO_in()
+        {
+
+        }
+        /// <summary>
+        /// del dto que envia solo enteros
+        /// </summary>
+        /// <param name="dto"></param>
+        public MateriaPrimaDTO_in(IntDTO_in dto)
+        {
+            this.Mariscoid = dto.id;
+            this.Cantidad = dto.valor;
+        }
+
+
+        #endregion
+
         #region add
         /// <summary>
         /// para agregar mas datos a un marisco

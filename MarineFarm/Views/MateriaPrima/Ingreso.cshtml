@@ -1,0 +1,93 @@
+﻿
+@using MarineFarm.DTO;
+@{
+    ViewData["Title"] = ViewBag.heading = "Ingreso De Materia Prima";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.MateriaPrimaAriaExpanded = "true";
+    ViewBag.MateriaPrimaGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.MateriaPrimaColapseGroup = "show";
+    ViewBag.InMateriaPrimaNavLink = "active";
+    List<GTipoDTO_out> list = ViewBag.list;
+}
+
+
+
+<div class="card">
+  <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+    
+     
+      <h3 class="card-title">
+        
+    </h3>
+  </div>
+
+  <div class="card-body pt-2" id="card">
+         <div class="row" name="insert">
+             @foreach (var item in list)
+             {
+                 <div class="form-group col-lg-6 col-md-4 col-xs-12">
+                    <label  class="control-label"> <b class="card-subtitle">@item.Name </b>  </label>
+                    <input hidden min="0" value=@item.id type="number" class="form-control" name="mariscoid" />
+                    <label  class="control-label"> 
+                    <b class="card-text"> Cantidad en Kg.  </b> </label>
+                        <input min="0" value="0" type="number" class="form-control" name="cantkg" />
+                </div>
+             }   
+           
+        </div>
+         <div class="card-footer form-group text-center m-0">
+             <button class="btn btn-primary" onclick="send()">Guardar</button>
+             <a class="btn btn-danger rounded-pill" asp-action="Index">Volver</a>
+         </div>
+  </div>
+  <div class="card-footer">
+      <p class="card-text">
+          Ingreso De Materia Prima
+      </p>
+  </div>
+</div>
+
+
+<script>
+
+     const send = () => {
+        
+         //obtengo mis datos
+         const ins = obtenerMateriasValidas()
+        console.log(ins)
+      
+        //los envio
+              $.ajax({
+                data: JSON.stringify(ins),
+                url:   'GuardarIngreso', //archivo que recibe la peticion
+                type:  'post', //método de envio
+                success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                        let resp = response ? 'datos guardados' : 'datos no guardados'
+                        console.log(resp)
+                }
+        });   
+
+    }
+
+   
+    const obtenerMateriasValidas = () => {
+
+        let materias = []
+        let ids = document.getElementsByName('mariscoid')
+        let kg = document.getElementsByName('cantkg')
+        const vueltas = ids.length
+
+        for(let i = 0; i<vueltas; i++)
+            if(kg[i].value > 0)
+                materias.push({
+                    Mariscoid:ids[i].value,
+                    Cantidad:kg[i].value,
+                })
+
+        return materias
+    }    
+
+
+
+</script>

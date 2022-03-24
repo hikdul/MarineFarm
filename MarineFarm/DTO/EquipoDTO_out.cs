@@ -114,12 +114,12 @@ namespace MarineFarm.DTO
                             Name = element.Cargo.Name,
                             id = element.Cargo.id
                         });
-                        SumOC = element.CantCubierta;
-                        SumON = element.Cargo.CantOperadoresNecesario;
+                        SumOC += element.CantCubierta;
+                        SumON += element.Cargo.CantOperadoresNecesario;
                     }
                 aux.operadoresCubiertos = SumOC;
                 aux.operadoresNecesarios = SumON;
-
+                SumOC = SumON = 0;
                 ret.Add(aux);
             }
 

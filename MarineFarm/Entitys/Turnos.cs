@@ -28,5 +28,6 @@ namespace MarineFarm.Entitys
         /// </summary>
         [StringLength(100)]
         public string Desc { get; set; } = String.Empty;
+    
     }
 }
