@@ -101,7 +101,7 @@ namespace MarineFarm.Controllers
             try
             {
                 ViewBag.listado = await ToSelect.ToSelectITipo<Marisco>(context);
-                ViewBag.list = mapper.Map<List<GTipoDTO_out>>( await context.Mariscos.Where(ee => ee.act == true).ToListAsync());
+              //  ViewBag.list = mapper.Map<List<GTipoDTO_out>>( await context.Mariscos.Where(ee => ee.act == true).ToListAsync());
             }
             catch (Exception ee)
             {
@@ -113,6 +113,29 @@ namespace MarineFarm.Controllers
 
         }
 
+        /// <summary>
+        /// para almacenar los datos de la nueva materia
+        /// </summary>
+        /// <param name="ins"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Save(MateriaPrimaDTO_in ins)
+        {
+            try
+            {
+                var resp = await ins.Add(context, mapper);
+                HistorialMateriaPrima hs = new(ins.Mariscoid, ins.Cantidad, true);
+                await hs.Add(context, User);
+                ViewData.Add("Msg", "Elemento Almacenado");
+            }
+            catch (Exception ee)
+            {
+                ViewData.Add("Err", "Error al almacenar los datos");
+                Console.Error.WriteLine(ee.Message);
+            }
+
+            return RedirectToAction("Index");
+
+        }
 
         #endregion
 

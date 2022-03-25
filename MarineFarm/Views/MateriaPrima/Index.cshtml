@@ -18,7 +18,7 @@
             <!-- Card header -->
             <div class="card-header">
                 <p class="text-sm mb-0">
-                    <a asp-action="Ingreso" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
+                    <a asp-action="Ingreso" class="btn btn-primary btn-round"><i class="fa fa-plus"></i></a>
                 </p>
                 <h5 class="mb-0">Listado De Mariscos Que Aun No Han Sido Procesado</h5>
             </div>
@@ -41,11 +41,13 @@
                                     <td class=" text-sm font-weight-bold">@item.Marisco</td>
                                     <td class="text-sm font-weight-normal">@item.Cantidad</td>
                                     <td class="text-sm font-weight-light">
-                                        <div >
-                                        <input type="number" value="0" min="0" id=@name class="form-control" />
-                                        @*<button class="btn btn-primary" onclick="agregar(@item.id)">+</button>*@
-                                        <button class="btn btn-primary" onclick="alerta('mensaje',true)">+</button>
+                                        <div class="input-group mb-3">
+                                            <input type="number" value="0" min="0" class="form-control" id=@name aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" onclick="agregar(@item.id)">+</button>
+                                            </div>
                                         </div>
+                                        
                                     </td>
                                 </tr>
                             }
@@ -59,30 +61,12 @@
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
-<script src="sweetalert2.all.min.js"></script>
+}
 <script>
-    //para usal el sweet alert
-    function alerta (msg, positiva ) {
-    const Swal = require('sweetalert2')
-        
-        if(positiva)
-            return Swal.fire({
-                          position: 'top-end',
-                          icon: 'success',
-                          title: msg,
-                          showConfirmButton: false,
-                          timer: 1500
-                        })
-        return 
-            Swal.fire({
-                          icon: 'error',
-                          title: 'Oops...',
-                          text: 'Verifique los datos almacenados!',
-                          footer: ' '
-                        })
-    }
+ 
     //para agregar elemento individual
     const agregar = id => {
         console.log(id)
@@ -103,20 +87,15 @@
            url:   'MateriaPrima/add', //archivo que recibe la peticion
            type:  'post', //método de envio
            success: function(resp){
-               //let msg = resp == true ? "Datos Almacenados" : "No fue Posible almacenar los datos"
-               //alerta(msg,resp)
+               if(resp)
+                    location.reload()
+               else
+                alert("Datos No Validos")
            }
-        });   
+        });
     }
 
 
-
-    //para usar el datatable
-
-    const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
-        searchable: true,
-        fixedHeight: true
-    });
 </script>
 
 

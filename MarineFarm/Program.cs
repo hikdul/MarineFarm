@@ -55,6 +55,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 
+
 // ## === ##
 // Politicas de cors
 // ## === ##

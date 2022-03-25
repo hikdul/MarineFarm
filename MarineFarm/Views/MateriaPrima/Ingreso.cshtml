@@ -1,5 +1,6 @@
 ﻿
 @using MarineFarm.DTO;
+@model MateriaPrimaDTO_in
 @{
     ViewData["Title"] = ViewBag.heading = "Ingreso De Materia Prima";
     // => este es sobre el boton para expandir y el grupo de botones
@@ -8,7 +9,6 @@
     // => este es simplemente para que se vea la poscicion actual
     ViewBag.MateriaPrimaColapseGroup = "show";
     ViewBag.InMateriaPrimaNavLink = "active";
-    List<GTipoDTO_out> list = ViewBag.list;
 }
 
 
@@ -23,23 +23,24 @@
   </div>
 
   <div class="card-body pt-2" id="card">
-         <div class="row" name="insert">
-             @foreach (var item in list)
-             {
-                 <div class="form-group col-lg-6 col-md-4 col-xs-12">
-                    <label  class="control-label"> <b class="card-subtitle">@item.Name </b>  </label>
-                    <input hidden min="0" value=@item.id type="number" class="form-control" name="mariscoid" />
-                    <label  class="control-label"> 
-                    <b class="card-text"> Cantidad en Kg.  </b> </label>
-                        <input min="0" value="0" type="number" class="form-control" name="cantkg" />
-                </div>
-             }   
-           
+       <form asp-action="Save" method="post">
+         <div class="row">
+            <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="Mariscoid" class="control-label"> Nombre</label>
+                <select asp-for="Mariscoid" asp-items=@ViewBag.listado class="form-control"></select>
+                <span asp-validation-for="Mariscoid" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="Cantidad" class="control-label"> Breve Descripcion </label>
+                <input asp-for="Cantidad" class="form-control text-to-upper-alau" />
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
+            </div>
         </div>
          <div class="card-footer form-group text-center m-0">
-             <button class="btn btn-primary" onclick="send()">Guardar</button>
+             <input type="submit" value="Guardar" class="btn btn-primary rounded-pill" />
              <a class="btn btn-danger rounded-pill" asp-action="Index">Volver</a>
          </div>
+    </form>
   </div>
   <div class="card-footer">
       <p class="card-text">
