@@ -1,4 +1,5 @@
 ﻿using MarineFarm.Auth;
+using MarineFarm.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarineFarm.Entitys
@@ -6,7 +7,7 @@ namespace MarineFarm.Entitys
     /// <summary>
     /// para almacenar los datos de un pedido
     /// </summary>
-    public class Pedido
+    public class Pedido : Iid
     {
         [Key]
         public int id { get; set; }
@@ -43,6 +44,9 @@ namespace MarineFarm.Entitys
         /// listado de productos
         /// </summary>
         public List<PedidosProductos> PedidoProductos { get; set; }
-
+        /// <summary>
+        /// si el elemento se encuentra activo o no
+        /// </summary>
+        public bool act { get; set; }
     }
 }

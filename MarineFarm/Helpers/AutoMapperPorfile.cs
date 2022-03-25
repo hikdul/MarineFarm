@@ -26,6 +26,8 @@ namespace MarineFarm.Helpers
             HsMateriaPrimaMap();
             ProduccionMap();
             EquipoMap();
+            PedidosMap();
+            ClienteMap();
         }
 
         private void CustamMapITipe<T>() where T : class, Iid
@@ -249,6 +251,73 @@ namespace MarineFarm.Helpers
 
         #endregion
 
+        #region pedido
 
+        private void PedidosMap()
+        {
+            CreateMap<Pedido, PedidoDTOS_out>()
+                .ForMember(ee => ee.Cliente, opt => opt.MapFrom(PedidoNombreCliente))
+                .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante));
+
+            CreateMap<Pedido, PedidoDTO_out>()
+                .ForMember(ee => ee.Cliente, opt => opt.MapFrom(PedidoNombreCliente))
+                .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante))
+                .ForMember(ee => ee.Productos, opt => opt.MapFrom(ProductosEnPedido));
+
+        }
+
+
+        private List<PedidoProductoDTO_Out> ProductosEnPedido(Pedido ent, PedidoDTO_out dto)
+        {
+            List<PedidoProductoDTO_Out> list = new();
+            if (ent == null || ent.PedidoProductos.Count < 1)
+                return list;
+
+            foreach (var item in ent.PedidoProductos)
+                list.Add(new()
+                {
+                    id = item.Productoid,
+                    act = item.Producto.act,
+                    Calibre = item.Producto.Calibre.Name,
+                    Empaquetado = item.Producto.Empaquetado.Name,
+                    Marisco = item.Producto.Marisco.Name,
+                    TipoProduccion = item.Producto.TipoProduccion.Name,
+                    Cantidad = item.Cantidad
+                });
+
+            return list;
+        }
+
+        private string PedidoNombreCliente(Pedido ent, PedidoDTOS_out dto)
+        {
+            if (ent == null ||  ent.Cliente == null || ent.Cliente.Name == null)
+                return "";
+
+            return ent.Cliente.Name;
+
+        }
+
+        private string PedidoNombreSolicitante(Pedido ent, PedidoDTOS_out dto)
+        {
+            if (ent == null || ent.Solicitante == null || ent.Solicitante.Nombre == null)
+                return "";
+
+            return ent.Solicitante.Nombre;
+        }
+
+        #endregion
+
+        #region Cliente
+
+        private void ClienteMap()
+        {
+            CreateMap<ClienteDTO_in, Cliente>()
+                .ForMember(ee => ee.act, opt => opt.MapFrom(x => true));
+
+            CreateMap<Cliente, ClienteDTO_out>().ReverseMap();
+
+        }
+
+        #endregion
     }
 }
