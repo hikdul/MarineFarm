@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MarineFarm.Data;
 using MarineFarm.DTO;
+using MarineFarm.Entitys;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -99,6 +100,26 @@ namespace MarineFarm.Controllers.API
 
         #endregion
 
+        #region post
+        /// <summary>
+        /// para generar un nuevo pedido
+        /// </summary>
+        /// <param name="ins"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] PedidoDTO_in ins)
+        {
+            try
+            {
+                return await Post<PedidoDTO_in, Pedido, PedidoDTO_out>(ins);
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return BadRequest("upss, error al insertar datos. por favor intente de nuevo mas tarde");
+            }
+        }
 
+        #endregion
     }
 }
