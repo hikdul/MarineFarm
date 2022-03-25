@@ -40,19 +40,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-// ## === ##
-// cookies conf
-// ## === ##
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.AccessDeniedPath = "/Cuentas/Login";
-    options.Cookie.Name = "YourAppCookieName";
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromDays(1);
-    options.LoginPath = "/Cuentas/Login";
-    options.LogoutPath = "/Cuentas/Login";
-    options.SlidingExpiration = true;
-});
+
 
 
 
@@ -154,6 +142,26 @@ builder.Services.Configure<SMTPConf>(Config.GetSection("MailSetup"));
 // pero lo recomiendan singleton. claro en el ejempo el email se enviar 
 // directamente desde un formulario. por tanto lo cambio a trans por eso!!>
 builder.Services.AddSingleton<IMailSender, EmailSenderServices>();
+
+// ## === ##
+// cookies conf
+// ## === ##
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = new PathString("/cuentas/login");
+    options.Cookie.Name = "YourAppCookieName";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    options.LoginPath = new PathString("/cuentas/login");
+    options.LogoutPath = new PathString("/cuentas/login");
+    options.SlidingExpiration = true;
+    //options.Events.OnRedirectToLogin = context =>
+    //{
+    //    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+    //    return Task.CompletedTask;
+    //};
+});
+
 
 // ==> arranca la app y construccion en pipeline
 
