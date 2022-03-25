@@ -72,12 +72,11 @@ namespace MarineFarm.DTO
                 {
                     exist.Cantidad += this.Cantidad;
                     await context.SaveChangesAsync();
-                    ent = await context.MateriasPrimas
-                       .Include(x => x.Marisco)
-                       .Where(x => x.id == exist.id)
-                       .FirstOrDefaultAsync();
+                    exist.Marisco = await context.Mariscos
+                        .Where(x => x.id == this.Mariscoid)
+                        .FirstOrDefaultAsync();
 
-                    return mapper.Map<MateriaPrimaDTO_out>(ent);
+                    return mapper.Map<MateriaPrimaDTO_out>(exist);
                 }
 
 

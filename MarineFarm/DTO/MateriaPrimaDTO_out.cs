@@ -11,8 +11,13 @@
         /// </summary>
         public int id { get; set; }
         /// <summary>
+        /// marisco id
+        /// </summary>
+        public int Mariscoid { get; set; }
+        /// <summary>
         /// Marisco
         /// </summary>
+
         public string Marisco { get; set; }
         /// <summary>
         /// Cantidad

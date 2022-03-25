@@ -44,7 +44,10 @@ namespace MarineFarm.Controllers
             List<MateriaPrimaDTO_out> ret = new();
             try
             {
-                var ents = await context.MateriasPrimas.Include(x => x.Marisco).ToListAsync();
+                var ents = await context.MateriasPrimas
+                    .Include(x => x.Marisco)
+                    .Where(x => x.Marisco.act == true)
+                    .ToListAsync();
                 ret = mapper.Map<List<MateriaPrimaDTO_out>>(ents);
             }
             catch (Exception ee)
