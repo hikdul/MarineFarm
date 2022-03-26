@@ -148,7 +148,7 @@ namespace MarineFarm.Controllers.API
                     return BadRequest("Usuario No Valido");
 
                 ent.Solicitanteid = us.id;
-                ent.FechaEntregaPosible = DateTime.Now.AddDays(10);
+                ent.FechaEntregaPosible = CalcularFechaEntrega();
 
                 ent.PedidoProductos = new();
 
@@ -176,5 +176,69 @@ namespace MarineFarm.Controllers.API
         }
 
         #endregion
+
+
+        #region Put
+
+        /// <summary>
+        /// para actualizar un pedido
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ins"></param>
+        /// <returns></returns>
+        [HttpPut("id")]
+        public async Task<ActionResult> Put(int id, [FromBody] PedidoDTO_in ins)
+        {
+            try {
+                var ent = await context.Pedidos.Where(y => y.id == id).FirstOrDefaultAsync();
+                if (ent == null || ent.id < 1)
+                    return NotFound();
+                var us = await context.AspNetUsuario.Where(y => y.Email == User.Identity.Name).FirstOrDefaultAsync();
+                if (us == null || us.id < 1)
+                    return BadRequest("Usuario No Valido");
+
+                ent = mapper.Map(ins, ent);
+
+                ent.Solicitanteid = us.id;
+                ent.FechaEntregaPosible = CalcularFechaEntrega();
+
+                ent.PedidoProductos = new();
+
+                if (ins.Productos != null || ins.Productos.Count > 0)
+                    foreach (var item in ins.Productos)
+                    {
+                        if (item.Cantidad > 0)
+                        {
+                            var producto = await Producto.GetByParametersAsync(context, item.Mariscoid, item.TipoProduccionid, item.Calibreid, item.Empaquetadoid);
+                            if (producto != null && producto.id > 0)
+                                ent.PedidoProductos.Add(new() { Cantidad = item.Cantidad, Productoid = producto.id });
+                        }
+                    }
+
+                await context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return BadRequest("upss, error al insertar datos. por favor intente de nuevo mas tarde");
+            }
+        }
+
+
+        #endregion
+
+
+        #region calcular el tiempo estimado
+
+        private DateTime CalcularFechaEntrega()
+        {
+            return DateTime.Now.AddDays(10);
+        }
+
+
+        #endregion
+
     }
 }
