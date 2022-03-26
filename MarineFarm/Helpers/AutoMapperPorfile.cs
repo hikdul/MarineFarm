@@ -264,8 +264,41 @@ namespace MarineFarm.Helpers
                 .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante))
                 .ForMember(ee => ee.Productos, opt => opt.MapFrom(ProductosEnPedido));
 
+            CreateMap<PedidoDTO_in, Pedido>()
+                .ForMember(ee => ee.act, opt => opt.MapFrom(y => true))
+                .ForMember(ee => ee.FechaEntrega, opt => opt.Ignore())
+                .ForMember(ee => ee.FechaSolicitud, opt => opt.MapFrom(y => DateTime.Now))
+                .ForMember(ee => ee.PedidoProductos, opt => opt.Ignore());
+                //.ForMember(ee => ee.PedidoProductos, opt => opt.MapFrom(PedidoProductoMap));
+
         }
 
+
+        private List<PedidosProductos> PedidoProductoMap(PedidoDTO_in dto, Pedido ent)
+        {
+            List<PedidosProductos> list = new();
+            if (dto.Productos == null || dto.Productos.Count < 1)
+                return list;
+
+            foreach (var item in dto.Productos)
+            {
+                if(item.Cantidad > 0)
+                    list.Add(new()
+                    {
+                        Cantidad = item.Cantidad,
+                        Producto = new()
+                        {
+                            TipoProduccionid = item.TipoProduccionid,
+                            Calibreid = item.Calibreid,
+                            Mariscoid = item.Mariscoid,
+                            Empaquetadoid = item.Empaquetadoid,
+                            act = true,
+                        }
+                    });
+            }
+
+            return list;
+        }
 
         private List<PedidoProductoDTO_Out> ProductosEnPedido(Pedido ent, PedidoDTO_out dto)
         {

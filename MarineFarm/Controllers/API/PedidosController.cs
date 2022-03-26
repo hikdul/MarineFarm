@@ -71,6 +71,37 @@ namespace MarineFarm.Controllers.API
         }
 
         /// <summary>
+        /// para obtener los datos de un pedido a detalle
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("id")]
+        public async Task<ActionResult> Get(int id)
+        {
+            try
+            {
+                var ent = await context.Pedidos
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Marisco)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.TipoProduccion)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Calibre)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Empaquetado)
+                    .Include(ee => ee.Solicitante)
+                    .Include(ee => ee.Cliente)
+                    .Where(x =>
+                    x.act == true &&
+                    x.id == id)
+                    .FirstOrDefaultAsync();
+                return Ok(mapper.Map<PedidoDTO_out>(ent));
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine(ee.Message);
+                return BadRequest("Alga Salio mal, intente mas tarde");
+            }
+        }
+
+
+        /// <summary>
         /// para obtener una lista de pedidos en un periodo valido
         /// </summary>
         /// <param name="periodo"></param>
@@ -111,7 +142,31 @@ namespace MarineFarm.Controllers.API
         {
             try
             {
-                return await Post<PedidoDTO_in, Pedido, PedidoDTO_out>(ins);
+                var ent = mapper.Map<Pedido>(ins);
+                var us = await context.AspNetUsuario.Where(y => y.Email == User.Identity.Name).FirstOrDefaultAsync();
+                if (us == null || us.id < 1)
+                    return BadRequest("Usuario No Valido");
+
+                ent.Solicitanteid = us.id;
+                ent.FechaEntregaPosible = DateTime.Now.AddDays(10);
+
+                ent.PedidoProductos = new();
+
+                if (ins.Productos != null || ins.Productos.Count > 0)
+                    foreach (var item in ins.Productos)
+                    {
+                        if (item.Cantidad > 0)
+                        {
+                            var producto = await Producto.GetByParametersAsync(context, item.Mariscoid, item.TipoProduccionid, item.Calibreid, item.Empaquetadoid);
+                            if (producto != null && producto.id > 0)
+                                ent.PedidoProductos.Add(new() { Cantidad = item.Cantidad, Productoid = producto.id });
+                        }
+                    }
+
+                context.Add(ent);
+                await context.SaveChangesAsync();
+                return Ok(mapper.Map<PedidoDTOS_out>(ent));
+            
             }
             catch (Exception ee)
             {
