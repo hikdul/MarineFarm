@@ -1,0 +1,97 @@
+﻿@using MarineFarm.DTO;
+
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Nuevo Mariscos";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.PedidoAriaExpanded = "true";
+    ViewBag.PedidoGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.PedidoColapseGroup = "show";
+    ViewBag.GPedidoNavLink = "active";
+
+}
+
+
+<div class="card">
+    <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+        <h3 class="card-title">
+            Nuevo Pedido
+        </h3>
+    </div>
+
+    <div class="card-body pt-2">
+        <div class="row">
+            <div class="col-12">
+                <button id="PlusM" class="btn btn-primary">+</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div hidden id="original">
+    <div class="clonar">
+        <div class="card mt-5">
+            <div class="card-header">
+                <button class="btn btn-primary">+</button>
+                <div class="row">
+
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="mariscoid" class="control-label"> Seleccione Marisco</label>
+                        <select name="mariscoid" asp-items=@ViewBag.Mariscos class="form-control"></select>
+                    </div>
+                  
+                     <div class="form-group col-md-6 col-xs-12">
+                        <label for="solicitado" class="control-label"> Cantidad Solicitada</label>
+                        <input name="solicitado" class="form-control" type="number" />
+                    </div>
+                </div>
+            </div>
+            <div class="card-body mt-0">
+                <div class="row">
+                    <div class="form-group col-md-4 col-xs-12">
+                        <label for="TipoProduccionid" class="control-label"> Tipo Produccion</label>
+                        <select name="TipoProduccionid" asp-items=@ViewBag.Tps class="form-control"></select>
+                    </div>
+                    <div class="form-group col-md-4 col-xs-12">
+                        <label for="Calibreid" class="control-label"> Calibre</label>
+                        <select name="Calibreid" asp-items=@ViewBag.Calibres class="form-control"></select>
+                    </div>
+                    <div class="form-group col-md-4 col-xs-12">
+                        <label for="Empaquetadoid" class="control-label"> Empaquetado</label>
+                        <select name="Empaquetadoid" asp-items=@ViewBag.Empaquetados class="form-control"></select>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="cont">
+
+</div>
+
+
+<script>
+    const PlusM = document.getElementById('PlusM')
+    const cont = document.getElementById('cont');
+
+    let Subconid = 0
+
+    // para generar toda uno tarjeta
+    PlusM.addEventListener('click', function(e){
+        e.preventDefault()
+
+        const clone = document.querySelector('.clonar')
+        let copy = clone.cloneNode(true)
+
+        cont.appendChild(copy).classList.remove('clonar')
+
+      
+    })
+
+
+</script>

@@ -40,10 +40,10 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                ViewBag.Mariscos = await context.Mariscos.Where(y => y.act == true).ToListAsync();// ToSelect.ToSelectITipo<Marisco>(context);
-                ViewBag.Tps = await context.TiposProduccion.Where(y => y.act == true).ToListAsync(); ;//ToSelect.ToSelectITipo<TipoProduccion>(context);
-                ViewBag.Calibres = await context.Calibres.Where(y => y.act == true).ToListAsync();;//ToSelect.ToSelectITipo<Calibre>(context);
-                ViewBag.Empaquetados = await context.Empaquetados.Where(y => y.act == true).ToListAsync();;//ToSelect.ToSelectITipo<Empaquetado>(context);
+                ViewBag.Mariscos = await context.Mariscos.Where(y => y.act == true).ToListAsync();
+                ViewBag.Tps = await context.TiposProduccion.Where(y => y.act == true).ToListAsync();
+                ViewBag.Calibres = await context.Calibres.Where(y => y.act == true).ToListAsync();
+                ViewBag.Empaquetados = await context.Empaquetados.Where(y => y.act == true).ToListAsync();
             }
             catch (Exception ee)
             {
@@ -193,6 +193,49 @@ namespace MarineFarm.Controllers
 
 
         #endregion
+
+        #region historial
+
+
+        /// <summary>
+        /// para ver el historial de pedidos
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Historial()
+        {
+            var hoy = DateTime.Now;
+            var ent = await context.Produccion
+                .Include(y => y.Superv)
+                .Where(y => y.Fecha.Day == hoy.Day 
+                        && y.Fecha.Month == hoy.Month 
+                        && y.Fecha.Year == hoy.Year)
+                .ToListAsync();
+            return View(mapper.Map<List<ProduccionDTO_out>>(ent));
+        }
+        /// <summary>
+        /// para buscar elementos pasandole un periodo
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> HistorialF(Periodo periodo)
+        {
+            if (periodo.Validate())
+            {
+                var hoy = DateTime.Now;
+                var ent = await context.Produccion
+                    .Include(y => y.Superv)
+                    .Where(y => y.Fecha>= periodo.Inicio.AddDays(-1)
+                    && y.Fecha <= periodo.Fin.AddDays(1))
+                    .ToListAsync();
+                return View(mapper.Map<List<ProduccionDTO_out>>(ent));
+            }
+
+            return View();
+        }
+
+
+        #endregion
+
 
 
     }
