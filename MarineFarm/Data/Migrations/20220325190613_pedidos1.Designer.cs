@@ -4,6 +4,7 @@ using MarineFarm.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarineFarm.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220325190613_pedidos1")]
+    partial class pedidos1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,9 +319,6 @@ namespace MarineFarm.Data.Migrations
                     b.Property<int>("Solicitanteid")
                         .HasColumnType("int");
 
-                    b.Property<bool>("act")
-                        .HasColumnType("bit");
-
                     b.HasKey("id");
 
                     b.HasIndex("Clienteid");
@@ -327,24 +326,6 @@ namespace MarineFarm.Data.Migrations
                     b.HasIndex("Solicitanteid");
 
                     b.ToTable("Pedidos");
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.PedidosProductos", b =>
-                {
-                    b.Property<int>("pedidoid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Productoid")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Cantidad")
-                        .HasColumnType("float");
-
-                    b.HasKey("pedidoid", "Productoid");
-
-                    b.HasIndex("Productoid");
-
-                    b.ToTable("PP");
                 });
 
             modelBuilder.Entity("MarineFarm.Entitys.PMariscoProduccion", b =>
@@ -779,25 +760,6 @@ namespace MarineFarm.Data.Migrations
                     b.Navigation("Solicitante");
                 });
 
-            modelBuilder.Entity("MarineFarm.Entitys.PedidosProductos", b =>
-                {
-                    b.HasOne("MarineFarm.Entitys.Producto", "Producto")
-                        .WithMany()
-                        .HasForeignKey("Productoid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MarineFarm.Entitys.Pedido", "pedido")
-                        .WithMany("PedidoProductos")
-                        .HasForeignKey("pedidoid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Producto");
-
-                    b.Navigation("pedido");
-                });
-
             modelBuilder.Entity("MarineFarm.Entitys.PMariscoProduccion", b =>
                 {
                     b.HasOne("MarineFarm.Entitys.Marisco", "Marisco")
@@ -931,11 +893,6 @@ namespace MarineFarm.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MarineFarm.Entitys.Pedido", b =>
-                {
-                    b.Navigation("PedidoProductos");
                 });
 
             modelBuilder.Entity("MarineFarm.Entitys.Produccion", b =>

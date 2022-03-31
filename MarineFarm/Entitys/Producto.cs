@@ -1,5 +1,6 @@
 ﻿using MarineFarm.Data;
 using MarineFarm.Helpers;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarineFarm.Entitys
@@ -66,56 +67,43 @@ namespace MarineFarm.Entitys
         /// en caso de no existir crea uno
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="Mid"></param>
-        /// <param name="TPid"></param>
-        /// <param name="Cid"></param>
-        /// <param name="Eid"></param>
+        /// <param name="Mid">marisca</param>
+        /// <param name="TPid">tipo de producto</param>
+        /// <param name="Cid">Calibre</param>
+        /// <param name="Eid">Empaquetado</param>
         /// <returns></returns>
-        public static async Task<Producto> GetByParametersAsync(ApplicationDbContext context, int Mid, int TPid, int Cid, int Eid = 0)
+        public static async Task<Producto> GetByParametersAsync(ApplicationDbContext context, int Mid, int TPid, int Cid, int Eid)
         {
-            //Producto pp = new();
             try
             {
 
-                //if (Eid == 0)
-                //{
-                //    var ppO = await context.Productos
-                //   .Where(x => x.Mariscoid == Mid
-                //   && x.TipoProduccionid == TPid
-                //   && x.Calibreid == Cid)
-                //   .FirstOrDefaultAsync();
+              var pp = await context.Productos
+                      .Where(x => x.Mariscoid == Mid
+                      && x.TipoProduccionid == TPid
+                      && x.Calibreid == Cid
+                      && x.Empaquetadoid == Eid)
+                      .FirstOrDefaultAsync();
 
-                //    return ppO;
-                //}
+                if (pp == null || pp.id < 1)
+                {
+                    pp = new()
+                    {
+                        Mariscoid = Mid,
+                        TipoProduccionid = TPid,
+                        Calibreid = Cid,
+                        Empaquetadoid = Eid
+                    };
+                    context.Add(pp);
+                    await context.SaveChangesAsync();
+                }
+                return pp;
 
-
-                //var pp = await context.Productos
-                //      .Where(x => x.Mariscoid == Mid
-                //      && x.TipoProduccionid == TPid
-                //      && x.Calibreid == Cid
-                //      && x.Empaquetadoid == Eid)
-                //      .FirstOrDefaultAsync();
-
-                //if (pp == null || pp.id < 1)
-                //{
-                //    pp = new()
-                //    {
-                //        Mariscoid = Mid,
-                //        TipoProduccionid = TPid,
-                //        Calibreid = Cid,
-                //        Empaquetadoid = Eid
-                //    };
-                //    context.Add(pp);
-                //    await context.SaveChangesAsync();
-                //}
-                //return pp;
-
-                return new();
+               
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
-                return null;
+                return new();
             }
         }
 

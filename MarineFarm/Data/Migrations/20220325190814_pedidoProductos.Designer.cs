@@ -4,6 +4,7 @@ using MarineFarm.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarineFarm.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220325190814_pedidoProductos")]
+    partial class pedidoProductos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,9 +319,6 @@ namespace MarineFarm.Data.Migrations
                     b.Property<int>("Solicitanteid")
                         .HasColumnType("int");
 
-                    b.Property<bool>("act")
-                        .HasColumnType("bit");
-
                     b.HasKey("id");
 
                     b.HasIndex("Clienteid");
@@ -336,9 +335,6 @@ namespace MarineFarm.Data.Migrations
 
                     b.Property<int>("Productoid")
                         .HasColumnType("int");
-
-                    b.Property<double>("Cantidad")
-                        .HasColumnType("float");
 
                     b.HasKey("pedidoid", "Productoid");
 

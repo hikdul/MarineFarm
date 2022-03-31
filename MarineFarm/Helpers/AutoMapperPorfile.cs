@@ -26,6 +26,8 @@ namespace MarineFarm.Helpers
             HsMateriaPrimaMap();
             ProduccionMap();
             EquipoMap();
+            PedidosMap();
+            ClienteMap();
         }
 
         private void CustamMapITipe<T>() where T : class, Iid
@@ -249,6 +251,106 @@ namespace MarineFarm.Helpers
 
         #endregion
 
+        #region pedido
 
+        private void PedidosMap()
+        {
+            CreateMap<Pedido, PedidoDTOS_out>()
+                .ForMember(ee => ee.Cliente, opt => opt.MapFrom(PedidoNombreCliente))
+                .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante));
+
+            CreateMap<Pedido, PedidoDTO_out>()
+                .ForMember(ee => ee.Cliente, opt => opt.MapFrom(PedidoNombreCliente))
+                .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante))
+                .ForMember(ee => ee.Productos, opt => opt.MapFrom(ProductosEnPedido));
+
+            CreateMap<PedidoDTO_in, Pedido>()
+                .ForMember(ee => ee.act, opt => opt.MapFrom(y => true))
+                .ForMember(ee => ee.FechaEntrega, opt => opt.Ignore())
+                .ForMember(ee => ee.FechaSolicitud, opt => opt.MapFrom(y => DateTime.Now))
+                .ForMember(ee => ee.PedidoProductos, opt => opt.Ignore());
+                //.ForMember(ee => ee.PedidoProductos, opt => opt.MapFrom(PedidoProductoMap));
+
+        }
+
+
+        private List<PedidosProductos> PedidoProductoMap(PedidoDTO_in dto, Pedido ent)
+        {
+            List<PedidosProductos> list = new();
+            if (dto.Productos == null || dto.Productos.Count < 1)
+                return list;
+
+            foreach (var item in dto.Productos)
+            {
+                if(item.Cantidad > 0)
+                    list.Add(new()
+                    {
+                        Cantidad = item.Cantidad,
+                        Producto = new()
+                        {
+                            TipoProduccionid = item.TipoProduccionid,
+                            Calibreid = item.Calibreid,
+                            Mariscoid = item.Mariscoid,
+                            Empaquetadoid = item.Empaquetadoid,
+                            act = true,
+                        }
+                    });
+            }
+
+            return list;
+        }
+
+        private List<PedidoProductoDTO_Out> ProductosEnPedido(Pedido ent, PedidoDTO_out dto)
+        {
+            List<PedidoProductoDTO_Out> list = new();
+            if (ent == null || ent.PedidoProductos.Count < 1)
+                return list;
+
+            foreach (var item in ent.PedidoProductos)
+                list.Add(new()
+                {
+                    id = item.Productoid,
+                    act = item.Producto.act,
+                    Calibre = item.Producto.Calibre.Name,
+                    Empaquetado = item.Producto.Empaquetado.Name,
+                    Marisco = item.Producto.Marisco.Name,
+                    TipoProduccion = item.Producto.TipoProduccion.Name,
+                    Cantidad = item.Cantidad
+                });
+
+            return list;
+        }
+
+        private string PedidoNombreCliente(Pedido ent, PedidoDTOS_out dto)
+        {
+            if (ent == null ||  ent.Cliente == null || ent.Cliente.Name == null)
+                return "";
+
+            return ent.Cliente.Name;
+
+        }
+
+        private string PedidoNombreSolicitante(Pedido ent, PedidoDTOS_out dto)
+        {
+            if (ent == null || ent.Solicitante == null || ent.Solicitante.Nombre == null)
+                return "";
+
+            return ent.Solicitante.Nombre;
+        }
+
+        #endregion
+
+        #region Cliente
+
+        private void ClienteMap()
+        {
+            CreateMap<ClienteDTO_in, Cliente>()
+                .ForMember(ee => ee.act, opt => opt.MapFrom(x => true));
+
+            CreateMap<Cliente, ClienteDTO_out>().ReverseMap();
+
+        }
+
+        #endregion
     }
 }

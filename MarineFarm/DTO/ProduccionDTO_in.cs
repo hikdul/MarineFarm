@@ -21,6 +21,53 @@ namespace MarineFarm.DTO
         #endregion
 
 
+
+        #region ctor
+        /// <summary>
+        /// empty
+        /// </summary>
+        public ProduccionDTO_in()
+        {
+            this.ProduccionIn = new();
+        }
+        /// <summary>
+        /// contructor para vista
+        /// </summary>
+        /// <param name="dto"></param>
+        public ProduccionDTO_in(ProduccionDTOView_in dto)
+        {
+            this.ProduccionIn = new();
+
+            foreach (var usado in dto.usado)
+            {
+                PivotProduccionDTO_in aux = new()
+                {
+                    Productos = new(),
+                    Mariscoid = usado.mariscoid,
+                    CantidadUtilizada = usado.usado
+                };
+
+                var filter = dto.pedido.Where(y => y.mariscoid == usado.mariscoid).ToList();
+                if(filter != null && filter.Count > 0)
+                    foreach (var item in filter)
+                    {
+                        aux.Productos.Add(new()
+                        {
+                            Calibreid = item.calibre,
+                            TipoProduccionid = item.tipoproduccion,
+                            CantProduccida = item.producido,
+                            Empaquetadoid = item.empaquetado
+                        });
+
+                    }
+
+                this.ProduccionIn.Add(aux);
+            }
+
+        }
+
+        #endregion
+
         #region valid
 
         /// <summary>

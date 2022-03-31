@@ -55,23 +55,25 @@ namespace MarineFarm.Entitys
                 resp.ProductoProduccion = new();
 
                 foreach (var marisco in dto.ProduccionIn)
-                {
-                    resp.MariscosProduccion.Add(new()
+                    if (marisco.CantidadUtilizada > 0)
                     {
-                        CantidadUtilizada = marisco.CantidadUtilizada,
-                        Mariscoid = marisco.Mariscoid,
-                    });
-                    foreach (var pp in marisco.Productos)
-                    {
-                        var flag = await Producto.GetByParametersAsync(context, marisco.Mariscoid, pp.TipoProduccionid, pp.Calibreid, pp.Empaquetadoid);
-                        resp.ProductoProduccion.Add(new()
+                        resp.MariscosProduccion.Add(new()
                         {
-                            CantidadProducida = pp.CantProduccida,
-                            Productoid = flag.id
+                            CantidadUtilizada = marisco.CantidadUtilizada,
+                            Mariscoid = marisco.Mariscoid,
                         });
+                        foreach (var pp in marisco.Productos)
+                            if (pp.CantProduccida > 0)
+                            {
+                                var flag = await Producto.GetByParametersAsync(context, marisco.Mariscoid, pp.TipoProduccionid, pp.Calibreid, pp.Empaquetadoid);
+                                resp.ProductoProduccion.Add(new()
+                                {
+                                    CantidadProducida = pp.CantProduccida,
+                                    Productoid = flag.id
+                                });
+                            }
                     }
 
-                }
 
                 return resp;
             }

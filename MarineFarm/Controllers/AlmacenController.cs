@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MarineFarm.Data;
 using MarineFarm.DTO;
+using MarineFarm.Entitys;
+using MarineFarm.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -67,8 +69,8 @@ namespace MarineFarm.Controllers
 
         #endregion
 
+      
 
-        
 
     }
 }

@@ -113,6 +113,21 @@ namespace MarineFarm.Data
         /// </summary>
         public DbSet<Equipo> Equipos { get; set; }
 
+        // ## == Manejo de Pedidos
+        // ## =====================================
+        /// <summary>
+        /// para almacenar los datos generales de los clientes
+        /// </summary>
+        public DbSet<Cliente> Clientes { get; set; }
+        /// <summary>
+        /// Para almacenar los datos base de los pedidos
+        /// </summary>
+        public DbSet<Pedido> Pedidos { get; set; }
+        /// <summary>
+        /// pivote de pedidos en productos
+        /// </summary>
+        public DbSet<PedidosProductos> PP { get; set; }
+
 
         #endregion
 
@@ -139,7 +154,8 @@ namespace MarineFarm.Data
             builder.Entity<PMariscoProduccion>().HasKey(x => new { x.Produccionid, x.Mariscoid });
             builder.Entity<PProductoProduccion>().HasKey(x => new { x.Produccionid, x.Productoid });
             builder.Entity<Equipo>().HasKey(x => new { x.Turnoid, x.Cargoid });
-           // builder.Entity<CostosMes>().HasKey(x => new { x.Equipoid, x.Mariscoid, x.TipoProduccionid, x.Calibreid });
+            builder.Entity<PedidosProductos>().HasKey(x => new { x.pedidoid, x.Productoid });
+            // builder.Entity<CostosMes>().HasKey(x => new { x.Equipoid, x.Mariscoid, x.TipoProduccionid, x.Calibreid });
         }
 
         #endregion

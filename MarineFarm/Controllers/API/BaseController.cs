@@ -94,7 +94,6 @@ namespace MarineFarm.Controllers.API
 
         #endregion
 
-
         #region Get
 
         /// <summary>
@@ -162,8 +161,6 @@ namespace MarineFarm.Controllers.API
 
 
         #endregion
-
-
 
         #region PUT
         /// <summary>
