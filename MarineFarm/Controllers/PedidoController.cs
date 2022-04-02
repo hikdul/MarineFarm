@@ -42,6 +42,7 @@ namespace MarineFarm.Controllers
                 ViewBag.Tps = await ToSelect.ToSelectITipo<TipoProduccion>(context);// context.TiposProduccion.Where(y => y.act == true).ToListAsync();
                 ViewBag.Calibres = await ToSelect.ToSelectITipo<Calibre>(context);// context.Calibres.Where(y => y.act == true).ToListAsync();
                 ViewBag.Empaquetados = await ToSelect.ToSelectITipo<Empaquetado>(context);// context.Empaquetados.Where(y => y.act == true).ToListAsync();
+                ViewBag.Clientes = await ToSelect.ToSelectITipo<Cliente>(context);
             }
             catch (Exception ee)
             {
@@ -49,9 +50,20 @@ namespace MarineFarm.Controllers
             }
             return View();
         }
+        /// <summary>
+        /// Para Calcular un pedido
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Calcular(PedidoDTO_in ins)
+        {
+            return View();
+        }
 
-
-
+        /// <summary>
+        /// para almacenar un pedido
+        /// </summary>
+        /// <param name="ins"></param>
+        /// <returns></returns>
         public IActionResult Guardar(PedidoDTO_in ins)
         {
             return View();

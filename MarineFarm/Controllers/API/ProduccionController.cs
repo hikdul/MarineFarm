@@ -3,6 +3,7 @@ using MarineFarm.Auth;
 using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
+using MarineFarm.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,15 +24,19 @@ namespace MarineFarm.Controllers.API
         private readonly ApplicationDbContext context;
 
         private readonly IMapper mapper;
+        private readonly ISaveMuestrasDiarias md;
+
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="context"></param>
         /// <param name="mapper"></param>
-        public ProduccionController(ApplicationDbContext context, IMapper mapper): base(context,mapper)
+        /// <param name="md"></param>
+        public ProduccionController(ApplicationDbContext context, IMapper mapper, ISaveMuestrasDiarias md): base(context,mapper)
         {
             this.context = context;
             this.mapper = mapper;
+            this.md = md;
         }
         #endregion
 
@@ -66,6 +71,31 @@ namespace MarineFarm.Controllers.API
                     //almacena los datos de produccion
                     context.Add(ent);
                     await context.SaveChangesAsync();
+
+                    //generamos la muestra mensual
+                    _ = Task.Run(async () =>
+                    {
+
+                        int ano = DateTime.Now.Year;
+                        int mes = DateTime.Now.Month;
+
+                        foreach (var item in ent.ProductoProduccion)
+                        {
+                            MuestraDiaria muestra = new()
+                            {
+                                ano = ano,
+                                mes = mes,
+                                TotalProducido = item.CantidadProducida,
+                                ProduccionDiaria = item.CantidadProducida,
+                                Calibreid = item.Producto.TipoProduccionid,
+                                TipoProduccionid = item.Producto.Calibreid,
+                                Empaquetadoid = item.Producto.Empaquetadoid,
+                                Mariscoid = item.Producto.Mariscoid,
+                            };
+                            await md.Save(muestra);
+                        }
+                    });
+
 
                     //todo bien ahora tocamos materia prima 
 

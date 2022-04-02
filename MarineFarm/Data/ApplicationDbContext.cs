@@ -127,6 +127,10 @@ namespace MarineFarm.Data
         /// pivote de pedidos en productos
         /// </summary>
         public DbSet<PedidosProductos> PP { get; set; }
+        /// <summary>
+        /// Muestras Diarias
+        /// </summary>
+        public DbSet<MuestraDiaria> MuestrasDiarias { get; set; }
 
 
         #endregion
@@ -155,6 +159,7 @@ namespace MarineFarm.Data
             builder.Entity<PProductoProduccion>().HasKey(x => new { x.Produccionid, x.Productoid });
             builder.Entity<Equipo>().HasKey(x => new { x.Turnoid, x.Cargoid });
             builder.Entity<PedidosProductos>().HasKey(x => new { x.pedidoid, x.Productoid });
+            builder.Entity<MuestraDiaria>().HasKey(x => new { x.ano, x.mes, x.Mariscoid, x.TipoProduccionid, x.Calibreid, x.Empaquetadoid });
             // builder.Entity<CostosMes>().HasKey(x => new { x.Equipoid, x.Mariscoid, x.TipoProduccionid, x.Calibreid });
         }
 

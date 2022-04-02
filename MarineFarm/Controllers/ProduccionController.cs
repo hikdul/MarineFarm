@@ -4,6 +4,7 @@ using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
 using MarineFarm.Helpers;
+using MarineFarm.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,15 +18,19 @@ namespace MarineFarm.Controllers
         #region ctor
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly ISaveMuestrasDiarias md;
+
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="context"></param>
         /// <param name="mapper"></param>
-        public ProduccionController(ApplicationDbContext context, IMapper mapper)
+        /// <param name="md"></param>
+        public ProduccionController(ApplicationDbContext context, IMapper mapper, ISaveMuestrasDiarias md)
         {
             this.context = context;
             this.mapper = mapper;
+            this.md = md;
         }
 
         #endregion
@@ -81,10 +86,13 @@ namespace MarineFarm.Controllers
                     var ent = await Produccion.Up(ins, flagUs.id, context);
 
 
+
+
                     //almacena los datos de produccion
                     context.Add(ent);
                     await context.SaveChangesAsync();
 
+                    
                     //todo bien ahora tocamos materia prima 
 
                     foreach (var item in ent.MariscosProduccion)
@@ -103,6 +111,31 @@ namespace MarineFarm.Controllers
                         var aux = await AlmacenDTO_in.costructor(context, item.Productoid, item.CantidadProducida);
                         await aux.Add(context, mapper);
                     }
+
+                    //para que corra la tarea en otra hilo y asi me almacene los datos.
+                    _ = Task.Run(async () =>
+                   {
+
+                       int ano = DateTime.Now.Year;
+                       int mes = DateTime.Now.Month;
+
+                       foreach (var item in ent.ProductoProduccion)
+                       {
+                           MuestraDiaria muestra = new()
+                           {
+                               ano = ano,
+                               mes = mes,
+                               TotalProducido = item.CantidadProducida,
+                               ProduccionDiaria = item.CantidadProducida,
+                               Calibreid = item.Producto.TipoProduccionid,
+                               TipoProduccionid = item.Producto.Calibreid,
+                               Empaquetadoid = item.Producto.Empaquetadoid,
+                               Mariscoid = item.Producto.Mariscoid,
+                           };
+                           await md.Save(muestra);
+                       }
+                   });
+
 
                     // da respuesta con el resultado obtenido pero mapeado a otro elemento
                     return RedirectToAction("Index");

@@ -1,5 +1,7 @@
 using MarineFarm.Data;
+using MarineFarm.Services;
 using MarineFarm.Services.MailServices;
+using MarineFarm.Services.SaveDailytest;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -162,6 +164,18 @@ builder.Services.ConfigureApplicationCookie(options =>
     //};
 });
 
+// ## === ##
+// para configurar mi servicio de almacenado de datos de soltar y olvidar
+// ## === ##
+    
+    // => para almacenar mis muestras diarias
+builder.Services.AddScoped<ISaveMuestrasDiarias, SaveMuestrasDiarias>();
+
+// ## === ##
+// ## === ##
+// ## === ##
+// ## === ##
+// ## === ##
 
 // ==> arranca la app y construccion en pipeline
 
