@@ -28,6 +28,7 @@ namespace MarineFarm.Helpers
             EquipoMap();
             PedidosMap();
             ClienteMap();
+            MuestraDiariaMap();
         }
 
         private void CustamMapITipe<T>() where T : class, Iid
@@ -271,6 +272,7 @@ namespace MarineFarm.Helpers
                 .ForMember(ee => ee.PedidoProductos, opt => opt.Ignore());
                 //.ForMember(ee => ee.PedidoProductos, opt => opt.MapFrom(PedidoProductoMap));
 
+           
         }
 
 
@@ -352,5 +354,50 @@ namespace MarineFarm.Helpers
         }
 
         #endregion
+
+        #region Muestra Diaria Map
+
+        private void MuestraDiariaMap()
+        {
+            CreateMap<MuestraDiaria, CalculoProduccionDTO_out>()
+               .ForMember(y => y.Marisco, o => o.MapFrom(CalculoMarisco))
+               .ForMember(y => y.TipoProduccion, o => o.MapFrom(CalculoTipoProduccion))
+               .ForMember(y => y.Calibre, o => o.MapFrom(CalculoCalibre))
+               .ForMember(y => y.Empaquetado, o => o.MapFrom(CalculoEmpaquetado))
+               .ForMember(y => y.dias, o => o.MapFrom(x => 0))
+               .ForMember(y => y.PosibleEntrega, o => o.Ignore());
+
+        }
+
+
+        private string CalculoMarisco(MuestraDiaria ent, CalculoProduccionDTO_out dto)
+        {
+            if (ent == null || ent.Marisco == null || ent.Marisco.Name == null)
+                return " -- ";
+            return ent.Marisco.Name;
+        }
+
+        private string CalculoTipoProduccion(MuestraDiaria ent, CalculoProduccionDTO_out dto)
+        {
+            if (ent == null || ent.TipoProduccion == null || ent.TipoProduccion.Name == null)
+                return " -- ";
+            return ent.TipoProduccion.Name;
+        }
+
+        private string CalculoCalibre(MuestraDiaria ent, CalculoProduccionDTO_out dto)
+        {
+            if (ent == null || ent.Calibre == null || ent.Calibre.Name == null)
+                return " -- ";
+            return ent.Calibre.Name;
+        }
+
+        private string CalculoEmpaquetado(MuestraDiaria ent, CalculoProduccionDTO_out dto)
+        {
+            if (ent == null || ent.Empaquetado == null || ent.Empaquetado.Name == null)
+                return " -- ";
+            return ent.Empaquetado.Name;
+        }
+        #endregion
+
     }
 }

@@ -148,7 +148,7 @@ namespace MarineFarm.Controllers.API
                     return BadRequest("Usuario No Valido");
 
                 ent.Solicitanteid = us.id;
-                ent.FechaEntregaPosible = CalcularFechaEntrega();
+                ent.FechaEntregaPosible = await CalculoProduccionDTO_out.CalcularFechaEntrega(ins,context);
 
                 ent.PedidoProductos = new();
 
@@ -200,7 +200,7 @@ namespace MarineFarm.Controllers.API
                 ent = mapper.Map(ins, ent);
 
                 ent.Solicitanteid = us.id;
-                ent.FechaEntregaPosible = CalcularFechaEntrega();
+                ent.FechaEntregaPosible = await CalculoProduccionDTO_out.CalcularFechaEntrega(ins, context);
 
                 ent.PedidoProductos = new();
 
@@ -230,15 +230,7 @@ namespace MarineFarm.Controllers.API
         #endregion
 
 
-        #region calcular el tiempo estimado
-
-        private DateTime CalcularFechaEntrega()
-        {
-            return DateTime.Now.AddDays(10);
-        }
-
-
-        #endregion
+     
 
     }
 }

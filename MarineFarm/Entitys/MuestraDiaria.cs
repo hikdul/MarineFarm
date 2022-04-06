@@ -39,6 +39,25 @@
         /// La Produccion Diaria
         /// </summary>
         public double ProduccionDiaria { get; set; }
+
+        // === nav props
+
+        /// <summary>
+        /// nav prop
+        /// </summary>
+        public Marisco Marisco { get; set; }
+        /// <summary>
+        /// nav prop
+        /// </summary>
+        public TipoProduccion TipoProduccion { get; set; }
+        /// <summary>
+        /// nav prop
+        /// </summary>
+        public Calibre Calibre { get; set; }
+        /// <summary>
+        /// nav prop
+        /// </summary>
+        public Empaquetado Empaquetado { get; set; }
         #endregion
 
 

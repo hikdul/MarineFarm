@@ -53,6 +53,36 @@
 
         #endregion
 
+        #region Comprobar dias validos
+        /// <summary>
+        /// para que me calcule el numero de dias en base a un dia y una fecha
+        /// </summary>
+        /// <param name="inicio"></param>
+        /// <param name="cantidadDiasASumar"></param>
+        /// <returns></returns>
+        public static DateTime DiasValidos(DateTime inicio, double cantidadDiasASumar)
+        {
+            int DiasPorSemana = 5;
+            int band = (int)cantidadDiasASumar;
+            band = band / DiasPorSemana;
+            cantidadDiasASumar += band;
+            DateTime respuesta;
+            
+            if(cantidadDiasASumar  > 0)
+                respuesta = inicio.AddDays(cantidadDiasASumar);
+            else
+                respuesta = inicio.AddDays(1);
+
+            if(respuesta.DayOfWeek == DayOfWeek.Sunday)
+                respuesta = respuesta.AddDays(1);
+            if(DiasPorSemana < 6 && respuesta.DayOfWeek == DayOfWeek.Saturday)
+                respuesta = respuesta.AddDays(2);
+
+            return respuesta;
+        }
+
+
+        #endregion
 
     }
 }
