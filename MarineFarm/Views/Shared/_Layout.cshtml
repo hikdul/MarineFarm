@@ -18,6 +18,9 @@
     <link href="~/assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="~/assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
+    <!--data table css-->
+    <link rel="stylesheet" type="text/css" href="~/assets/css/DataTable.css">
+ 
 </head>
 
 
@@ -409,6 +412,14 @@
         </footer>*@
 
 
+    <!-- ### == ### -->
+    <!-- Scripts system base -->
+    <!-- ### == ### -->
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
     <!-- Para agregar el sweet alert -->
     <script src="~/js~/js/sweetAler2.js"></script>
     <!-- scripts template -->
@@ -443,13 +454,11 @@
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="~/assets/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
 
-    <!-- ### == ### -->
-    <!-- Scripts -->
-    <!-- ### == ### -->
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+ 
+    <!-- Data Table-->
+    <script src="~/assets/js/DataTable.js"></script>
+    <script src="~/assets/js/DataTableEsp.js" asp-append-version="true"></script>
+ 
     @await RenderSectionAsync("Scripts", required: false)
 
 
