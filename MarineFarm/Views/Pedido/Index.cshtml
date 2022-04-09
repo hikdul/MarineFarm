@@ -1,0 +1,59 @@
+﻿
+@using MarineFarm.DTO;
+@model IEnumerable<PedidoDTOS_out>
+
+    @{
+    ViewData["Title"] = ViewBag.heading = "Pedidos Activos";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.PedidoAriaExpanded = "true";
+    ViewBag.PedidoGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.PedidoColapseGroup = "show";
+    ViewBag.PedidoNavLink = "active";
+
+}
+
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header">
+                <p class="text-sm mb-0">
+                    <a asp-action="Generar" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
+                </p>
+                <h5 class="mb-0">Empaquetados Usados en la empresa</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="MarineTable">
+                    <thead class="thead-dark">
+                        <tr class="text-center">
+                            <th>Cliente</th>
+                            <th>Solicitante</th>
+                            <th>Fecha Solicitud</th>
+                            <th>Fecha Entrega</th>
+                            <th><i class="text-dark fa fa-gears"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count() > 0)
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td class=" text-sm font-weight-bold">@item.Cliente</td>
+                                    <td class="text-sm font-weight-normal">@item.Solicitante</td>
+                                    <td class="text-sm font-weight-normal">@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-sm font-weight-normal">@item.FechaEntregaPosible.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-sm font-weight-light">
+                                        <a asp-action="Details" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa fa-eye "></i></a>
+                                        <a asp-action="editar" asp-route-id="@item.id" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
+                                        <a asp-action="Eliminar" asp-route-id="@item.id" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
+                                    </td>
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

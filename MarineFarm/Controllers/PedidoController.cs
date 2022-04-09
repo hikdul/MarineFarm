@@ -43,6 +43,7 @@ namespace MarineFarm.Controllers
                 ViewBag.Calibres = await ToSelect.ToSelectITipo<Calibre>(context);// context.Calibres.Where(y => y.act == true).ToListAsync();
                 ViewBag.Empaquetados = await ToSelect.ToSelectITipo<Empaquetado>(context);// context.Empaquetados.Where(y => y.act == true).ToListAsync();
                 ViewBag.Clientes = await ToSelect.ToSelectITipo<Cliente>(context);
+                ViewBag.fecha = DateTime.Now.ToString("yyyy-MM-dd");
             }
             catch (Exception ee)
             {

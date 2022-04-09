@@ -105,7 +105,7 @@ namespace MarineFarm.DTO
                         prodDiaria = prodDiaria / muestra.Count();
                         dto.dias = item.Cantidad / prodDiaria;
 
-                        dto.PosibleEntrega = Periodo.DiasValidos(DateTime.Now, dto.dias);   // DateTime.Now.AddDays(auxd);
+                        dto.PosibleEntrega = Periodo.DiasValidos(ins.fecha, dto.dias);   // DateTime.Now.AddDays(auxd);
                         dto.UsaMuestra = true;
                         resp.Add(dto);
                     }
@@ -129,7 +129,7 @@ namespace MarineFarm.DTO
                         };
                         var dto = mapper.Map<CalculoProduccionDTO_out>(flag);
                         dto.dias = item.Cantidad / valorDefaultDia;
-                        dto.PosibleEntrega = Periodo.DiasValidos(DateTime.Now, dto.dias);
+                        dto.PosibleEntrega = Periodo.DiasValidos(ins.fecha, dto.dias);
                         dto.UsaMuestra = false;
                         resp.Add(dto);
 

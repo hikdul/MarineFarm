@@ -18,6 +18,11 @@ namespace MarineFarm.DTO
         /// </summary>
         [ModelBinder(BinderType = typeof(TypeBinder<List<PedidoProductoDTO_in>>))]
         public List<PedidoProductoDTO_in> Productos { get; set; }
+        /// <summary>
+        /// me entrega la fecha en que se iniciara la produccion.
+        /// por defecto es la fecha actual
+        /// </summary>
+        public DateTime fecha { get; set; } = DateTime.Now;
 
     }
 }
