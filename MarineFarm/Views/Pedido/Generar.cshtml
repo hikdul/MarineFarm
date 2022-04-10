@@ -111,13 +111,12 @@
 </div>
 
 
-
-
-
 <script>
     const PlusM = document.getElementById('PlusM')
    // const PlusD = document.getElementById('PlusD')
     const cont = document.getElementById('cont');
+
+    let generar = document.getElementById('Generar')
 
     let contador = 1;
 
@@ -169,29 +168,101 @@
        }
    }
 
-   const calcular = document.getElementById('calcular')
 
-   calcular.addEventListener('click', function(e){
+
+   const generarTabla = lista => {
        
-      
+       const inicio = '<div class="table-responsive">'+
+                '<table class="table table-flush" >'+
+          '<thead>'+
+          '<tr>'+
+          '<th>'+
+          'Tipo Produccion'+
+          '</th>'+
+          '<th>'+
+          'Calibre'+
+          '</th>'+
+          '<th>'+
+          'Empaquetado'+
+          '</th>'+
+          '<th>'+
+          'Dias Produccion'+
+          '</th>'+
+          '<th>'+
+          'Fecha Entrega'+
+          '</th>'+
+          '</tr>'+
+          '</thead>'+
+          '<tbody>'
+
+          
+          let cuerpo = ''
+          for(let i = 0; i<lista.length;i++){
+              cuerpo += '<tr>'+
+               '<td>'+
+                lista[i]['tipoProduccion']+
+              '</td>'+
+              '<td>'+
+                lista[i]['calibre']+
+              '</td>'+
+              '<td>'+
+                lista[i]['empaquetado']+
+              '</td>'+
+              '<td>'+
+                lista[i]['dias']+
+              '</td>'+
+              '<td>'+
+               TraformarFechaDDMMYY( lista[i]['posibleEntrega'])+
+              '</td>'+
+              '</tr>'
+          }
+          
+          const fin = '</tbody>'+
+          '</table>'+
+          '</div>'
+
+          
+          return inicio + cuerpo + fin
+   }
+
+
+
+   const calcular = document.getElementById('calcular')
+   // aqui se muestra los calculos totales
+   calcular.addEventListener('click', function(e){
        let data = ObtenerValores()
-
-       console.log(data);
-
-
            $.ajax({
                 data: data,
                 url:   'Calcular', //archivo que recibe la peticion
                 type:  'post', //método de envio
                 success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-                        alert('Elemento Enviado')
-                       console.log(response)
+                       let valores = generarTabla(response.calculoPorElemento)
+                      AlertaHtml('Posible Entrega ' + TraformarFechaDDMMYY( response.entregaPedido ), valores)
                 }
         });
 
    })
 
-  
-   
+   // esta funcion es la que guarda los datos
+   const Guardar = () => {
+        let data = ObtenerValores()
+             $.ajax({
+                data: data,
+                url:   'Guardar', //archivo que recibe la peticion
+                type:  'post', //método de envio
+                success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                    if(response){
+                        AlertSuccess("Elemento Almacenado Correctamente")
+                    }else{
+                        AlertError("Upps, Error Inesperado","algo no esta bien intente de nuevo mas tarde")
+                    }
+                }
+        });
+   }
+
+// aqui se guardan los datos  
+   generar.addEventListener('click', () => {
+       Guardar()
+   })
 
 </script>

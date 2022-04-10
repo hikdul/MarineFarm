@@ -132,6 +132,13 @@ namespace MarineFarm.Data
         /// </summary>
         public DbSet<MuestraDiaria> MuestrasDiarias { get; set; }
 
+        // ## == Para conf valores utiles en toda la pp
+        // ## =====================================
+
+        /// <summary>
+        /// Almacena la conf del sistema
+        /// </summary>
+        public DbSet<Configuraciones> Config { get; set; }
 
         #endregion
 

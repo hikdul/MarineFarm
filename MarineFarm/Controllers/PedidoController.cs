@@ -73,14 +73,14 @@ namespace MarineFarm.Controllers
         /// </summary>
         /// <param name="ins"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Guardar(PedidoDTO_in ins)
+        public async Task<ActionResult<bool>> Guardar(PedidoDTO_in ins)
         {
             try
             {
                 var ent = mapper.Map<Pedido>(ins);
                 var us = await context.AspNetUsuario.Where(y => y.Email == User.Identity.Name).FirstOrDefaultAsync();
                 if (us == null || us.id < 1)
-                    return BadRequest("Usuario No Valido");
+                    return false;
 
                 ent.Solicitanteid = us.id;
                 ent.FechaEntregaPosible = await CalculoProduccionDTO_out.CalcularFechaEntrega(ins, context);
@@ -100,13 +100,13 @@ namespace MarineFarm.Controllers
 
                 context.Add(ent);
                 await context.SaveChangesAsync();
-                return Ok(mapper.Map<PedidoDTOS_out>(ent));
+                return true;
 
             }
             catch (Exception ee)
             {
                 Console.WriteLine(ee.Message);
-                return BadRequest("upss, error al insertar datos. por favor intente de nuevo mas tarde");
+                return false;
             }
         }
 
