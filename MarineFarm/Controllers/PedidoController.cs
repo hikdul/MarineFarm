@@ -100,7 +100,7 @@ namespace MarineFarm.Controllers
 
                 context.Add(ent);
                 await context.SaveChangesAsync();
-                return true;
+                return View("Index");
 
             }
             catch (Exception ee)

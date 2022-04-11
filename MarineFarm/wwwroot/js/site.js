@@ -5,7 +5,7 @@
 
 //para generar una alerta pasandole como cuerpo el html
 const AlertaHtml = (title, contHTMLlineal, btnSend = '<i class="fa fa-thumbs-up"></i> ', btnCancel = '<i class="fa fa-thumbs-down"></i>') => {
-    Swal.fire({
+  return  Swal.fire({
         title: title,
         icon: null,
         width: '80%',

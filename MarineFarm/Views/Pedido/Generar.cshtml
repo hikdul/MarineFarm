@@ -237,7 +237,12 @@
                 type:  'post', //método de envio
                 success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
                        let valores = generarTabla(response.calculoPorElemento)
-                      AlertaHtml('Posible Entrega ' + TraformarFechaDDMMYY( response.entregaPedido ), valores)
+                      AlertaHtml( 'Posible Entrega '+ TraformarFechaDDMMYY( response.entregaPedido ), valores)
+                      .then((result) => {
+                        if(result.value){
+                            Guardar()
+                        }
+                    })
                 }
         });
 
@@ -253,6 +258,7 @@
                 success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
                     if(response){
                         AlertSuccess("Elemento Almacenado Correctamente")
+                        setTimeout( function() { window.location.href = "/Pedido"; }, 1500 );
                     }else{
                         AlertError("Upps, Error Inesperado","algo no esta bien intente de nuevo mas tarde")
                     }
