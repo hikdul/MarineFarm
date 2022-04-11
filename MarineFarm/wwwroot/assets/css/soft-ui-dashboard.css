@@ -10345,6 +10345,11 @@ fieldset:disabled .btn {
   background-color: #212529 !important;
 }
 
+.bg-blue {
+  background-color: #63B3ED !important;
+  
+}
+
 .bg-opacity-10 {
   --bs-bg-opacity: 0.1;
 }

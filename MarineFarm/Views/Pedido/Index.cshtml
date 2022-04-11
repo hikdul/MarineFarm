@@ -16,7 +16,7 @@
 
 <div class="row mt-4">
     <div class="col-12">
-        <div class="card">
+        <div class="card p-3">
             <!-- Card header -->
             <div class="card-header">
                 <p class="text-sm mb-0">
@@ -45,8 +45,8 @@
                                     <td class="text-sm font-weight-normal">@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
                                     <td class="text-sm font-weight-normal">@item.FechaEntregaPosible.ToString("dd/MM/yyyy")</td>
                                     <td class="text-sm font-weight-light">
-                                        <a asp-action="Details" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa fa-eye "></i></a>
-                                        <a asp-action="editar" asp-route-id="@item.id" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
+                                        <a asp-action="Details" asp-route-id="@item.id" class="btn btn-success btn-round"><i class="fa fa-eye "></i></a>
+                                        <a asp-action="editar" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa fa-edit "></i></a>
                                         <a asp-action="Eliminar" asp-route-id="@item.id" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
                                     </td>
                                 </tr>
