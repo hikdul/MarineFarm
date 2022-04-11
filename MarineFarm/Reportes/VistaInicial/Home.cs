@@ -21,10 +21,6 @@ namespace MarineFarm.Reportes.VistaInicial
         /// </summary>
         public List<PedidoProductoDTO_Out> ProduccionAlmacen { get; set; }
         /// <summary>
-        /// mayor produccion del mes
-        /// </summary>
-        public List<PedidoProductoDTO_Out> MayorProduccionMes { get; set; }
-        /// <summary>
         /// total pedido completados este año
         /// </summary>
         public List<pedidoAnoHome> PedidosAno { get; set; }
@@ -40,7 +36,6 @@ namespace MarineFarm.Reportes.VistaInicial
         {
             this.cantidad = 10;
             this.MateriaPrima = new();
-            this.MayorProduccionMes = new();
             this.ProduccionAlmacen = new();
             this.PedidosAno = new();
 
@@ -79,13 +74,7 @@ namespace MarineFarm.Reportes.VistaInicial
                     .ToListAsync();
                 if (a != null && a.Count > 0)
                     home.ProduccionAlmacen = mapper.Map<List<PedidoProductoDTO_Out>>(a);
-                //produccion mes
-                var date = DateTime.Now;
-                var pm = await context
-                    .Produccion
-                    .Where(y => y.Fecha.Month == date.Month && y.Fecha.Year == date.Year)
-                    .Select(y => y.ProductoProduccion.OrderBy(y => y.CantidadProducida).Take(home.cantidad)).ToListAsync();
-
+              
 
                 // pedidos completados ano
 
