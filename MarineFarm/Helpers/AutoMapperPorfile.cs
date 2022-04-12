@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MarineFarm.Auth;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
 
@@ -10,7 +11,7 @@ namespace MarineFarm.Helpers
     public class AutoMapperPorfile: Profile
     {
         /// <summary>
-        /// run
+        /// ctor
         /// </summary>
         public AutoMapperPorfile()
         {
@@ -29,8 +30,15 @@ namespace MarineFarm.Helpers
             PedidosMap();
             ClienteMap();
             MuestraDiariaMap();
+            UsMap();
+            UsClienteMap();
         }
 
+        #region mapeo Generica elementos de interface ITipo
+        /// <summary>
+        /// solo es un mapeo generico
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         private void CustamMapITipe<T>() where T : class, Iid
         {
             CreateMap<GTipoDTO_in, T>()
@@ -43,6 +51,7 @@ namespace MarineFarm.Helpers
                 .ForMember(e => e.act, opt => opt.MapFrom(ee => true));
 
         }
+        #endregion
 
         #region equipo
 
@@ -352,6 +361,91 @@ namespace MarineFarm.Helpers
             CreateMap<Cliente, ClienteDTO_out>().ReverseMap();
 
         }
+
+        #endregion
+
+        #region usuarios Map
+
+        private void UsMap()
+        {
+            CreateMap<UsuarioDTO_in, Usuario>()
+                .ForMember(y => y.Rol, o => o.MapFrom(RolPublico))
+                .ForMember(y => y.Userid, o => o.Ignore());
+            CreateMap<Usuario, UsuarioDTO_out>();
+        }
+        private void UsClienteMap()
+        {
+            CreateMap<UsuarioClienteDTO_in,Usuario>()
+                 .ForMember(y => y.Rol, o => o.MapFrom(RolPublico))
+                .ForMember(y => y.Userid, o => o.Ignore());
+
+            CreateMap<UsuarioCliente, UsuarioClienteDTO_out>()
+                .ForMember(y => y.Nombre, o => o.MapFrom(nombreCliente))
+                .ForMember(y => y.Email, o => o.MapFrom(emailCliente))
+                .ForMember(y => y.Rol, o => o.MapFrom(rolCliente))
+                .ForMember(y => y.rut, o => o.MapFrom(rutCliente))
+                .ForMember(y => y.Telefono, o => o.MapFrom(telefonoCliente))
+                .ForMember(y => y.Cliente, o => o.MapFrom(ClienteCliente))
+                .ForMember(y => y.RUT, o => o.MapFrom(ClienteClienteRUT));
+        }
+
+
+        private string ClienteClienteRUT(UsuarioCliente ent, UsuarioClienteDTO_out dto)
+        {
+
+            if (ent.Cliente == null || ent.Cliente.id < 1 || String.IsNullOrEmpty(ent.Cliente.RUT))
+                return String.Empty;
+            return ent.Cliente.RUT;
+        }
+        private string ClienteCliente(UsuarioCliente ent, UsuarioClienteDTO_out dto)
+        {
+
+            if (ent.Cliente == null || ent.Cliente.id < 1 || String.IsNullOrEmpty(ent.Cliente.Name))
+                return String.Empty;
+            return ent.Cliente.Name;
+        }
+        private string rutCliente(UsuarioCliente ent, UsuarioClienteDTO_out dto)
+        {
+            if (ent.Usuario == null || ent.Usuario.id < 1 || String.IsNullOrEmpty(ent.Usuario.rut))
+                return String.Empty;
+            return ent.Usuario.rut;
+        }
+
+        private string telefonoCliente(UsuarioCliente ent, UsuarioClienteDTO_out dto)
+        {
+            if (ent.Usuario == null || ent.Usuario.id < 1 || String.IsNullOrEmpty(ent.Usuario.Telefono))
+                return String.Empty;
+            return ent.Usuario.Telefono;
+        }
+
+        private string rolCliente(UsuarioCliente ent, UsuarioClienteDTO_out dto)
+        {
+            if (ent.Usuario == null || ent.Usuario.id < 1 || String.IsNullOrEmpty(ent.Usuario.Rol))
+                return String.Empty;
+            return ent.Usuario.Rol;
+        }
+
+        private string nombreCliente(UsuarioCliente ent, UsuarioClienteDTO_out dto)
+        {
+            if (ent.Usuario == null || ent.Usuario.id < 1 || String.IsNullOrEmpty(ent.Usuario.Nombre))
+                return String.Empty;
+            return ent.Usuario.Nombre;
+        }
+
+        private string emailCliente(UsuarioCliente ent, UsuarioClienteDTO_out dto)
+        {
+            if (ent.Usuario == null || ent.Usuario.id < 1 || String.IsNullOrEmpty(ent.Usuario.Email))
+                return String.Empty;
+            return ent.Usuario.Email;
+        }
+
+        private string RolPublico(UsuarioDTO_in dto, Usuario ent)
+        {
+            if (dto == null || dto.LvlRol < 0 || dto.LvlRol > 3)
+                return "";
+            return Usuario.GetRol(dto.LvlRol);
+        }
+
 
         #endregion
 

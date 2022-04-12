@@ -6,6 +6,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MarineFarm.Auth
 {
+    /// <summary>
+    /// para definir a un usuario cliente
+    /// este es el unico usuario que va contener filtro de informacion por su tipo.
+    /// </summary>
     public class Usuario
     {
         #region props
@@ -49,9 +53,13 @@ namespace MarineFarm.Auth
         /// => AdmoSistema ==> Administrador del sistema
         /// => Gerenteplanta ==> Genente de planta
         /// => Superv ==> Supervisor de Planta
-        /// => Cliente ==> Cliente`
+        /// => Cliente ==> Cliente
         /// </summary>
         public string Rol { get; set; }
+        /// <summary>
+        /// si esta activo o no
+        /// </summary>
+        public bool act { get; set; }
 
         #endregion
 
@@ -126,6 +134,24 @@ namespace MarineFarm.Auth
                 this.Rol = "Supervisor De Planta";
             if (lvl == 0)
                 this.Rol = "Cliente";
+
+        }
+        /// <summary>
+        /// Para obtener un rol para la vista
+        /// </summary>
+        /// <param name="lvl"></param>
+        /// <returns></returns>
+        public static string GetRol(int lvl)
+        {
+            if (lvl == 3)
+                return "Administrador Del Sistema";
+            if (lvl == 2)
+                return "Gerente De Planta";
+            if (lvl == 1)
+                return "Supervisor De Planta";
+            if (lvl == 0)
+                return "Cliente";
+            return "";
 
         }
 

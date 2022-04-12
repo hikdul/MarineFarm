@@ -22,15 +22,17 @@ namespace MarineFarm.Data
 
         #region Tablas de negocio
 
-        // ## == Adicional para aspNetIdentity
+        // ## == Complemento de datos para usuarios
         // ## =====================================
 
         /// <summary>
         /// donde se almacena la data sensible del usuario
         /// </summary>
         public DbSet<Usuario> AspNetUsuario { get; set; }
-
-
+        /// <summary>
+        /// Usuario del sistema para nuestros cliente
+        /// </summary>
+        public DbSet<UsuarioCliente> UsuarioClientes{ get; set; }
 
         // ## == Sobre la construccion de productos
         // ## =====================================

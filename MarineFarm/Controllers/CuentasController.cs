@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
 using MarineFarm.Auth;
 using MarineFarm.Data;
+using MarineFarm.DTO;
+using MarineFarm.Entitys;
+using MarineFarm.Helpers;
+using MarineFarm.Services.MailServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace MarineFarm.Controllers
 {
@@ -22,6 +27,8 @@ namespace MarineFarm.Controllers
         private readonly IConfiguration configuration;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly IMailSender sender;
+
         /// <summary>
         /// ctor
         /// </summary>
@@ -30,12 +37,14 @@ namespace MarineFarm.Controllers
         /// <param name="configuration"></param>
         /// <param name="context"></param>
         /// <param name="mapper"></param>
+        /// <param name="sender"></param>
         public CuentasController(
               SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
             IConfiguration configuration,
             ApplicationDbContext context,
-            IMapper mapper
+            IMapper mapper,
+            IMailSender sender
             )
         {
             this.signInManager = signInManager;
@@ -43,6 +52,7 @@ namespace MarineFarm.Controllers
             this.configuration = configuration;
             this.context = context;
             this.mapper = mapper;
+            this.sender = sender;
         }
 
         #endregion
@@ -154,6 +164,170 @@ namespace MarineFarm.Controllers
         #endregion
 
 
+        #region Usuarios, no clientes
+        /// <summary>
+        /// Para ver a todos los usuarios
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Usuarios()
+        {
+            List<UsuarioDTO_out> list = new();
+            try
+            {
+                var ents = await context.AspNetUsuario
+                    .Where(y => y.act == true && y.Rol != "Cliente")
+                    .ToListAsync();
+                list = mapper.Map<List<UsuarioDTO_out>>(list);
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine(ee.Message);
+            }
+            return View(list);
+        }
+
+
+        /// <summary>
+        /// vista para crear el gerente de planta
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CrearUsuarioInternos()
+        {
+            return View();
+        }
+        /// <summary>
+        /// para Guardar los datos del nuevo genente de planta
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GuardarUsuarioInterno(UsuarioDTO_in ins)
+        {
+
+            var aux = await userManager.FindByEmailAsync(ins.Email);
+            if (aux != null)
+            {
+
+                var result = await userManager.CreateAsync(new IdentityUser()
+                {
+                    Email = ins.Email,
+                    UserName = ins.Email
+                }, ins.Psw);
+
+                if (result.Succeeded)
+                {
+                    var user = await userManager.FindByEmailAsync(ins.Email);
+                    var usuario = mapper.Map<Usuario>(ins);
+                    usuario.Userid = user.Id;
+                    context.Add(usuario);
+                    await context.SaveChangesAsync();
+                    await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, usuario.MyRolIdentity(ins.LvlRol)));
+
+                    //queda enviar el correo. generar una tarea solo para enviar el correo. que cree el body y haga todo en su hilo
+
+
+                }
+                else
+                {
+                    TempData["Err"] = "Datos No Validos. Verifica de nuevo";
+                    return View("CrearUsuarioInternos", ins);
+                }
+
+            }
+            else
+            {
+                TempData["Err"] = "Correo Electronico en uso";
+                return View("CrearUsuarioInternos", ins);
+            }
+
+
+            return View();
+        }
+
+        #endregion
+        #region Usuarios, Clientes
+        /// <summary>
+        /// Para ver a todos los usuarios
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Clientes()
+        {
+            List<UsuarioClienteDTO_out> list = new();
+            try
+            {
+                var ents = await context.UsuarioClientes
+                    .Include(y => y.Cliente)
+                    .Include(y => y.Usuario)
+                    .Where(y => y.Usuario.act == true && y.Cliente.act == true)
+                    .ToListAsync();
+
+                list = mapper.Map<List<UsuarioClienteDTO_out>>(ents);
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine(ee.Message);
+            }
+            return View(list);
+        }
+
+
+        /// <summary>
+        /// vista para crear el gerente de planta
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> CrearUsuarioCliente()
+        {
+            ViewBag.Clientes = await ToSelect.ToSelectITipo<Cliente>(context);
+            return View();
+        }
+        /// <summary>
+        /// para Guardar los datos del nuevo genente de planta
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GuardarUsuarioCliente(UsuarioClienteDTO_in ins)
+        {
+            var aux = await userManager.FindByEmailAsync(ins.Email);
+            if (aux != null)
+            {
+                var result = await userManager.CreateAsync(new IdentityUser()
+                {
+                    Email = ins.Email,
+                    UserName = ins.Email
+                }, ins.Psw);
+
+                if (result.Succeeded)
+                {
+                    var user = await userManager.FindByEmailAsync(ins.Email);
+                    var usuario = mapper.Map<Usuario>(ins);
+                    usuario.Userid = user.Id;
+                    context.Add(usuario);
+                    await context.SaveChangesAsync();
+                    await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, usuario.MyRolIdentity(ins.LvlRol)));
+                    UsuarioCliente uc = new()
+                    {
+                        Clienteid = ins.Clienteid,
+                        Usuarioid = usuario.id
+                    };
+                    context.Add(uc);
+                    await context.SaveChangesAsync();
+                    //queda enviar el correo. generar una tarea solo para enviar el correo. que cree el body y haga todo en su hilo
+                }
+                else
+                {
+                    TempData["Err"] = "Datos No Validos. Verifica de nuevo";
+                    return View("CrearUsuarioInternos", ins);
+                }
+
+            }
+            else
+            {
+                TempData["Err"] = "Correo Electronico en uso";
+                return View("CrearUsuarioInternos", ins);
+            }
+
+
+            return View();
+        }
+
+        #endregion
 
     }
 }
