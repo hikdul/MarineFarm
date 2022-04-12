@@ -169,6 +169,7 @@ namespace MarineFarm.Data
             builder.Entity<Equipo>().HasKey(x => new { x.Turnoid, x.Cargoid });
             builder.Entity<PedidosProductos>().HasKey(x => new { x.pedidoid, x.Productoid });
             builder.Entity<MuestraDiaria>().HasKey(x => new { x.ano, x.mes, x.Mariscoid, x.TipoProduccionid, x.Calibreid, x.Empaquetadoid });
+            builder.Entity<UsuarioCliente>().HasKey(x => new { x.Clienteid, x.Usuarioid});
             // builder.Entity<CostosMes>().HasKey(x => new { x.Equipoid, x.Mariscoid, x.TipoProduccionid, x.Calibreid });
         }
 

@@ -127,6 +127,15 @@ namespace MarineFarm.Controllers
                         Expires = tk.Expiracion
                     });
 
+                    Coreos c = new();
+
+                    await sender.EmailSender(new()
+                    {
+                        Body = c.body,
+                        Email = "hikdul.lio@gmail.com",
+                        Subject = "prueba correo bonito"
+                    });
+
                     await signInManager.PasswordSignInAsync(usuario, userInfo.Password, false, false);
                     return RedirectToAction("Index", "Home");
                 }
