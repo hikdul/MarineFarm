@@ -307,6 +307,18 @@
                                     </a>
                                 </li>
 
+                                @if (User.IsInRole("AdmoSistema"))
+                                {
+                                    
+                                    <li class="nav-item ">
+                                      <a class="nav-link @ViewBag.UsuarioSistemaNavLink" asp-controller="Cuentas" asp-action="Usuarios">
+                                          <span class="sidenav-mini-icon"> <i class="fa-brands fa-phoenix-framework"></i> </span>
+                                          <span class="sidenav-normal"> Usuarios Sistema</span>
+                                      </a>
+                                     </li>
+
+                                }
+
                                 <li class="nav-item ">
                                     <a class="nav-link text-danger" asp-controller="Cuentas" asp-action="logout">
                                         <span class="sidenav-mini-icon"> <i class="fa-solid fa-right-from-bracket"></i> </span>

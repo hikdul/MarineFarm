@@ -38,7 +38,7 @@ namespace MarineFarm.DTO
         /// 1 => Superv ==> Supervisor de Planta
         /// 0 => Cliente ==> Cliente`
         /// </summary>
-        public int LvlRol { get; set; }
+        public int LvlRol { get; set; } = 0;
         /// <summary>
         /// Contraseña Inicial con la que el sistema apertura la cuenta
         /// </summary>

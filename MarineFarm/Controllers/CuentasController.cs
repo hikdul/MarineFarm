@@ -110,11 +110,13 @@ namespace MarineFarm.Controllers
             HttpClient client = new();
             try
             {
+                
                 UserToken tk;
                 var result = await signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
-
-                if (result.Succeeded)
+                var Logeable = await Usuario.Logeable(userInfo.Email, context);
+                if (result.Succeeded && Logeable)
                 {
+                    
                     var usuario = await userManager.FindByEmailAsync(userInfo.Email);
                     var roles = await userManager.GetRolesAsync(usuario);
 
@@ -126,17 +128,7 @@ namespace MarineFarm.Controllers
                     {
                         Expires = tk.Expiracion
                     });
-
-                    Coreos c = new();
-
-                    await sender.EmailSender(new()
-                    {
-                        Body = c.body,
-                        Email = "hikdul.lio@gmail.com",
-                        Subject = "prueba correo bonito"
-                    });
-
-                    await signInManager.PasswordSignInAsync(usuario, userInfo.Password, false, false);
+                   
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -202,6 +194,7 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public IActionResult CrearUsuarioInternos()
         {
+            ViewBag.TipoUsuario = Usuario.RolView(false);
             return View();
         }
         /// <summary>
@@ -212,7 +205,7 @@ namespace MarineFarm.Controllers
         {
 
             var aux = await userManager.FindByEmailAsync(ins.Email);
-            if (aux != null)
+            if (aux == null)
             {
 
                 var result = await userManager.CreateAsync(new IdentityUser()
@@ -231,7 +224,14 @@ namespace MarineFarm.Controllers
                     await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, usuario.MyRolIdentity(ins.LvlRol)));
 
                     //queda enviar el correo. generar una tarea solo para enviar el correo. que cree el body y haga todo en su hilo
+                    Coreos C = new(usuario, ins.Psw, $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}");
 
+                    await sender.EmailSender(new()
+                    {
+                        Body = C.body,
+                        Email = ins.Email,
+                        Subject = "Acceso al sistema"
+                    });
 
                 }
                 else
@@ -248,7 +248,7 @@ namespace MarineFarm.Controllers
             }
 
 
-            return View();
+            return RedirectToAction("Usuarios");
         }
 
         #endregion
@@ -309,7 +309,7 @@ namespace MarineFarm.Controllers
                     usuario.Userid = user.Id;
                     context.Add(usuario);
                     await context.SaveChangesAsync();
-                    await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, usuario.MyRolIdentity(ins.LvlRol)));
+                    await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, usuario.MyRolIdentity(0)));
                     UsuarioCliente uc = new()
                     {
                         Clienteid = ins.Clienteid,
@@ -318,6 +318,15 @@ namespace MarineFarm.Controllers
                     context.Add(uc);
                     await context.SaveChangesAsync();
                     //queda enviar el correo. generar una tarea solo para enviar el correo. que cree el body y haga todo en su hilo
+                    Coreos C = new(usuario, ins.Psw, $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}");
+
+                    await sender.EmailSender(new()
+                    {
+                        Body = C.body,
+                        Email = ins.Email,
+                        Subject = "Acceso al sistema"
+                    });
+
                 }
                 else
                 {

@@ -375,9 +375,10 @@ namespace MarineFarm.Helpers
         }
         private void UsClienteMap()
         {
-            CreateMap<UsuarioClienteDTO_in,Usuario>()
+            CreateMap<UsuarioClienteDTO_in, Usuario>()
                  .ForMember(y => y.Rol, o => o.MapFrom(RolPublico))
-                .ForMember(y => y.Userid, o => o.Ignore());
+                .ForMember(y => y.Userid, o => o.Ignore())
+                .ForMember(y => y.act, o => o.MapFrom(x => true));
 
             CreateMap<UsuarioCliente, UsuarioClienteDTO_out>()
                 .ForMember(y => y.Nombre, o => o.MapFrom(nombreCliente))

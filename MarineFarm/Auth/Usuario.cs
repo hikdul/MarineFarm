@@ -158,19 +158,21 @@ namespace MarineFarm.Auth
         /// <summary>
         /// para obtener el select de roles
         /// </summary>
+        /// <param name="complete"></param>
         /// <param name="rol"></param>
         /// <returns></returns>
-        public static List<SelectListItem> RolView(int rol = -1)
+        public static List<SelectListItem> RolView(bool complete = true ,int rol = -1)
         {
             List<SelectListItem> roles = new();
 
             if (rol < 0)
                 roles.Add(new SelectListItem("== SELECCIONE UN ROLE ==", "", true));
-
+            
             roles.Add(new("Administrador Del Sistema", "3", rol == 3));
             roles.Add(new("Gerente De Planta", "2", rol == 2));
             roles.Add(new("Supervisor De Planta", "1", rol == 1));
-            roles.Add(new("Cliente", "0", rol == 0));
+            if(complete)
+                roles.Add(new("Cliente", "0", rol == 0));
 
             return roles;
 
@@ -221,5 +223,33 @@ namespace MarineFarm.Auth
 
 
         #endregion
+
+        #region validar si se puede logear o no
+        /// <summary>
+        /// verifica si un usuario esta activo o no y le permite logearse
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static async Task<bool> Logeable(string Email, ApplicationDbContext context)
+        {
+            try
+            {
+                var temp = await context.AspNetUsuario.Where(y => y.Email == Email).FirstOrDefaultAsync();
+                if (temp == null)
+                    return false;
+
+                return temp.act;
+
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine(ee.Message);
+                return false;
+            }
+        }
+
+        #endregion
+
     }
 }
