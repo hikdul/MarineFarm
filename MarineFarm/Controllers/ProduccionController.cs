@@ -45,10 +45,11 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                ViewBag.Mariscos = await context.Mariscos.Where(y => y.act == true).ToListAsync();
-                ViewBag.Tps = await context.TiposProduccion.Where(y => y.act == true).ToListAsync();
-                ViewBag.Calibres = await context.Calibres.Where(y => y.act == true).ToListAsync();
-                ViewBag.Empaquetados = await context.Empaquetados.Where(y => y.act == true).ToListAsync();
+                ViewBag.Mariscos = await ToSelect.ToSelectITipo<Marisco>(context); // await context.Mariscos.Where(y => y.act == true).ToListAsync();
+                ViewBag.Tps = await ToSelect.ToSelectITipo<TipoProduccion>(context);// context.TiposProduccion.Where(y => y.act == true).ToListAsync();
+                ViewBag.Calibres = await ToSelect.ToSelectITipo<Calibre>(context);// context.Calibres.Where(y => y.act == true).ToListAsync();
+                ViewBag.Empaquetados = await ToSelect.ToSelectITipo<Empaquetado>(context);// context.Empaquetados.Where(y => y.act == true).ToListAsync();
+                ViewBag.fecha = DateTime.Now.ToString("yyyy-MM-dd");
             }
             catch (Exception ee)
             {

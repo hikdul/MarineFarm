@@ -10,199 +10,187 @@
     // => este es simplemente para que se vea la poscicion actual
     ViewBag.ProduccionColapseGroup = "show";
     ViewBag.ProduccionNavLink = "active";
-    List<Marisco> Mariscos = ViewBag.Mariscos;
-    List<TipoProduccion> Tps = ViewBag.Tps;
-    List<Calibre> Calibres = ViewBag.Calibres;
-    List<Empaquetado> Empaquetados = ViewBag.Empaquetados;
-
-    int TpsInd =  Tps.Where(y => y.Name.ToUpper() == "INDUSTRIAL").FirstOrDefault().id ;
-    int CalInd = Calibres.Where(y => y.Name.ToUpper() == "S/C").FirstOrDefault().id;
-
+   
 }
 
 
+<div class="card">
+    <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+        <h3 class="card-title">
+            Nuevo Pedido
+        </h3>
+    </div>
 
-<div class="row">
+    <div class="card-body pt-2">
+        <div class="row">
+            
+        </div>
+    </div>
+</div>
 
-<div class="card mt-5">
-  <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
-      <h3 class="card-title">
-        Generar un listado de produccion
-    </h3>
-  </div>
- </div>
-         <div class="row">
-             @foreach (var Marisco in Mariscos)
-             {  
-                 <div class="card mt-3">
+<div id="original">
+    <div class="clonar">
+        <div class="card mt-5">
+            <div class="card-header">
+                <div class="col-12">
+                <button id="PlusM" class="btn btn-primary">+</button>
+            </div>
+                <div class="row">
 
-                    <div class="card-header col-12 text-center mt-2">
-                        <h2  class="card-title"> @Marisco.Name </h2>
-                        <div class="form-group col-md-6 col-xs-12">
-                               <label class="control-label"> Kg @Marisco.Name Utilizado</label>
-                               <input name="usado" type="number" value="0" min="0" class="forn-control" />
-                               <input name="mmusado" hidden value=@Marisco.id  type="number" class="forn-control" />
-
-                       </div>
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="mariscoid" class="control-label"> Seleccione Marisco</label>
+                        <select name="mariscoid" id="mariscoid" asp-items=@ViewBag.Mariscos class="form-control"></select>
                     </div>
-                <div class="card-body pt-2" id="card">
-                    <div class="table-responsive">
-                    <table class="table table-flush text-center" id="MarineTable">
-                    <thead>
-                    <tr>
-                        <th>
-                            Tipo Produccion
-                        </th>
-                        
-                        <th>
-                            Calibre
-                        </th>
-                        <th>
-                            Empaquetado
-                        </th>
-                        <th>
-                            Produccion Kg
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var Tp in Tps)
-                        @if(Tp.Name.ToUpper() != "INDUSTRIAL")
-                        {
-                        @foreach (var Calibre in Calibres)
-                                        @foreach (var Empaquetado in Empaquetados)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @Tp.Name
-                                                </td>
-                                                <td>
-                                                    @Calibre.Name
-                                                </td>
-                                                <td>
-                                                    @Empaquetado.Name
-                                                </td>
-                                                <td>
-                                                    <input name="mm" hidden value=@Marisco.id  type="number" class="forn-control" />
-                                                    <input name="tt" hidden value=@Tp.id type="number" class="forn-control" />
-                                                    <input name="cal" hidden value=@Calibre.id type="number" class="forn-control" />
-                                                    <input name="emp" hidden value=@Empaquetado.id type="number" class="forn-control" />
-                                                    <input name="valor" value="0" min="0" type="number" class="forn-control" />
-                                                </td>
-                                            </tr>
-                                        }
-                    }
-                    @foreach (var Empaquetado in Empaquetados)
-                                {
-                                       {
-                                            <tr>
-                                                <td>
-                                                    Industrial
-                                                </td>
-                                                <td>
-                                                    S/C
-                                                </td>
-                                                <td>
-                                                    @Empaquetado.Name
-                                                </td>
-                                                <td>
-                                                    <input name="mm" hidden value=@Marisco.id  type="number" class="forn-control" />
-                                                    <input name="tt" hidden value=@TpsInd type="number" class="forn-control" />
-                                                    <input name="cal" hidden value=@CalInd type="number" class="forn-control" />
-                                                    <input name="emp" hidden value=@Empaquetado.id type="number" class="forn-control" />
-                                                    <input name="valor" value="0" min="0" type="number" class="forn-control" />
-                                                </td>
-                                            </tr>
-                                        }
-
-
-                                }
-
-                    </tbody>
-                     </table>
-                     </div>
+                    
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="gastado" class="control-label"> Cantidad Utilizada</label>
+                        <input type="text" class="form-control" name="gastado" id="gastado" />
+                    </div>
+                     
+                </div>
+            </div>
+            <div class="card-body mt-0">
+                <div class="row"  id="cont">
+                    <div class="form-group col-md-3 col-xs-12">
+                        <label for="TipoProduccionid" class="control-label"> Tipo Produccion</label>
+                        <select name="TipoProduccionid" asp-items=@ViewBag.Tps class="form-control"></select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12">
+                        <label for="Calibreid" class="control-label"> Calibre</label>
+                        <select name="Calibreid" asp-items=@ViewBag.Calibres class="form-control"></select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12">
+                        <label for="Empaquetadoid" class="control-label"> Empaquetado</label>
+                        <select name="Empaquetadoid" asp-items=@ViewBag.Empaquetados class="form-control"></select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12">
+                        <label for="solicitado" class="control-label"> Cantidad Solicitada</label>
+                        <input name="solicitado" class="form-control" type="number" min="0" value="0" />
                     </div>
                 </div>
-            
-             }
-           
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                  <div class="col-12">
+                      <button id="Generar" class="btn btn-danger">Guardar</button>
+                </div>
+            </div>
         </div>
-        <div class="card">
-         <div class="card-footer form-group text-center m-0">
-             <button onclick="sayhi()" class="btn btn-primary rounded-pill">
-                 Guardar
-             </button>
-            
-         </div>
-         </div>
-
+    </div>
 </div>
+
+<div hidden id="o2">
+    <div class="clonar2">
+        <div class="row"  >
+                <div class="form-group col-md-3 col-xs-12">
+                        <label for="TipoProduccionid" class="control-label"> Tipo Produccion</label>
+                        <select name="TipoProduccionid"  asp-items=@ViewBag.Tps class="TipoProduccionid form-control"></select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12">
+                        <label for="Calibreid" class="control-label"> Calibre</label>
+                        <select name="Calibreid" asp-items=@ViewBag.Calibres class="Calibreid form-control"></select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12">
+                        <label for="Empaquetadoid" class="control-label"> Empaquetado</label>
+                        <select name="Empaquetadoid" asp-items=@ViewBag.Empaquetados class="form-control Empaquetadoid"></select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-12">
+                        <label for="solicitado" class="control-label"> Cantidad Solicitada</label>
+                        <input name="solicitado" class="form-control solicitado" type="number" min="0" value="0" />
+                    </div>
+                    </div>
+        </div>
+</div>
+
+
+
 <script>
-    function sayhi() {
+     const PlusM = document.getElementById('PlusM')
+   // const PlusD = document.getElementById('PlusD')
+    const cont = document.getElementById('cont');
+
+    let generar = document.getElementById('Generar')
+
+    let contador = 1;
+
+    let Subconid = 0
+
+    // para generar toda uno tarjeta
+    PlusM.addEventListener('click', function(e){
+        e.preventDefault()
+
+        const clone = document.querySelector('.clonar2')
+        let copy = clone.cloneNode(true)
+
+        cont.appendChild(copy).classList.remove('clonar2')
+
+      
+    })
+
+
+      const ObtenerValores = () => {
+       let mariscoid = document.getElementById('mariscoid').value
+       let gastado = document.getElementById('gastado').value
+       let tpin = document.getElementsByName('TipoProduccionid')
+       let cin = document.getElementsByName('Calibreid')
+       let ein = document.getElementsByName('Empaquetadoid')
+       let sin = document.getElementsByName('solicitado')
+
+       console.log(gastado)
+
        
-       const pedido = GetPedido()
-       if(pedido.length <= 0){
-            alert('Ingrese datos para el pedido')
-            return
-       }
-       const usado = GetUse()
+       let usado=[]
+       let pedido=[]
 
-       const data = {
-           pedido:JSON.stringify(pedido),
-           usado:JSON.stringify(usado)
+        usado.push({
+            mariscoid :mariscoid,
+            usado: gastado 
+        })
+
+
+
+       for(let i=0 ; i<tpin.length -1 ; i++){
+           const tp = tpin[i].value
+           const c = tpin[i].value
+           const e = ein[i].value
+           const s = sin[i].value
+
+           pedido.push({
+               mariscoid:mariscoid,
+               tipoProduccion:tp,
+               calibre:c,
+               empaquetado:e,
+               producidoSS:s
+           })
+
        }
 
-       console.log(data)
-       //
-           $.ajax({
+       return {
+           usado: JSON.stringify(usado),
+           pedido: JSON.stringify(pedido)
+       }
+   }
+
+     // esta funcion es la que guarda los datos
+   const Guardar = () => {
+        let data = ObtenerValores()
+             $.ajax({
                 data: data,
                 url:   'Produccion/SeeData', //archivo que recibe la peticion
                 type:  'post', //método de envio
                 success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-                        alert('Elemento Enviado')
-                       console.log('Los datos ahora son => ', datos)
+                    if(response){
+                        AlertSuccess("Elemento Almacenado Correctamente")
+                        setTimeout( function() { window.location.href = "/Pedido"; }, 1500 );
+                    }else{
+                        AlertError("Upps, Error Inesperado","algo no esta bien intente de nuevo mas tarde")
+                    }
                 }
         });
+   }
 
-    }
-    //obtengo los datos del pedido
-    function GetPedido(){
-         let Hmm = document.getElementsByName('mm');
-        let Htt = document.getElementsByName('tt');
-        let Hcal = document.getElementsByName('cal');
-        let Hvv = document.getElementsByName('valor');
-        let Hemp = document.getElementsByName('emp');
-        
-        let pedido = [];
-       
-        for(let j = 0 ; j<Hmm.length; j++){
-            let aux0 = Hmm[j].value;
-            let aux1 = Htt[j].value;
-            let aux2 = Hcal[j].value;
-            let aux3 = Hvv[j].value;
-            let aux4 = Hemp[j].value;
 
-            if(aux3 > 0)
-                pedido.push({mariscoid:aux0,tipoproduccion:aux1,calibre:aux2,empaquetado:aux4,producido:aux3});
-        }
-
-        return pedido;
-    }
-    //obtengo los datos de los gastos
-    function GetUse(){
-         let Husado = document.getElementsByName('usado');
-        let Hmmusado = document.getElementsByName('mmusado');
-         const usado = [];
-
-        for(let i = 0; i<Husado.length; i++) 
-        {
-            let aux0 = Husado[i].value;
-            let aux1 = Hmmusado[i].value;
-            if(aux0 > 0)
-                usado.push({mariscoid:aux1,usado:aux0});
-        }
-
-        return usado;
-    }
-
+   generar.addEventListener('click', function(){
+       Guardar()                                          
+   })
 </script>
