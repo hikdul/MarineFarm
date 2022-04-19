@@ -133,7 +133,7 @@ namespace MarineFarm.Controllers
                 }
 
                 ViewBag.Err = "El correo o la contraseña no son correctos.";
-                return View("login");
+                return RedirectToAction("login");
             }
             catch (HttpRequestException e)
             {
