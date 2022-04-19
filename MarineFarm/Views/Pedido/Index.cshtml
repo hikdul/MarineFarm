@@ -10,7 +10,7 @@
     // => este es simplemente para que se vea la poscicion actual
     ViewBag.PedidoColapseGroup = "show";
     ViewBag.PedidoNavLink = "active";
-   }
+}
 
 
 <div class="row mt-4">
@@ -18,16 +18,22 @@
         <div class="card p-3">
             <!-- Card header -->
             <div class="card-header">
-                <p class="text-sm mb-0">
-                    <a asp-action="Generar" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
-                </p>
-                <h5 class="mb-0">Empaquetados Usados en la empresa</h5>
+                @if (!User.IsInRole("Superv"))
+                {
+                    <p class="text-sm mb-0">
+                        <a asp-action="Generar" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
+                    </p>
+                }
+                <h5 class="mb-0">Pedidos Activos</h5>
             </div>
             <div class="table-responsive">
                 <table class="table table-flush" id="MarineTable">
                     <thead class="thead-dark">
                         <tr class="text-center">
-                            <th>Cliente</th>
+                              @if (!User.IsInRole("Superv"))
+                                    {
+                                        <th>Cliente</th>
+                                    }
                             <th>Solicitante</th>
                             <th>Fecha Solicitud</th>
                             <th>Fecha Entrega</th>
@@ -39,13 +45,15 @@
                             @foreach (var item in Model)
                             {
                                 <tr class="text-center">
-                                    <td class=" text-sm font-weight-bold">@item.Cliente</td>
+                                    @if (!User.IsInRole("Superv"))
+                                    {
+                                        <td class=" text-sm font-weight-bold">@item.Cliente</td>
+                                    }
                                     <td class="text-sm font-weight-normal">@item.Solicitante</td>
                                     <td class="text-sm font-weight-normal">@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
                                     <td class="text-sm font-weight-normal">@item.FechaEntregaPosible.ToString("dd/MM/yyyy")</td>
                                     <td class="text-sm font-weight-light">
                                         <a asp-action="Details" asp-route-id="@item.id" class="btn btn-success btn-round"><i class="fa fa-eye "></i></a>
-                                        <a asp-action="editar" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa fa-edit "></i></a>
                                         <a asp-action="Delete" asp-route-id="@item.id" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
                                     </td>
                                 </tr>

@@ -4,6 +4,7 @@ using MarineFarm.DTO;
 using MarineFarm.Entitys;
 using MarineFarm.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarineFarm.Controllers
@@ -36,13 +37,36 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Generar()
         {
+            if (User.IsInRole("Superv"))
+                return RedirectToAction("logout", "Cuentas");
+
+            
+            List<SelectListItem> clientes = new();
+
+            if(User.IsInRole("Cliente"))
+            {
+                var aux = await Cliente.ClienteByEmail(User.Identity.Name,context);
+                if (aux == null)
+                    return RedirectToAction("logout", "cuentas");
+                    clientes.Add(new()
+                    {
+                        Value =aux.id.ToString(),
+                        Text =$"{aux.Name} || {aux.RUT}" 
+                    });
+
+            }else
+                clientes= await ToSelect.ToSelectITipo<Cliente>(context);
+
             try
             {
+
+                if(User.IsInRole("Cliente"))
+
                 ViewBag.Mariscos = await ToSelect.ToSelectITipo<Marisco>(context); // await context.Mariscos.Where(y => y.act == true).ToListAsync();
                 ViewBag.Tps = await ToSelect.ToSelectITipo<TipoProduccion>(context);// context.TiposProduccion.Where(y => y.act == true).ToListAsync();
                 ViewBag.Calibres = await ToSelect.ToSelectITipo<Calibre>(context);// context.Calibres.Where(y => y.act == true).ToListAsync();
                 ViewBag.Empaquetados = await ToSelect.ToSelectITipo<Empaquetado>(context);// context.Empaquetados.Where(y => y.act == true).ToListAsync();
-                ViewBag.Clientes = await ToSelect.ToSelectITipo<Cliente>(context);
+                ViewBag.Clientes = clientes;
                 ViewBag.fecha = DateTime.Now.ToString("yyyy-MM-dd");
             }
             catch (Exception ee)
