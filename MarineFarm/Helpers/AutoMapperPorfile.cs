@@ -370,7 +370,8 @@ namespace MarineFarm.Helpers
         {
             CreateMap<UsuarioDTO_in, Usuario>()
                 .ForMember(y => y.Rol, o => o.MapFrom(RolPublico))
-                .ForMember(y => y.Userid, o => o.Ignore());
+                .ForMember(y => y.Userid, o => o.Ignore())
+                .ForMember(y => y.act, o => o.MapFrom(x => true));
             CreateMap<Usuario, UsuarioDTO_out>();
         }
         private void UsClienteMap()
