@@ -142,9 +142,7 @@ namespace MarineFarm.Controllers
             finally
             {
                 client.Dispose();
-
             }
-
         }
         /// <summary>
         /// para salir del sistema
@@ -168,13 +166,16 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Usuarios()
         {
+            if (!User.IsInRole("SuperAdmin"))
+                return RedirectToAction("logout");
+
             List<UsuarioDTO_out> list = new();
             try
             {
                 var ents = await context.AspNetUsuario
                     .Where(y => y.act == true && y.Rol != "Cliente")
                     .ToListAsync();
-                list = mapper.Map<List<UsuarioDTO_out>>(list);
+                list = mapper.Map<List<UsuarioDTO_out>>(ents);
             }
             catch (Exception ee)
             {
@@ -190,6 +191,8 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public IActionResult CrearUsuarioInternos()
         {
+            if (!User.IsInRole("SuperAdmin"))
+                return RedirectToAction("logout");
             ViewBag.TipoUsuario = Usuario.RolView(false);
             return View();
         }
