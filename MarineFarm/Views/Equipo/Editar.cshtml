@@ -3,7 +3,7 @@
 @model EquipoDTO_in
 
 @{
-    ViewData["Title"] = ViewBag.heading = "Cargos";
+    ViewData["Title"] = ViewBag.heading = "Editar Equipo De Trabajo";
     // => este es sobre el boton para expandir y el grupo de botones
     ViewBag.EquipoAriaExpanded = "true";
     ViewBag.EquipoGroupActive = "active";
@@ -76,7 +76,7 @@
 
         </div>
          <div class="card-footer form-group text-center m-0">
-             <button class="btn btn-primary" onclick="sender()">
+             <button class="btn btn-primary" onclick="editarElementoActual()">
                  Editar
              </button>
              <a class="btn btn-danger rounded-pill" asp-action="Index">Volver</a>
@@ -89,41 +89,46 @@
 
 <script>
   
-    const sender = () => {
-            
+    const sender=()=>console.log('hola')
+
+    const editarElementoActual = () => {
+            console.log('cargando datos')
         //obtener datos
         const id = document.getElementById('id')
         const name = document.getElementById('Name')
         const desc = document.getElementById('Descripcion')
         const cc = obtenerCargos()
         //crear el bloque de datos para enviar
+        console.log('creando paquete de datos para enviar')
         const turno = {
             id: id.value,
             Name: name.value,
             Desc: desc.value,
         }
         const datos = {
-                        turno: turno,
-                        cargos: JSON.stringify(cc),
-                }
+                turno: turno,
+                cargos: JSON.stringify(cc),
+        }
 
+        console.log('paquete creado')
         console.log(datos)
+
         //enviar los datos
             $.ajax({
                 data: datos,
-                url:   'Edit', //archivo que recibe la peticion
+                url:   '/Equipo/Edit', //archivo que recibe la peticion
                 type:  'post', //método de envio
                 success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
-                      if(response){
+                    console.log('respuesta del servidor'+response)  
+                    if(response){
                           AlertSuccess("Equipo Editado Exitosamente")
-                          setTimeout( function() { window.location.href = "/Equipo"; }, 155500 );
+                          setTimeout( function() { window.location.href = "/Equipo"; }, 1500 );
                       }else{
                           AlertError("Upps, Error Inesperado","algo no esta bien intente de nuevo mas tarde")
                       }
                 }
         });
-
-
+        console.log('fin de la funcions')
     }
 
 

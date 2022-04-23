@@ -1,14 +1,14 @@
 ﻿@using MarineFarm.DTO;
-@model IEnumerable<UsuarioDTO_out>
+@model IEnumerable<UsuarioClienteDTO_out>
 @{
 
-     ViewData["Title"] = ViewBag.heading = "Usuarios Activos";
+     ViewData["Title"] = ViewBag.heading = "Usuarios Clientes Activos";
     // => este es sobre el boton para expandir y el grupo de botones
     ViewBag.UsuarioAriaExpanded = "true";
     ViewBag.UsuarioGroupActive = "active";
     // => este es simplemente para que se vea la poscicion actual
     ViewBag.UsuarioColapseGroup = "show";
-    ViewBag.UsuarioSistemaNavLink = "active";
+    ViewBag.UsuarioClientesNavLink = "active";
    
 }
 
@@ -19,7 +19,7 @@
             <!-- Card header -->
             <div class="card-header">
                 <p class="text-sm mb-0">
-                    <a asp-action="CrearUsuarioInternos" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
+                    <a asp-action="CrearUsuarioCliente" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
                 </p>
                 <h5 class="mb-0">Listado De Usuarios Del Sistema</h5>
             </div>
@@ -31,7 +31,7 @@
                             <th>RUT</th>
                             <th>Email</th>
                             <th>Telefono</th>
-                            <th>Rol En Sistema</th>
+                            <th>Empresa A la que esta afiliado</th>
                             <th></th>
                             <th><i class="text-dark fa fa-gears"></i></th>
                         </tr>
@@ -45,9 +45,9 @@
                                     <td class="text-sm font-weight-normal">@item.rut</td>
                                     <td class="text-sm font-weight-normal">@item.Email</td>
                                     <td class="text-sm font-weight-normal">@item.Telefono</td>
-                                    <td class="text-sm font-weight-normal">@item.Rol</td>
+                                    <td class="text-sm font-weight-normal">@item.Cliente</td>
                                     <td class="text-sm font-weight-light">
-                                        <a asp-action="ElimiarUsuario" asp-controller="Cuentas" asp-route-id="@item.id" asp-route-cliente="false" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
+                                        <a asp-action="ElimiarUsuario" asp-controller="Cuentas" asp-route-id="@item.id" asp-route-cliente="true" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
                                     </td>
                                 </tr>
                             }
@@ -69,10 +69,5 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
-
-
-
-
 
 

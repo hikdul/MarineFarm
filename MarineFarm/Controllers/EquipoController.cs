@@ -202,9 +202,45 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<bool> Edit(EquipoDTO_Edit ins) 
         {
-            var ent = ins;
 
-            return false;
+            int id = ins.turno.id;
+
+
+            try
+            {
+                var turno = await context.Turnos.Where(y => y.id == id).FirstOrDefaultAsync();
+                //guiarda y editar los cambmios enel turno.
+                turno.act = true;
+                turno.Name = ins.turno.Name;
+                turno.Desc = ins.turno.Desc;
+                await context.SaveChangesAsync();
+
+                //guardar los cambios que sean para el equipo en general
+
+                var equipos = await context.Equipos
+                    .Where(y => y.Turnoid == id)
+                    .ToListAsync();
+
+                foreach (var item in equipos)
+                {
+                    var cambio = ins.cargos.Where(y => y.Cargoid == item.Cargoid).FirstOrDefault();
+                    if (item != null && cambio!=null)
+                    {
+                        item.CantCubierta = cambio.CantCubierta;
+                        item.CostoOperario = cambio.CostoOperario;
+                        await context.SaveChangesAsync();
+                    }
+                    
+                }
+
+                return true;
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return false;
+            }
+            
         }
         /// <summary>
         /// Para almacenar los datos de un nuevo elemento

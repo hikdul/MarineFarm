@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
@@ -55,7 +56,7 @@ namespace MarineFarm.Controllers
         #endregion
 
 
-        #region CrearCliente
+        #region Crear Cliente
 
         /// <summary>
         /// vista para crear un cliente
@@ -99,6 +100,80 @@ namespace MarineFarm.Controllers
 
         #endregion
 
+        #region editars
+        /// <summary>
+        /// vista para editar a los clientes
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Editar(int id)
+        {
+            if (User.IsInRole("Cliente") || User.IsInRole("Superv"))
+                return RedirectToAction("logout", "Cuentas");
+
+            ClienteDTO_out dto = new();
+            try
+            {
+                var ent = await context.Clientes.Where(x => x.id == id).FirstOrDefaultAsync();
+                dto = mapper.Map<ClienteDTO_out>(ent);
+
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+
+            return View(dto);
+        }
+
+       /// <summary>
+       /// para almacenar los datos editados del cliente.
+       /// </summary>
+       /// <param name="id"></param>
+       /// <param name="ins"></param>
+       /// <returns></returns>
+        public async Task<IActionResult> Edit(ClienteDTO_out ins)
+        {
+            try
+            {
+                var ent = await context.Clientes.Where(x => x.id == ins.id).FirstOrDefaultAsync();
+                mapper.Map(ins, ent);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return View("Editar", ins);
+            }
+
+            return RedirectToAction("Index");
+
+        }
+
+        #endregion
+
+        #region delete
+        /// <summary>
+        /// para eliminar un cliente y limitar su acceso.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            try
+            {
+                var ent = await context.Clientes.Where(x => x.id == id).FirstOrDefaultAsync();
+                ent.act = false;
+                await context.SaveChangesAsync();
+                    
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+            return RedirectToAction("Index");
+        }
+        #endregion
 
     }
 }

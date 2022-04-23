@@ -13,5 +13,6 @@
         /// indica el rut del cliente
         /// </summary>
         public string RUT { get; set; }
+
     }
 }

@@ -1,14 +1,14 @@
 ﻿@using MarineFarm.DTO;
-@model UsuarioDTO_in
+@model UsuarioClienteDTO_in
 @{
 
-     ViewData["Title"] = ViewBag.heading = "Usuarios Activos";
+     ViewData["Title"] = ViewBag.heading = "Nuevo Usuario Cliente";
     // => este es sobre el boton para expandir y el grupo de botones
     ViewBag.UsuarioAriaExpanded = "true";
     ViewBag.UsuarioGroupActive = "active";
     // => este es simplemente para que se vea la poscicion actual
     ViewBag.UsuarioColapseGroup = "show";
-    ViewBag.UsuarioSistemaNavLink = "active";
+    ViewBag.UsuarioClientesNavLink = "active";
    
 }
 
@@ -22,7 +22,7 @@
   </div>
 
   <div class="card-body pt-2">
-    <form asp-action="GuardarUsuarioInterno" method="post">
+    <form asp-action="GuardarUsuarioCliente" method="post">
          <div class="row">
             <div class="form-group col-md-4 col-xs-12">
                 <label asp-for="Nombre" class="control-label"> Nombre</label>
@@ -52,9 +52,9 @@
                 <span asp-validation-for="Telefono" class="text-danger"></span>
             </div>
             <div class="form-group col-md-4 col-xs-12">
-                <label asp-for="LvlRol" class="control-label"> Seleccione el tipo de usuario </label>
-                <select class="form-control" asp-for="LvlRol" asp-items="ViewBag.TipoUsuario"></select>
-                <span asp-validation-for="LvlRol" class="text-danger"></span>
+                <label asp-for="Clienteid" class="control-label"> Seleccione Cliente </label>
+                <select class="form-control" asp-for="Clienteid" asp-items="ViewBag.Clientes"></select>
+                <span asp-validation-for="Clienteid" class="text-danger"></span>
             </div>
         </div>
          <div class="card-footer form-group text-center m-0">
@@ -66,9 +66,8 @@
   </div>
 </div>
 
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
 

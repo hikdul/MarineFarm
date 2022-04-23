@@ -159,14 +159,14 @@ namespace MarineFarm.Controllers
 
         #endregion
 
-        #region Usuarios, no clientes
+        #region Usuarios, Internos
         /// <summary>
         /// Para ver a todos los usuarios
         /// </summary>
         /// <returns></returns>
         public async Task<IActionResult> Usuarios()
         {
-            if (!User.IsInRole("SuperAdmin"))
+            if (!User.IsInRole("AdmoSistema"))
                 return RedirectToAction("logout");
 
             List<UsuarioDTO_out> list = new();
@@ -191,7 +191,7 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public IActionResult CrearUsuarioInternos()
         {
-            if (!User.IsInRole("SuperAdmin"))
+            if (!User.IsInRole("AdmoSistema"))
                 return RedirectToAction("logout");
             ViewBag.TipoUsuario = Usuario.RolView(false);
             return View();
@@ -202,7 +202,8 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<IActionResult> GuardarUsuarioInterno(UsuarioDTO_in ins)
         {
-
+            if (!User.IsInRole("AdmoSistema"))
+                return RedirectToAction("logout");
             var aux = await userManager.FindByEmailAsync(ins.Email);
             if (aux == null)
             {
@@ -235,15 +236,15 @@ namespace MarineFarm.Controllers
                 }
                 else
                 {
-                    TempData["Err"] = "Datos No Validos. Verifica de nuevo";
-                    return View("CrearUsuarioInternos", ins);
+                    ViewBag.Err = "Datos No Validos. Verifica de nuevo";
+                    return View("Usuarios", ins);
                 }
 
             }
             else
             {
-                TempData["Err"] = "Correo Electronico en uso";
-                return View("CrearUsuarioInternos", ins);
+                ViewBag.Err = "Correo Electronico en uso";
+                return View("Usuarios", ins);
             }
 
 
@@ -294,7 +295,7 @@ namespace MarineFarm.Controllers
         public async Task<IActionResult> GuardarUsuarioCliente(UsuarioClienteDTO_in ins)
         {
             var aux = await userManager.FindByEmailAsync(ins.Email);
-            if (aux != null)
+            if (aux == null)
             {
                 var result = await userManager.CreateAsync(new IdentityUser()
                 {
@@ -307,6 +308,7 @@ namespace MarineFarm.Controllers
                     var user = await userManager.FindByEmailAsync(ins.Email);
                     var usuario = mapper.Map<Usuario>(ins);
                     usuario.Userid = user.Id;
+                    usuario.Rol = "Cliente";
                     context.Add(usuario);
                     await context.SaveChangesAsync();
                     await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, usuario.MyRolIdentity(0)));
@@ -342,8 +344,41 @@ namespace MarineFarm.Controllers
             }
 
 
-            return View();
+            return RedirectToAction("Clientes");
         }
+
+        #endregion
+
+
+        #region eliminar usuarios
+
+        /// <summary>
+        /// para eliminar un usuario del sistema
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="cliente"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> ElimiarUsuario(int id, bool cliente)
+        {
+            try
+            {
+                var ent = await context.AspNetUsuario.Where(x => x.id == id).FirstOrDefaultAsync();
+                ent.act = false;
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+               
+            }
+
+
+            if (cliente)
+                return RedirectToAction("Clientes");
+            return RedirectToAction("Usuarios");
+            
+        }
+
 
         #endregion
 

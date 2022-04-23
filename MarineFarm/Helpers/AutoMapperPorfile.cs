@@ -359,6 +359,8 @@ namespace MarineFarm.Helpers
             CreateMap<ClienteDTO_in, Cliente>()
                 .ForMember(ee => ee.act, opt => opt.MapFrom(x => true));
 
+            CreateMap<Cliente, ClienteDTO_in>();
+
             CreateMap<Cliente, ClienteDTO_out>().ReverseMap();
 
         }
@@ -389,9 +391,20 @@ namespace MarineFarm.Helpers
                 .ForMember(y => y.rut, o => o.MapFrom(rutCliente))
                 .ForMember(y => y.Telefono, o => o.MapFrom(telefonoCliente))
                 .ForMember(y => y.Cliente, o => o.MapFrom(ClienteCliente))
-                .ForMember(y => y.RUT, o => o.MapFrom(ClienteClienteRUT));
+                .ForMember(y => y.RUT, o => o.MapFrom(ClienteClienteRUT))
+                .ForMember(y => y.id,o =>o.MapFrom(idClienteCliente));
+
+
         }
 
+        private int idClienteCliente(UsuarioCliente ent, UsuarioClienteDTO_out dto)
+        {
+            if (ent.Cliente == null || ent.Cliente.id < 1)
+                return 0;
+
+            return ent.Usuario.id;
+
+        }
 
         private string ClienteClienteRUT(UsuarioCliente ent, UsuarioClienteDTO_out dto)
         {
