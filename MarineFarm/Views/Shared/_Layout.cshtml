@@ -152,7 +152,7 @@
                     </li>
 
                     <!--Almacen -->
-                  
+                  @if(!User.IsInRole("Cliente")){
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#PageAlmacen" class="nav-link @ViewBag.AlmacenGroupActive" aria-controls="PageAlmacen" role="button" aria-expanded="false">
                             <div class="icon icon-shape icon-sm shadow border-radius-md  bg-blue text-center d-flex align-items-center justify-content-center  me-2">
@@ -178,7 +178,7 @@
                             </ul>
                         </div>
                     </li>
-
+                    }
                     <!--Equipos-->
                     @if (User.IsInRole("AdmoSistema") || User.IsInRole("Gerenteplanta"))
                     {

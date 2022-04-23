@@ -125,7 +125,10 @@ namespace MarineFarm.Controllers
                     {
                         Expires = tk.Expiracion
                     });
-                   
+
+                    if (User.IsInRole("Cliente"))
+                        return RedirectToAction("logout");
+
                     return RedirectToAction("Index", "Home");
                 }
 
