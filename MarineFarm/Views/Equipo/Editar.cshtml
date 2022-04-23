@@ -11,6 +11,9 @@
     ViewBag.EquipoColapseGroup = "show";
     ViewBag.EquipoNavLink = "active";
     List<__inV> lista = ViewBag.Cargos;
+    Turnos TT = ViewBag.turno;
+    string name = TT!=null?TT.Name:"";
+    string desc = TT!=null?TT.Desc:"";
 }
 
 <div class="card">
@@ -21,16 +24,18 @@
   </div>
 
   <div class="card-body pt-2">
+
+      <input id="id" name="id" type="hidden" value="@ViewBag.id" />
     @*<form asp-action="Guardar" method="post">*@
          <div class="row">
             <div class="form-group col-md-6 col-xs-12">
                 <label asp-for="turno.Name" class="control-label"> Nombre</label>
-                <input id="Name" asp-for="turno.Name" class="form-control text-to-upper-alau" />
+                <input id="Name" asp-for="turno.Name" class="form-control text-to-upper-alau" value="@name"/>
                 <span asp-validation-for="turno.Name" class="text-danger"></span>
             </div>
             <div class="form-group col-md-6 col-xs-12">
                 <label asp-for="turno.Desc" class="control-label"> Breve Descripcion </label>
-                <input id="Descripcion" asp-for="turno.Desc" class="form-control text-to-upper-alau" />
+                <input id="Descripcion" asp-for="turno.Desc" class="form-control text-to-upper-alau" value="@desc"/>
                 <span asp-validation-for="turno.Desc" class="text-danger"></span>
             </div>
 
@@ -72,7 +77,7 @@
         </div>
          <div class="card-footer form-group text-center m-0">
              <button class="btn btn-primary" onclick="sender()">
-                 Crear
+                 Editar
              </button>
              <a class="btn btn-danger rounded-pill" asp-action="Index">Volver</a>
          </div>
@@ -83,17 +88,17 @@
 
 
 <script>
-
-    
-
+  
     const sender = () => {
             
         //obtener datos
+        const id = document.getElementById('id')
         const name = document.getElementById('Name')
         const desc = document.getElementById('Descripcion')
         const cc = obtenerCargos()
         //crear el bloque de datos para enviar
         const turno = {
+            id: id.value,
             Name: name.value,
             Desc: desc.value,
         }
@@ -102,16 +107,16 @@
                         cargos: JSON.stringify(cc),
                 }
 
-      
+        console.log(datos)
         //enviar los datos
             $.ajax({
                 data: datos,
-                url:   'Guardar', //archivo que recibe la peticion
+                url:   'Edit', //archivo que recibe la peticion
                 type:  'post', //método de envio
                 success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
                       if(response){
-                          AlertSuccess("Equipo Creado Exitosamente")
-                          setTimeout( function() { window.location.href = "/Equipo"; }, 1500 );
+                          AlertSuccess("Equipo Editado Exitosamente")
+                          setTimeout( function() { window.location.href = "/Equipo"; }, 155500 );
                       }else{
                           AlertError("Upps, Error Inesperado","algo no esta bien intente de nuevo mas tarde")
                       }

@@ -151,11 +151,61 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Editar(int id)
         {
-          
+            ViewBag.id = id;
+            List<__inV> cargosVista = new(); 
+            try
+            {
+                //datos dinamicos alterables
+                var turno = await context.Turnos.Where(y => y.id == id).FirstOrDefaultAsync();
+                var equipo = await context.Equipos
+                    .Include(y=>y.Cargo)
+                    .Where(y => y.Turnoid == id)
+                    .ToListAsync();
+                //datos dinamicos fijos
+                var cargos = await context.Cargos
+                    .Where(x => x.act == true)
+                    .ToListAsync();
+                
+                foreach (var item in cargos)
+                {
+                    var eq = equipo.Where(x => x.Cargoid == item.id).FirstOrDefault();
+
+                    int cantCubierta = eq==null? 0: eq.CantCubierta;
+                    double costo =eq==null? 0:eq.CostoOperario;
+
+                    cargosVista.Add(new()
+                    {
+                        CantCubierta = cantCubierta,
+                        Cargoid = item.id,
+                        CargoName = item.Name,
+                        CostoOperario = costo,
+                        CantOperadoresNecesario = item.CantOperadoresNecesario
+                    });
+                }
+
+                ViewBag.Cargos = cargosVista;
+                ViewBag.turno = turno;
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+
 
             return View();
         }
 
+        /// <summary>
+        /// para guardar los nuevos datos editados
+        /// </summary>
+        /// <param name="ins"></param>
+        /// <returns></returns>
+        public async Task<bool> Edit(EquipoDTO_Edit ins) 
+        {
+            var ent = ins;
+
+            return false;
+        }
         /// <summary>
         /// Para almacenar los datos de un nuevo elemento
         /// </summary>
@@ -190,7 +240,7 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                var ent = await context.Cargos
+                var ent = await context.Turnos
                     .Where(e => e.id == id)
                     .FirstOrDefaultAsync();
                 if (ent != null)

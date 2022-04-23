@@ -17,9 +17,12 @@
             <div class="card-header pb-0 p-3">
               <div class="row">
                 <div class="col-md-6">
-                  <h5 class="mb-0 card-title">Cliente: @Model.Cliente </h5>
-                  <h6 class="mb-0 card-subtitle">Solicitante: @Model.Solicitante </h6>
-                  <p class="mb-0 card-text"/>Posible Entrega: @Model.FechaEntregaPosible.ToString("dd/MM/yyyy") </p>
+                 @if (!User.IsInRole("Superv"))
+                   {
+                       <h5 class="mb-0 card-title">Cliente: @Model.Cliente </h5>
+                       <h6 class="mb-0 card-subtitle">Solicitante: @Model.Solicitante </h6>
+                   }
+                   <p class="mb-0 card-text"/>Posible Entrega: @Model.FechaEntregaPosible.ToString("dd/MM/yyyy") </p>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end align-items-center">
                   <i class="far fa-calendar-alt me-2"></i>

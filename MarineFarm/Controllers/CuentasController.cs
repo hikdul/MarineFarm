@@ -57,7 +57,6 @@ namespace MarineFarm.Controllers
 
         #endregion
 
-
         #region vista inicial
         /// <summary>
         /// vista inicial, vista de mi usuario
@@ -82,8 +81,6 @@ namespace MarineFarm.Controllers
 
 
         #endregion
-
-
 
         #region logIn
         /// <summary>
@@ -133,14 +130,14 @@ namespace MarineFarm.Controllers
                 }
 
                 ViewBag.Err = "El correo o la contraseña no son correctos.";
-                return RedirectToAction("login");
+                return RedirectToAction("logout");
             }
             catch (HttpRequestException e)
             {
                 Console.WriteLine("\n HTTP  Exception Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
                 ViewBag.Err = "El correo o la contraseña no son correctos.";
-                return View("login");
+                return RedirectToAction("logout");
             }
             finally
             {
@@ -163,7 +160,6 @@ namespace MarineFarm.Controllers
         }
 
         #endregion
-
 
         #region Usuarios, no clientes
         /// <summary>
@@ -252,6 +248,7 @@ namespace MarineFarm.Controllers
         }
 
         #endregion
+
         #region Usuarios, Clientes
         /// <summary>
         /// Para ver a todos los usuarios

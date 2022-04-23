@@ -42,9 +42,11 @@ namespace MarineFarm.Controllers
 
             
             List<SelectListItem> clientes = new();
-
-            if(User.IsInRole("Cliente"))
+            try
             {
+
+                if (User.IsInRole("Cliente"))
+                {
                 var aux = await Cliente.ClienteByEmail(User.Identity.Name,context);
                 if (aux == null)
                     return RedirectToAction("logout", "cuentas");
@@ -54,13 +56,8 @@ namespace MarineFarm.Controllers
                         Text =$"{aux.Name} || {aux.RUT}" 
                     });
 
-            }else
+                }else
                 clientes= await ToSelect.ToSelectITipo<Cliente>(context);
-
-            try
-            {
-
-                if(User.IsInRole("Cliente"))
 
                 ViewBag.Mariscos = await ToSelect.ToSelectITipo<Marisco>(context); // await context.Mariscos.Where(y => y.act == true).ToListAsync();
                 ViewBag.Tps = await ToSelect.ToSelectITipo<TipoProduccion>(context);// context.TiposProduccion.Where(y => y.act == true).ToListAsync();

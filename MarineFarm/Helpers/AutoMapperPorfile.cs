@@ -32,6 +32,7 @@ namespace MarineFarm.Helpers
             MuestraDiariaMap();
             UsMap();
             UsClienteMap();
+            ConfigurationMap();
         }
 
         #region mapeo Generica elementos de interface ITipo
@@ -494,5 +495,12 @@ namespace MarineFarm.Helpers
         }
         #endregion
 
+        #region config map
+        
+        private void ConfigurationMap()
+        {
+            CreateMap<Configuraciones, ConfigurcionDTO>().ReverseMap();
+        }
+        #endregion
     }
 }

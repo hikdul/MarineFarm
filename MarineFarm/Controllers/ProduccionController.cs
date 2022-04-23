@@ -244,7 +244,8 @@ namespace MarineFarm.Controllers
                         && y.Fecha.Month == hoy.Month 
                         && y.Fecha.Year == hoy.Year)
                 .ToListAsync();
-            return View(mapper.Map<List<ProduccionDTO_out>>(ent));
+            ViewBag.history = mapper.Map<List<ProduccionDTO_out>>(ent);
+            return View();
         }
         /// <summary>
         /// para buscar elementos pasandole un periodo
@@ -255,13 +256,15 @@ namespace MarineFarm.Controllers
         {
             if (periodo.Validate())
             {
-                var hoy = DateTime.Now;
+                ViewBag.inicio=periodo.Inicio.ToString("yyyy-MM-dd");
+                ViewBag.fin=periodo.Fin.ToString("yyyy-MM-dd");
                 var ent = await context.Produccion
                     .Include(y => y.Superv)
                     .Where(y => y.Fecha>= periodo.Inicio.AddDays(-1)
                     && y.Fecha <= periodo.Fin.AddDays(1))
                     .ToListAsync();
-                return View(mapper.Map<List<ProduccionDTO_out>>(ent));
+                ViewBag.history = mapper.Map<List<ProduccionDTO_out>>(ent);
+                return View(periodo);
             }
 
             return View();

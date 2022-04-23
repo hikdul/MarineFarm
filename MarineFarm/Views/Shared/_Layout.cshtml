@@ -99,15 +99,18 @@
                                 </li>
                               
                             </ul>
-                             <ul class="nav ms-4 ps-3">
-                                <li class="nav-item ">
-                                    <a class="nav-link @ViewBag.HProduccionNavLink" asp-controller="Produccion" asp-action="Historial">
-                                        <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i> </span>
-                                        <span class="sidenav-normal"> Historial </span>
-                                    </a>
-                                </li>
-                              
-                            </ul>
+                              @if (!User.IsInRole("Superv"))
+                            {
+                                <ul class="nav ms-4 ps-3">
+                                    <li class="nav-item ">
+                                        <a class="nav-link @ViewBag.HProduccionNavLink" asp-controller="Produccion" asp-action="Historial">
+                                            <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i> </span>
+                                            <span class="sidenav-normal"> Historial </span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            }
                         </div>
                     </li>
                     <!--Stock -->
@@ -166,13 +169,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a class="nav-link @ViewBag.InAlmacenNavLink" asp-controller="Almacen" asp-action="ingreso">
-                                        <span class="sidenav-mini-icon"> <i class="fa-solid fa-box-open"></i> </span>
-                                        <span class="sidenav-normal"> Ingreso</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link @ViewBag.HAlmacenNavLink" asp-controller="Almacen" asp-action="Historial">
+                                    <a class="nav-link @ViewBag.HAlmacenNavLink" asp-controller="Produccion" asp-action="Historial">
                                         <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i> </span>
                                         <span class="sidenav-normal"> Historial</span>
                                     </a>
@@ -283,6 +280,12 @@
                                         <a class="nav-link @ViewBag.EmpaquetadoNavLink" asp-controller="Empaquetado" asp-action="Index">
                                             <span class="sidenav-mini-icon"> <i class="fa-solid fa-box-open"></i> </span>
                                             <span class="sidenav-normal"> Empaquetado</span>
+                                        </a>
+                                    </li>
+                                     <li class="nav-item ">
+                                        <a class="nav-link @ViewBag.configNavLink" asp-controller="configuration" asp-action="Index">
+                                            <span class="sidenav-mini-icon"> <i class="fa-solid fa-gears"></i> </span>
+                                            <span class="sidenav-normal"> Configuraciones</span>
                                         </a>
                                     </li>
                                 </ul>

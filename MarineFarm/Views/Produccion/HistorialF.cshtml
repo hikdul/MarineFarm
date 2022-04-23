@@ -11,7 +11,9 @@
     ViewBag.ProduccionColapseGroup = "show";
     ViewBag.HProduccionNavLink = "active";
     List<ProduccionDTO_out> modelo = ViewBag.history;
-    string fecha= DateTime.Now.ToString("yyyy-MM-dd");
+    string inicio = ViewBag.inicio;
+    string fin = ViewBag.fin;
+
 }
 <form asp-action="HistorialF" method="post" >
     <div class="row mt-4">
@@ -24,10 +26,10 @@
                 <div class="row">
                     <div class="col-md-6">
                          <label >Inicio </label>   
-                         <input name="Inicio" id="Inicio" class="form-control" type="date" value="@fecha"/>
+                         <input name="Inicio" id="Inicio" class="form-control" type="date" value="@inicio"/>
                     </div>
                     <div class="col-md-6">
-                        <label>fin </label><input name="Fin" id="Fin" class="form-control" type="date" value="@fecha"/>
+                        <label>fin </label><input name="Fin" id="Fin" class="form-control" type="date" value="@fin"/>
                     </div>
                 </div>
             </div>
@@ -50,16 +52,16 @@
     </div>
 }
 else{
-    <div class="row mt-2">
+    <div class="row mt-2 ">
         <div class="col-12">
-            <div class="card">
+            <div class="card p-3">
                 <!-- Card header -->
                 <div class="card-header">
                   
                     <h5 class="mb-0">Historial De Produccion</h5>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-flush" id="MarineTable">
+                    <table class="table table-flush p-3" id="MarineTable">
                         <thead class="thead-dark">
                             <tr class="text-center">
                                 <th>Fecha</th>
