@@ -56,6 +56,27 @@ namespace MarineFarm.DTO
         /// False => Insdica que se uso el calculo por defecto
         /// </summary>
         public bool UsaMuestra { get; set; } = false;
+        /// <summary>
+        /// menor costo de produccion
+        /// </summary>
+        public double CostoProduccionMenor  { get; set; }
+        /// <summary>
+        /// mayor costo de produccion
+        /// </summary>
+        public double CostoProduccionMayor { get; set; }
+        
+        /// <summary>
+        /// bono a pagar
+        /// </summary>
+        public double bono { get; set; }
+        /// <summary>
+        /// menor costo de produccion + bono
+        /// </summary>
+        public double TCostoProduccionMenor { get; set; }
+        /// <summary>
+        /// mayor costo de produccion + bono
+        /// </summary>
+        public double TCostoProduccionMayor { get; set; }
 
         #endregion
 
@@ -75,12 +96,28 @@ namespace MarineFarm.DTO
             int year = DateTime.Now.Year;
             List<CalculoProduccionDTO_out> resp = new();
 
-            double valorDefaultDia = 1000;
 
             try
             {
+                var config = await context.Config.FirstOrDefaultAsync();
+                if (config == null || config.id < 1)
+                    config = new()
+                    {
+                        DiasHabiles = 5,
+                        ProduccionDefaultPorDia = 10000,
+                        KgBono = 100000,
+                        PagoBono = 100
+                    };
+
+                double valorDefaultDia = config.ProduccionDefaultPorDia; 
+
+
                 foreach (var item in ins.Productos)
                 {
+                    CalcularCostoDTO_out costos = new();
+
+                    await costos.Up(context,item.Cantidad, DateTime.Now.Month);
+                    
 
                     var muestra = await context.MuestrasDiarias
                         .Include(y => y.Marisco)
@@ -105,13 +142,19 @@ namespace MarineFarm.DTO
                         prodDiaria = prodDiaria / muestra.Count();
                         dto.dias = item.Cantidad / prodDiaria;
 
-                        dto.PosibleEntrega = Periodo.DiasValidos(ins.fecha, dto.dias);   // DateTime.Now.AddDays(auxd);
+                        dto.PosibleEntrega = Periodo.DiasValidos(ins.fecha, dto.dias,config.DiasHabiles);   // DateTime.Now.AddDays(auxd);
                         dto.UsaMuestra = true;
+
+                        dto.CostoProduccionMenor = costos.min;
+                        dto.CostoProduccionMayor = costos.max;
+                        dto.TCostoProduccionMayor = costos.max;
+                        dto.TCostoProduccionMenor = costos.min;
+                        dto.bono = costos.bono;
+
                         resp.Add(dto);
                     }
                     else
                     {
-
                         var flag = new MuestraDiaria()
                         {
                             ano = year,
@@ -131,6 +174,13 @@ namespace MarineFarm.DTO
                         dto.dias = item.Cantidad / valorDefaultDia;
                         dto.PosibleEntrega = Periodo.DiasValidos(ins.fecha, dto.dias);
                         dto.UsaMuestra = false;
+
+                        dto.CostoProduccionMenor = costos.min;
+                        dto.CostoProduccionMayor = costos.max;
+                        dto.TCostoProduccionMayor = costos.max;
+                        dto.TCostoProduccionMenor = costos.min;
+                        dto.bono = costos.bono;
+
                         resp.Add(dto);
 
                     }
@@ -223,6 +273,15 @@ namespace MarineFarm.DTO
             return mayor;
         }
 
+        #endregion
+
+        #region calcular costo produccion
+
+        private async Task<double> CalcularCostoProduccion(ApplicationDbContext context)
+        {
+            return 0;
+        }
+        
         #endregion
     }
 }

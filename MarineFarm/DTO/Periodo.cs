@@ -59,10 +59,11 @@
         /// </summary>
         /// <param name="inicio"></param>
         /// <param name="cantidadDiasASumar"></param>
+        /// <param name="diasHabilePorSemana"></param>
         /// <returns></returns>
-        public static DateTime DiasValidos(DateTime inicio, double cantidadDiasASumar)
+        public static DateTime DiasValidos(DateTime inicio, double cantidadDiasASumar, int diasHabilePorSemana=5)
         {
-            int DiasPorSemana = 5;
+            int DiasPorSemana = diasHabilePorSemana>0 && diasHabilePorSemana<8 ? diasHabilePorSemana:5;
             int band = (int)cantidadDiasASumar;
             band = band / DiasPorSemana;
             cantidadDiasASumar += band;
