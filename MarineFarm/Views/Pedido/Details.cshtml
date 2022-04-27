@@ -22,11 +22,12 @@
                        <h5 class="mb-0 card-title">Cliente: @Model.Cliente </h5>
                        <h6 class="mb-0 card-subtitle">Solicitante: @Model.Solicitante </h6>
                    }
-                   <p class="mb-0 card-text"/>Posible Entrega: @Model.FechaEntregaPosible.ToString("dd/MM/yyyy") </p>
+                   <p class="mb-0 card-text">Estado: @Model.EstadoDesc </p>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end align-items-center">
                   <i class="far fa-calendar-alt me-2"></i>
                   <small>Generado: @Model.FechaSolicitud.ToString("dd/MM/yyyy")  </small>
+                   <p class="mb-0 card-text"/>Posible Entrega: @Model.FechaEntregaPosible.ToString("dd/MM/yyyy") </p>
                 </div>
               </div>
             </div>

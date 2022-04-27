@@ -268,24 +268,48 @@ namespace MarineFarm.Helpers
         {
             CreateMap<Pedido, PedidoDTOS_out>()
                 .ForMember(ee => ee.Cliente, opt => opt.MapFrom(PedidoNombreCliente))
-                .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante));
+                .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante))
+                .ForMember(ee => ee.EstadoDesc, opt => opt.MapFrom(EstadoPedidoStr));
 
             CreateMap<Pedido, PedidoDTO_out>()
                 .ForMember(ee => ee.Cliente, opt => opt.MapFrom(PedidoNombreCliente))
                 .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante))
+                .ForMember(ee => ee.EstadoDesc, opt => opt.MapFrom(EstadoPedidoStr))
                 .ForMember(ee => ee.Productos, opt => opt.MapFrom(ProductosEnPedido));
 
             CreateMap<PedidoDTO_in, Pedido>()
                 .ForMember(ee => ee.act, opt => opt.MapFrom(y => true))
                 .ForMember(ee => ee.FechaEntrega, opt => opt.Ignore())
                 .ForMember(ee => ee.FechaSolicitud, opt => opt.MapFrom(y => DateTime.Now))
-                .ForMember(ee => ee.PedidoProductos, opt => opt.Ignore());
+                .ForMember(ee => ee.PedidoProductos, opt => opt.Ignore())
+                .ForMember(ee => ee.estado, opt => opt.MapFrom(y => 0));
                 //.ForMember(ee => ee.PedidoProductos, opt => opt.MapFrom(PedidoProductoMap));
 
-           
+
+
         }
 
+        private string EstadoPedidoStr(Pedido ent, PedidoDTOS_out dto)
+        {
+            string resp = "No Descrito";
+            switch (ent.estado)
+            {
+                case 0:
+                    resp = "Generado";
+                    break;
+                case 1:
+                    resp = "Concretado";
+                    break;
+                case 2:
+                    resp = "Cancelado";
+                    break;
+                default:
+                    resp = "No Descrito";
+                    break;
+            }
 
+            return resp;
+        }
         private List<PedidosProductos> PedidoProductoMap(PedidoDTO_in dto, Pedido ent)
         {
             List<PedidosProductos> list = new();

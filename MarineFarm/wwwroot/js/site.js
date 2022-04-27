@@ -54,3 +54,9 @@ const TraformarFechaDDMMYY = fecha => {
     return date.toLocaleDateString("es-ES", options)
     
 }
+
+// retorna un valor con solo dos decimales
+const fixedTwoDecimal = dotNumber => {
+
+    return (Math.round(dotNumber * 100) / 100).toFixed(2)
+}

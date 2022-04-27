@@ -48,5 +48,12 @@ namespace MarineFarm.Entitys
         /// si el elemento se encuentra activo o no
         /// </summary>
         public bool act { get; set; }
+        /// <summary>
+        /// para verificar el estado del pedido
+        /// 0 => solicitado 
+        /// 1 => completado
+        /// 2 => cancelado
+        /// </summary>
+        public int estado { get; set; } = 0;
     }
 }

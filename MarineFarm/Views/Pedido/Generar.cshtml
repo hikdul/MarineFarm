@@ -9,7 +9,7 @@
     // => este es simplemente para que se vea la poscicion actual
     ViewBag.PedidoColapseGroup = "show";
     ViewBag.GPedidoNavLink = "active";
-
+    string fecha = DateTime.Now.ToString("yyyy-MM-dd");
 }
 
 
@@ -70,7 +70,12 @@
             </div>
             <div class="card-footer">
                 <div class="row">
-                    <div class="col-12">
+                     <div class="form-group col-md-4 col-xs-12">
+                        <label for="fecha" class="control-label">Fecha Inicio Produccion</label>
+                        <input name="fecha" id="fecha" class="form-control" type="date" min="@fecha" value="@fecha" />
+                    </div>
+                     <div class="col-md-2"></div>
+                     <div class="col-md-6">
                         <div class="btn-group">
                             <button id="calcular" class="btn btn-primary">Calcular</button>
                             <button id="Generar" class="btn btn-danger">Enviar</button>
@@ -138,8 +143,7 @@
        let cin = document.getElementsByName('Calibreid')
        let ein = document.getElementsByName('Empaquetadoid')
        let sin = document.getElementsByName('solicitado')
-
-       console.log(clienteid)
+       let fecha = document.getElementById('fecha').value
 
        let data = []
        for(let i=0 ; i<tpin.length -1 ; i++){
@@ -159,6 +163,7 @@
        }
 
        return {
+           fecha:fecha,
            clienteid: clienteid,
             productos: JSON.stringify(data)
        }
@@ -167,7 +172,7 @@
 
 
    const generarTabla = lista => {
-       
+       console.log(lista)
        const inicio = '<div class="table-responsive">'+
                 '<table class="table table-flush" >'+
           '<thead>'+
@@ -187,6 +192,9 @@
           '<th>'+
           'Fecha Entrega'+
           '</th>'+
+          '<th>'+
+          'Costo Produccion'+
+          '</th>'+
           '</tr>'+
           '</thead>'+
           '<tbody>'
@@ -205,10 +213,13 @@
                 lista[i]['empaquetado']+
               '</td>'+
               '<td>'+
-                lista[i]['dias']+
+                fixedTwoDecimal(lista[i]['dias'])+
               '</td>'+
               '<td>'+
                TraformarFechaDDMMYY( lista[i]['posibleEntrega'])+
+              '</td>'+
+              '<td>'+
+                fixedTwoDecimal(lista[i]['tCostoProduccionMayor'])+
               '</td>'+
               '</tr>'
           }

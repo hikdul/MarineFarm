@@ -148,7 +148,8 @@ namespace MarineFarm.Controllers
                 var ent = await context.Pedidos
                      .Include(ee => ee.Solicitante)
                     .Include(ee => ee.Cliente)
-                    .Where(y => y.act == true).ToListAsync();
+                    .Where(y => y.act == true && y.estado==0)
+                    .ToListAsync();
                 list = mapper.Map<List<PedidoDTOS_out>>(ent);
             }
             catch (Exception ee)

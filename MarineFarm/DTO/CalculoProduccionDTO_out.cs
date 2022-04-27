@@ -147,8 +147,8 @@ namespace MarineFarm.DTO
 
                         dto.CostoProduccionMenor = costos.min;
                         dto.CostoProduccionMayor = costos.max;
-                        dto.TCostoProduccionMayor = costos.max;
-                        dto.TCostoProduccionMenor = costos.min;
+                        dto.TCostoProduccionMayor = costos.Tmax;
+                        dto.TCostoProduccionMenor = costos.Tmin;
                         dto.bono = costos.bono;
 
                         resp.Add(dto);
@@ -177,8 +177,8 @@ namespace MarineFarm.DTO
 
                         dto.CostoProduccionMenor = costos.min;
                         dto.CostoProduccionMayor = costos.max;
-                        dto.TCostoProduccionMayor = costos.max;
-                        dto.TCostoProduccionMenor = costos.min;
+                        dto.TCostoProduccionMayor = costos.Tmax;
+                        dto.TCostoProduccionMenor = costos.Tmin;
                         dto.bono = costos.bono;
 
                         resp.Add(dto);
@@ -249,7 +249,7 @@ namespace MarineFarm.DTO
                 Console.Error.WriteLine(ee.Message);
             }
 
-            return fechaEntrega.AddDays(dias);
+            return ins.fecha.AddDays(dias);
         }
 
 

@@ -37,5 +37,16 @@
         /// fecha en que el sistema cree se entregara el producto
         /// </summary>
         public DateTime FechaEntregaPosible { get; set; }
+        /// <summary>
+        /// estado del pedido
+        /// 0 => solicitado
+        /// 1 => completado
+        /// 2 => cancelado
+        /// </summary>
+        public int estado { get; set; }
+        /// <summary>
+        /// descripcion del estado
+        /// </summary>
+        public string EstadoDesc { get; set; }
     }
 }

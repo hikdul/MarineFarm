@@ -21,6 +21,7 @@ namespace MarineFarm.DTO
         /// <summary>
         /// me entrega la fecha en que se iniciara la produccion.
         /// por defecto es la fecha actual
+        /// pero se puede modificar en la linea inicial
         /// </summary>
         public DateTime fecha { get; set; } = DateTime.Now;
 
