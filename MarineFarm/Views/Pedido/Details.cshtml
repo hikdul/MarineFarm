@@ -35,12 +35,23 @@
               <ul class="list-group">
                   @foreach (var item in Model.Productos)
                  {
-                      <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-                        <div class="d-flex">
-                          <div class="d-flex align-items-center">
-                            <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"> 
-                                <i class="fas fa-arrow-down"></i>
-                            </button>
+                        <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+                            <div class="d-flex">
+                                <div class="d-flex align-items-center">
+                                    @if (item.Complete)
+                                    {
+                                        <div class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"> 
+                                            <i class="fa-solid fa-check"></i>
+                                        </div>
+                                    }
+                                    @if (!item.Complete)
+                                    {
+                                        <div class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"> 
+                                            <i class="fa-solid fa-x"></i>
+                                        </div>
+                                                                            
+                                    }
+
                             <div class="d-flex flex-column">
                               <h6 class="mb-1 text-dark text-sm">@item.Marisco <i class="fa-solid fa-arrow-right"></i> @item.TipoProduccion <i class="fa-solid fa-arrow-right"></i> @item.Calibre <i class="fa-solid fa-arrow-right"></i> @item.Empaquetado</h6>
                               <span class="text-xs">Cantidad Solicitada: @item.Cantidad </span>
@@ -55,6 +66,20 @@
                  }
               </ul>
             </div>
+            @if (User.IsInRole("AdmoSistema") || User.IsInRole("Gerenteplanta"))
+            {
+                <div class="card-footer">
+                    <div class="btn-group">
+                        @if (Model.Completado)
+                        {
+
+                            <button class="btn btn-primary">Completar Pedido</button>
+                        }
+                            <button class="btn btn-danger">Eliminar Pedido</button>
+
+                    </div>
+            </div>
+            }
           </div>
         </div>
       

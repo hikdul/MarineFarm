@@ -133,6 +133,10 @@ namespace MarineFarm.Data
         /// Muestras Diarias
         /// </summary>
         public DbSet<MuestraDiaria> MuestrasDiarias { get; set; }
+        /// <summary>
+        /// contiene los pedidos que se han eliminado
+        /// </summary>
+        public DbSet<PedidoEliminado> PedidosEliminados { get; set; }
 
         // ## == Para conf valores utiles en toda la pp
         // ## =====================================

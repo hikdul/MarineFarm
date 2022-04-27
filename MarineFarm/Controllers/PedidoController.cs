@@ -184,6 +184,7 @@ namespace MarineFarm.Controllers
                     .Include(ee => ee.Cliente)
                     .Where(y => y.id == id).FirstOrDefaultAsync();
                 model = mapper.Map<PedidoDTO_out>(ent);
+                await model.Complete(context);
             }
             catch (Exception ee)
             {
@@ -220,5 +221,116 @@ namespace MarineFarm.Controllers
 
         #endregion
 
+        #region Completar Pedido
+        /// <summary>
+        /// para completar un pedido que se permita completar
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> CompletarPedido(int id)
+        {
+            if(User.IsInRole("AdmoSistema") || User.IsInRole("Gerenteplanta"))
+            {
+                try
+                {
+                    if (await ValidarPedido(id))
+                    {
+
+                        var original = await context.Pedidos.Where(y => y.id == id).FirstOrDefaultAsync();
+                        original.estado = 1;
+                        original.FechaEntrega = DateTime.Now;
+                        await context.SaveChangesAsync();
+                        ViewBag.Succ="Elemento Almacenado Correctamente";
+                        return true;
+                    }
+                }
+                catch (Exception ee)
+                {
+                    Console.WriteLine(ee.Message);
+                    ViewBag.Err = "Upps, Algo salio mal. intente de nuevo mas tarde";
+                    return false;
+                }
+            }
+            ViewBag.Err = "No Posee Permisos para ejecutar esta accion";
+            return false;
+        }
+
+        /// <summary>
+        /// valida si el pedido es viable para culminar
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private async Task<bool> ValidarPedido(int id)
+        {
+          if (User.IsInRole("AdmoSistema") || User.IsInRole("Gerenteplanta"))
+          {
+                  try
+              {
+                  var ent = await context.Pedidos
+                          .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Marisco)
+                          .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.TipoProduccion)
+                          .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Calibre)
+                          .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Empaquetado)
+                          .Include(ee => ee.Solicitante)
+                          .Include(ee => ee.Cliente)
+                          .Where(y => y.id == id).FirstOrDefaultAsync();
+                  var model = mapper.Map<PedidoDTO_out>(ent);
+                  await model.Complete(context);
+
+                  return model.Completado;
+
+              }
+              catch (Exception ee)
+              {
+                  Console.WriteLine(ee.Message);
+                  return false;
+              }
+          }
+            ViewBag.Err = "Usuario No Valido; Para ejecutar esta accion";
+            return false;
+
+        }
+        #endregion
+
+        #region eliminar pedido
+        /// <summary>
+        /// para eliminar un pedido especifico
+        /// </summary>
+        /// <param name="del"></param>
+        /// <returns></returns>
+        public async Task<bool> Eliminar(PedidoEliminadoDTO_in del)
+        {
+
+
+            try
+            {
+                var pedido = await context.Pedidos.Where(x => x.id == del.EliminadoId).FirstOrDefaultAsync();
+                var user = await context.AspNetUsuario.Where(x => x.Email == User.Identity.Name).FirstOrDefaultAsync();
+
+                if (pedido == null || pedido.id != del.EliminadoId|| user==null || user.id<1)
+                    return false;
+                pedido.act = false;
+                pedido.estado = 2;
+
+                PedidoEliminado pe = new()
+                {
+                    QuienEliminoid = user.id,
+                    Eliminadoid = del.EliminadoId,
+                    Razon = del.Razon
+                };
+                context.Add(pe);
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return false;
+            }
+
+        }
+
+        
+        #endregion
     }
 }

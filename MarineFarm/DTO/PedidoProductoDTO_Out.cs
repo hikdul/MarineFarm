@@ -9,6 +9,10 @@
         /// cantidad solicitada en kg
         /// </summary>
         public double Cantidad { get; set; }
+        /// <summary>
+        /// si este elemento se encuentra completado
+        /// </summary>
+        public bool Complete { get; set; } = false;
 
     }
 }
