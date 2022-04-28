@@ -273,6 +273,40 @@ namespace MarineFarm.Controllers
 
         #endregion
 
+        #region detalles de una produccion
+
+        /// <summary>
+        /// detalle de una produccion
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Details(int id)
+        {
+            try
+            {
+                var ent = await context.Produccion.Where(x => x.Fecha.Year > 2000)
+                 .Include(x => x.Superv)
+                 .Include(x => x.MariscosProduccion).ThenInclude(x => x.Marisco)
+                 .Include(x => x.ProductoProduccion).ThenInclude(x => x.Producto).ThenInclude(x => x.Marisco)
+                 .Include(x => x.ProductoProduccion).ThenInclude(x => x.Producto).ThenInclude(x => x.TipoProduccion)
+                 .Include(x => x.ProductoProduccion).ThenInclude(x => x.Producto).ThenInclude(x => x.Calibre)
+                 .Include(x => x.ProductoProduccion).ThenInclude(x => x.Producto).ThenInclude(x => x.Empaquetado)
+                 .Where(x => x.id == id)
+                 .FirstOrDefaultAsync();
+
+                var dto = mapper.Map<ProduccionDTO_out>(ent);
+                return View(dto);
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return View();
+            }
+        }
+
+        
+
+        #endregion
 
 
     }

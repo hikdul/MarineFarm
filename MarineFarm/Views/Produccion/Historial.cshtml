@@ -44,7 +44,9 @@
     <div class="row mt-2">
        <div class="col-12">
         <div class="card">
-            No Hay datos en el periodo seleccionado
+            <h5 class="card-subtitle m-2">
+                No Hay datos en el periodo seleccionado
+            </h5>
           </div>
         </div>
     </div>
@@ -76,7 +78,7 @@
                                         <td class=" text-sm font-weight-bold">@item.Fecha.ToString("dd/MM/yyyy")</td>
                                         <td class="text-sm font-weight-normal">@item.SupervName || @item.SupervEmail</td>
                                         <td class="text-sm font-weight-light">
-                                            <a asp-action="detalles" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa fa-see "></i></a>
+                                            <a asp-action="Details" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa fa-see "></i></a>
                                         </td>
                                     </tr>
                                 }
