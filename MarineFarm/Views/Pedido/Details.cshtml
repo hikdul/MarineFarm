@@ -10,7 +10,10 @@
     ViewBag.PedidoColapseGroup = "show";
     ViewBag.PedidoNavLink = "active";
 
-}
+}  
+
+<input type="hidden" id="id" value="@Model.id" />
+
  <div class="row mt-4">
         <div class="col-sm-12">
           <div class="card h-100">
@@ -70,13 +73,13 @@
             {
                 <div class="card-footer">
                     <div class="btn-group">
+                        <a asp-action="index" class="btn btn-outline-primary">Volver</a>
                         @if (Model.Completado)
                         {
-
-                            <button class="btn btn-primary">Completar Pedido</button>
+                            <button id="completar" asp-action="CompletarPedido" asp-route-id="@Model.id" class="btn btn-primary">Completar Pedido</button>
                         }
-                            <button class="btn btn-danger">Eliminar Pedido</button>
-
+                            <button id="eliminar" class="btn btn-danger">Eliminar Pedido</button>
+                            
                     </div>
             </div>
             }
@@ -84,3 +87,76 @@
         </div>
       
       </div>    
+
+
+      <script>
+      
+       const btnEliminar=document.getElementById("eliminar")
+   
+       const btnCompletar=document.getElementById('completar')
+       const id=document.getElementById("id").value
+       //para eliminar un pedido
+       btnEliminar.addEventListener('click',()  =>  {
+           Swal.fire({
+             title: 'Razón por la que se elimina el pedido',
+             input: 'text',
+             inputAttributes: {
+               autocapitalize: 'off'
+             },
+             showCancelButton: true,
+             confirmButtonText: 'Eliminar',
+             showLoaderOnConfirm: true,
+             preConfirm: (razon) => {
+               
+                 let data={
+                     EliminadoId: id,
+                     Razon:razon
+                 }
+
+                return  $.ajax({
+                    data: data,
+                    url:   '/Pedido/Eliminar', //archivo que recibe la peticion
+                    type:  'post', //método de envio
+                    success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                          if(response){
+                              return true
+                          }else{
+                              AlertError("Upps, Error Inesperado","algo no esta bien intente de nuevo mas tarde")
+                          }
+                    }
+                 });
+             },
+             allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    Swal.fire({
+                      title: `Pedido Eliminado`,
+                    })
+                     setTimeout( function() { window.location.href = "/Pedido"; }, 1500 )
+                  }
+                })
+
+            } )
+
+    // // !=> para completar un pedido
+       btnCompletar.addEventListener('click',()=>{
+           let data={
+               id:id
+           }
+           console.log(data)
+           $.ajax({
+               
+                url:   `/Pedido/CompletarPedido/${id}`, //archivo que recibe la peticion
+                type:  'get', //método de envio
+                success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                       if(response){
+                          window.location.href = "/Pedido";
+                       }
+                       else{
+                              AlertError("Upps, Error Inesperado","algo no esta bien intente de nuevo mas tarde")
+                       }
+                    }
+                })
+       })      
+            
+      </script>

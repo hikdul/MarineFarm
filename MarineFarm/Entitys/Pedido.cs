@@ -1,5 +1,7 @@
 ﻿using MarineFarm.Auth;
+using MarineFarm.Data;
 using MarineFarm.Helpers;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarineFarm.Entitys
@@ -9,6 +11,7 @@ namespace MarineFarm.Entitys
     /// </summary>
     public class Pedido : Iid
     {
+        #region props
         [Key]
         public int id { get; set; }
         /// <summary>
@@ -55,5 +58,51 @@ namespace MarineFarm.Entitys
         /// 2 => cancelado
         /// </summary>
         public int estado { get; set; } = 0;
+        #endregion
+
+        #region completar pedido
+        /// <summary>
+        /// para que me reste del almacen lo que se uso en este pedido
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static async Task CompletePedido(int id, ApplicationDbContext context)
+        {
+            try
+            {
+                if (id < 1)
+                    return;
+                var ent = await context
+                    .Pedidos
+                    .Include(x=>x.PedidoProductos).ThenInclude(x=>x.Producto)
+                    .Where(x => x.id == id)
+                    .FirstOrDefaultAsync();
+
+                if (ent == null || ent.id < 1)
+                    return;
+
+                foreach (var prod in ent.PedidoProductos)
+                {
+                    
+                    var almacen = await context.Almacen
+                        .Where(y => y.Productoid == prod.Productoid)
+                        .FirstOrDefaultAsync();
+
+                    if (almacen!=null||almacen.id<0)
+                    {
+                        almacen.Cantidad = almacen.Cantidad - prod.Cantidad<0? 0 : almacen.Cantidad - prod.Cantidad;
+                        await context.SaveChangesAsync();
+                        
+                    }
+                }
+
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+        }
+        #endregion
     }
 }

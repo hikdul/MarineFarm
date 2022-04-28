@@ -238,8 +238,10 @@ namespace MarineFarm.Controllers
 
                         var original = await context.Pedidos.Where(y => y.id == id).FirstOrDefaultAsync();
                         original.estado = 1;
+                        original.act = false;
                         original.FechaEntrega = DateTime.Now;
                         await context.SaveChangesAsync();
+                        await Pedido.CompletePedido(id, context);
                         ViewBag.Succ="Elemento Almacenado Correctamente";
                         return true;
                     }
@@ -262,6 +264,8 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         private async Task<bool> ValidarPedido(int id)
         {
+            if (id < 1)
+                return false;
           if (User.IsInRole("AdmoSistema") || User.IsInRole("Gerenteplanta"))
           {
                   try
@@ -286,7 +290,7 @@ namespace MarineFarm.Controllers
                   return false;
               }
           }
-            ViewBag.Err = "Usuario No Valido; Para ejecutar esta accion";
+            ViewBag.Err = "Usuario sin permisos para ejecutar esta accion";
             return false;
 
         }
@@ -301,36 +305,40 @@ namespace MarineFarm.Controllers
         public async Task<bool> Eliminar(PedidoEliminadoDTO_in del)
         {
 
-
-            try
+            if (User.IsInRole("AdmoSistema") || User.IsInRole("Gerenteplanta"))
             {
-                var pedido = await context.Pedidos.Where(x => x.id == del.EliminadoId).FirstOrDefaultAsync();
-                var user = await context.AspNetUsuario.Where(x => x.Email == User.Identity.Name).FirstOrDefaultAsync();
-
-                if (pedido == null || pedido.id != del.EliminadoId|| user==null || user.id<1)
-                    return false;
-                pedido.act = false;
-                pedido.estado = 2;
-
-                PedidoEliminado pe = new()
+                try
                 {
-                    QuienEliminoid = user.id,
-                    Eliminadoid = del.EliminadoId,
-                    Razon = del.Razon
-                };
-                context.Add(pe);
-                await context.SaveChangesAsync();
-                return true;
+                    var pedido = await context.Pedidos.Where(x => x.id == del.EliminadoId).FirstOrDefaultAsync();
+                    var user = await context.AspNetUsuario.Where(x => x.Email == User.Identity.Name).FirstOrDefaultAsync();
+
+                    if (pedido == null || pedido.id != del.EliminadoId|| user==null || user.id<1)
+                        return false;
+                    pedido.act = false;
+                    pedido.estado = 2;
+
+                    PedidoEliminado pe = new()
+                    {
+                        QuienEliminoid = user.id,
+                        Eliminadoid = del.EliminadoId,
+                        Razon = del.Razon
+                    };
+                    context.Add(pe);
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+                catch (Exception ee)
+                {
+                    Console.WriteLine(ee.Message);
+                    return false;
+                }
             }
-            catch (Exception ee)
-            {
-                Console.WriteLine(ee.Message);
-                return false;
-            }
+            ViewBag.Err = "Usuario sin permisos para ejecutar esta accion";
+            return false;
 
         }
 
-        
+
         #endregion
     }
 }
