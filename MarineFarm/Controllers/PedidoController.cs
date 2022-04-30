@@ -144,12 +144,28 @@ namespace MarineFarm.Controllers
             List<PedidoDTOS_out> list = new();
             try
             {
+                List<Pedido> ent = new();
+                if (User.IsInRole("Cliente"))
+                {
+                    var client = await context.UsuarioClientes
+                        .Include(x=>x.Usuario)
+                        .Where(x => x.Usuario.Email == User.Identity.Name)
+                        .FirstOrDefaultAsync();
 
-                var ent = await context.Pedidos
+                    ent = await context.Pedidos
+                     .Include(ee => ee.Solicitante)
+                    .Include(ee => ee.Cliente)
+                    .Where(y => y.Clienteid== client.Clienteid  && y.act == true && y.estado == 0)
+                    .ToListAsync();
+
+                }
+                else
+                    ent = await context.Pedidos
                      .Include(ee => ee.Solicitante)
                     .Include(ee => ee.Cliente)
                     .Where(y => y.act == true && y.estado==0)
                     .ToListAsync();
+                
                 list = mapper.Map<List<PedidoDTOS_out>>(ent);
             }
             catch (Exception ee)

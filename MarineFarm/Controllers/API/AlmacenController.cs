@@ -59,10 +59,6 @@ namespace MarineFarm.Controllers.API
             }
         }
 
-
-
-
-
         #endregion
 
         #region  substract

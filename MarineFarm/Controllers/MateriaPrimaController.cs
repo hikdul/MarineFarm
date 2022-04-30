@@ -156,6 +156,8 @@ namespace MarineFarm.Controllers
             if (!periodo.Validate())
                 periodo = new();
 
+            ViewBag.fi = periodo.Inicio.ToString("yyyy-MM-dd");
+            ViewBag.ff = periodo.Fin.ToString("yyyy-MM-dd");
             List<HistorialMateriaPrimaDTO_out> list = new();
 
             try

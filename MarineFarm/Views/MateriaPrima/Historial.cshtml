@@ -12,6 +12,33 @@
 
 }
 
+<form asp-action="Historial" method="post" >
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <div class="card">
+            <div class="card-header">
+                Rango de busqueda
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                         <label for="Inicio" class="control-label" >Inicio </label>   
+                         <input name="Inicio" id="Inicio" class="form-control" type="date" value="@ViewBag.fi"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="Fin" class="control-label">fin </label>
+                        <input name="Fin" id="Fin" class="form-control" type="date" value="@ViewBag.ff"/>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <input type="submit" class="btn btn-primary" value="filtrar"/>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+
 <div class="row mt-4">
     <div class="col-12">
         <div class="card p-3">
@@ -24,7 +51,7 @@
                     <thead class="thead-dark">
                         <tr class="text-center">
                             <th> Fecha </th>
-                            <th>Ingreso</th>
+                            <th>Movimiento</th>
                             <th>Marisco</th>
                             <th>Cantidad</th>
                             <th>Quien Registro</th>

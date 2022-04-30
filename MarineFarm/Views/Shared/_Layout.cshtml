@@ -77,80 +77,81 @@
                             }
                         </div>
                     </li>
-
-                    <!--Produccion-->
-                <li class="nav-item mt-3">
-                        <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Produccion</h6>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#ProduccionPage" class="nav-link @ViewBag.ProduccionGroupActive" aria-controls="ProduccionPage" role="button" aria-expanded="false">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md  bg-blue text-center d-flex align-items-center justify-content-center  me-2">
-                                <i class="fa-solid fa-clipboard-check"></i>
-                            </div>
-                            <span class="nav-link-text ms-1">Produccion</span>
-                        </a>
-                        <div class="collapse @ViewBag.ProduccionColapseGroup" id="ProduccionPage">
-                            <ul class="nav ms-4 ps-3">
-                                <li class="nav-item ">
-                                    <a class="nav-link @ViewBag.ProduccionNavLink" asp-controller="Produccion" asp-action="Index">
-                                        <span class="sidenav-mini-icon"> <i class="fa-solid fa-cart-plus"></i> </span>
-                                        <span class="sidenav-normal"> Produccion </span>
-                                    </a>
-                                </li>
-                              
-                            </ul>
-                              @if (!User.IsInRole("Superv"))
-                            {
+                    @if (!User.IsInRole("Cliente"))
+                    {
+                        <!--Produccion-->
+                        <li class="nav-item mt-3">
+                            <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Produccion</h6>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#ProduccionPage" class="nav-link @ViewBag.ProduccionGroupActive" aria-controls="ProduccionPage" role="button" aria-expanded="false">
+                                <div class="icon icon-shape icon-sm shadow border-radius-md  bg-blue text-center d-flex align-items-center justify-content-center  me-2">
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Produccion</span>
+                            </a>
+                            <div class="collapse @ViewBag.ProduccionColapseGroup" id="ProduccionPage">
                                 <ul class="nav ms-4 ps-3">
                                     <li class="nav-item ">
-                                        <a class="nav-link @ViewBag.HProduccionNavLink" asp-controller="Produccion" asp-action="Historial">
-                                            <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i> </span>
-                                            <span class="sidenav-normal"> Historial </span>
+                                        <a class="nav-link @ViewBag.ProduccionNavLink" asp-controller="Produccion" asp-action="Index">
+                                            <span class="sidenav-mini-icon"> <i class="fa-solid fa-cart-plus"></i> </span>
+                                            <span class="sidenav-normal"> Produccion </span>
                                         </a>
                                     </li>
 
                                 </ul>
-                            }
-                        </div>
-                    </li>
-                    <!--Stock -->
+                                @if (!User.IsInRole("Superv"))
+                                {
+                                    <ul class="nav ms-4 ps-3">
+                                        <li class="nav-item ">
+                                            <a class="nav-link @ViewBag.HProduccionNavLink" asp-controller="Produccion" asp-action="Historial">
+                                                <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i> </span>
+                                                <span class="sidenav-normal"> Historial </span>
+                                            </a>
+                                        </li>
 
-                    <!--Materia Prima -->
-                <li class="nav-item mt-3">
-                        <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Stock</h6>
-                    </li>
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#PageMateriaPrima" class="nav-link @ViewBag.MateriaPrimaGroupActive" aria-controls="PageMateriaPrima" role="button" aria-expanded="false">
-                            <div class="icon icon-shape icon-sm shadow border-radius-md  bg-blue text-center d-flex align-items-center justify-content-center  me-2">
-                                <i class="fa-solid fa-fish-fins"></i>
+                                    </ul>
+                                }
                             </div>
-                            <span class="nav-link-text ms-1">Materia Prima</span>
-                        </a>
-                        <div class="collapse @ViewBag.MateriaPrimaColapseGroup" id="PageMateriaPrima">
-                            <ul class="nav ms-4 ps-3">
-                                <li class="nav-item ">
-                                    <a class="nav-link @ViewBag.CalibreNavLink" asp-controller="MateriaPrima" asp-action="Index">
-                                        <span class="sidenav-mini-icon"> <i class="fa-solid fa-clock"></i> </span>
-                                        <span class="sidenav-normal"> Actual</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link @ViewBag.InMateriaPrimaNavLink" asp-controller="MateriaPrima" asp-action="ingreso">
-                                        <span class="sidenav-mini-icon"> <i class="fa-solid fa-angles-down"></i> </span>
-                                        <span class="sidenav-normal"> Ingreso</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link @ViewBag.HMateriaPrimaNavLink" asp-controller="MateriaPrima" asp-action="Historial">
-                                        <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i>  </span>
-                                        <span class="sidenav-normal"> Historial</span>
-                                    </a>
-                                </li>
+                        </li>
+                        <!--Stock -->
 
-                            </ul>
-                        </div>
-                    </li>
+                        <!--Materia Prima -->
+                        <li class="nav-item mt-3">
+                            <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Stock</h6>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#PageMateriaPrima" class="nav-link @ViewBag.MateriaPrimaGroupActive" aria-controls="PageMateriaPrima" role="button" aria-expanded="false">
+                                <div class="icon icon-shape icon-sm shadow border-radius-md  bg-blue text-center d-flex align-items-center justify-content-center  me-2">
+                                    <i class="fa-solid fa-fish-fins"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Materia Prima</span>
+                            </a>
+                            <div class="collapse @ViewBag.MateriaPrimaColapseGroup" id="PageMateriaPrima">
+                                <ul class="nav ms-4 ps-3">
+                                    <li class="nav-item ">
+                                        <a class="nav-link @ViewBag.CalibreNavLink" asp-controller="MateriaPrima" asp-action="Index">
+                                            <span class="sidenav-mini-icon"> <i class="fa-solid fa-clock"></i> </span>
+                                            <span class="sidenav-normal"> Actual</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link @ViewBag.InMateriaPrimaNavLink" asp-controller="MateriaPrima" asp-action="ingreso">
+                                            <span class="sidenav-mini-icon"> <i class="fa-solid fa-angles-down"></i> </span>
+                                            <span class="sidenav-normal"> Ingreso</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a class="nav-link @ViewBag.HMateriaPrimaNavLink" asp-controller="MateriaPrima" asp-action="Historial">
+                                            <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i>  </span>
+                                            <span class="sidenav-normal"> Historial</span>
+                                        </a>
+                                    </li>
 
+                                </ul>
+                            </div>
+                        </li>
+                    }
                     <!--Almacen -->
                   @if(!User.IsInRole("Cliente")){
                     <li class="nav-item">
@@ -168,13 +169,6 @@
                                         <span class="sidenav-normal"> Actual</span>
                                     </a>
                                 </li>
-                                <li class="nav-item ">
-                                    <a class="nav-link @ViewBag.HAlmacenNavLink" asp-controller="Produccion" asp-action="Historial">
-                                        <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i> </span>
-                                        <span class="sidenav-normal"> Historial</span>
-                                    </a>
-                                </li>
-
                             </ul>
                         </div>
                     </li>
