@@ -196,6 +196,16 @@
           'Costo Produccion'+
           '</th>'+
           '</tr>'+
+
+           '<tr>'+
+          '<th colspan="5">'+
+          ' '+
+          '</th>'+
+          '<th>'+
+          'menor | mayor'+
+          '</th>'+
+          '</tr>'+
+
           '</thead>'+
           '<tbody>'
 
@@ -219,7 +229,9 @@
                TraformarFechaDDMMYY( lista[i]['posibleEntrega'])+
               '</td>'+
               '<td>'+
-                fixedTwoDecimal(lista[i]['tCostoProduccionMayor'])+
+                fixedTwoDecimal(lista[i]['tCostoProduccionMenor']) +
+                "|"+
+                + fixedTwoDecimal(lista[i]['tCostoProduccionMayor'])+
               '</td>'+
               '</tr>'
           }

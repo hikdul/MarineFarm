@@ -62,10 +62,12 @@ namespace MarineFarm.Controllers
         /// vista para crear un cliente
         /// </summary>
         /// <returns></returns>
-        public IActionResult Crear()
+        public async Task<IActionResult> Crear()
         {
             if (User.IsInRole("Cliente") || User.IsInRole("Superv"))
                 return RedirectToAction("logout", "Cuentas");
+
+            ViewBag.Paises= await Paises.ObtenerPaises();
 
             return View();
         }
@@ -116,7 +118,7 @@ namespace MarineFarm.Controllers
             {
                 var ent = await context.Clientes.Where(x => x.id == id).FirstOrDefaultAsync();
                 dto = mapper.Map<ClienteDTO_out>(ent);
-
+                ViewBag.Paises = await Paises.ObtenerPaises(ent.Desc);
             }
             catch (Exception ee)
             {
