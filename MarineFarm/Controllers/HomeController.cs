@@ -1,6 +1,10 @@
-﻿using MarineFarm.Models;
+﻿using MarineFarm.Data;
+using MarineFarm.DTO;
+using MarineFarm.Entitys;
+using MarineFarm.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace MarineFarm.Controllers
@@ -13,16 +17,19 @@ namespace MarineFarm.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext context;
 
         /// <summary>
         /// contructor
         /// </summary>
         /// <param name="logger"></param>
-        public HomeController(ILogger<HomeController> logger)
+        /// <param name="context"></param>
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            this.context = context;
         }
-
+        #region pagina principal
         /// <summary>
         /// pagina inicial del sistema
         /// </summary>
@@ -31,6 +38,34 @@ namespace MarineFarm.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// para obtener los datos de las muestras diarias del ano actual.
+        /// estos datos son para imprimir las charts en pantalla
+        /// </summary>
+        /// <returns></returns>
+        public async Task<PieDTO_out?> DatosPie()
+        {
+            try
+            {
+                var ent = await context.MuestrasDiarias
+                    .Include(y=>y.Marisco)
+                    .Include(y=>y.TipoProduccion)
+                    .Include(y=>y.Calibre)
+                    .Include(y=>y.Empaquetado)
+                    .Where(y => y.ano == DateTime.Now.Year && y.mes == DateTime.Now.Month)
+                    .ToListAsync();
+
+                return new(ent);
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return null;
+            }
+        }
+
+        #endregion pagina secundaria
         /// <summary>
         /// politica de privacidad
         /// </summary>
