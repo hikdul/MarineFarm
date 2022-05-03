@@ -39,12 +39,12 @@
 
                     <div class="form-group col-md-6 col-xs-12">
                         <label for="clienteid" class="control-label"> Seleccione Cliente</label>
-                        <select name="clienteid" id="clienteid" asp-items=@ViewBag.Clientes class="form-control"></select>
+                        <select name="clienteid" id="clienteid" asp-items=@ViewBag.Clientes class="form-control select2"></select>
                     </div>
                      
                     <div class="form-group col-md-6 col-xs-12">
                         <label for="mariscoid" class="control-label"> Seleccione Marisco</label>
-                        <select name="mariscoid" id="mariscoid" asp-items=@ViewBag.Mariscos class="form-control"></select>
+                        <select name="mariscoid" id="mariscoid" asp-items=@ViewBag.Mariscos class="form-control select2"></select>
                     </div>
                 </div>
             </div>
@@ -52,15 +52,15 @@
                 <div class="row"  id="cont">
                     <div class="form-group col-md-3 col-xs-12">
                         <label for="TipoProduccionid" class="control-label"> Tipo Produccion</label>
-                        <select name="TipoProduccionid" asp-items=@ViewBag.Tps class="form-control"></select>
+                        <select name="TipoProduccionid" asp-items=@ViewBag.Tps class="form-control select2"></select>
                     </div>
                     <div class="form-group col-md-3 col-xs-12">
                         <label for="Calibreid" class="control-label"> Calibre</label>
-                        <select name="Calibreid" asp-items=@ViewBag.Calibres class="form-control"></select>
+                        <select name="Calibreid" asp-items=@ViewBag.Calibres class="form-control select2"></select>
                     </div>
                     <div class="form-group col-md-3 col-xs-12">
                         <label for="Empaquetadoid" class="control-label"> Empaquetado</label>
-                        <select name="Empaquetadoid" asp-items=@ViewBag.Empaquetados class="form-control"></select>
+                        <select name="Empaquetadoid" asp-items=@ViewBag.Empaquetados class="form-control select2"></select>
                     </div>
                     <div class="form-group col-md-3 col-xs-12">
                         <label for="solicitado" class="control-label"> Cantidad Solicitada</label>
@@ -92,15 +92,15 @@
         <div class="row"  >
                 <div class="form-group col-md-3 col-xs-12">
                         <label for="TipoProduccionid" class="control-label"> Tipo Produccion</label>
-                        <select name="TipoProduccionid"  asp-items=@ViewBag.Tps class="TipoProduccionid form-control"></select>
+                        <select name="TipoProduccionid"  asp-items=@ViewBag.Tps class="TipoProduccionid form-control select2"></select>
                     </div>
                     <div class="form-group col-md-3 col-xs-12">
                         <label for="Calibreid" class="control-label"> Calibre</label>
-                        <select name="Calibreid" asp-items=@ViewBag.Calibres class="Calibreid form-control"></select>
+                        <select name="Calibreid" asp-items=@ViewBag.Calibres class="Calibreid form-control select2"></select>
                     </div>
                     <div class="form-group col-md-3 col-xs-12">
                         <label for="Empaquetadoid" class="control-label"> Empaquetado</label>
-                        <select name="Empaquetadoid" asp-items=@ViewBag.Empaquetados class="form-control Empaquetadoid"></select>
+                        <select name="Empaquetadoid" asp-items=@ViewBag.Empaquetados class="form-control Empaquetadoid select2"></select>
                     </div>
                     <div class="form-group col-md-3 col-xs-12">
                         <label for="solicitado" class="control-label"> Cantidad Solicitada</label>

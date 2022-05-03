@@ -54,9 +54,10 @@ namespace MarineFarm.Controllers
         public async Task<IActionResult> Generado(AllReportDTO_in ins)
         {
             ReporteTotalProduccion reporte = new();
-            
+            ViewBag.GenerarReporte = ins;
             try
             {
+
                 await reporte.Generate(ins, context);
             }
             catch (Exception ee)

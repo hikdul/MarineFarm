@@ -60,3 +60,10 @@ const fixedTwoDecimal = dotNumber => {
 
     return (Math.round(dotNumber * 100) / 100).toFixed(2)
 }
+
+//  para es uso de los select
+// para este uso se debe de agregar la claso select2 al select y ya estara disponible
+
+$(document).ready(function () {
+    $('.select2').select2();
+});
