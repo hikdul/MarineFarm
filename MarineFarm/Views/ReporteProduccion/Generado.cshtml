@@ -4,6 +4,14 @@
 
 @{
     ReporteTotalProduccion reporte = ViewBag.Reporte;    
+  
+     ViewData["Title"] = ViewBag.heading = "Reporte De Produccion";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.ReporteProduccionAriaExpanded = "true";
+    ViewBag.ReporteProduccionGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.ReporteProduccionColapseGroup = "show";
+    ViewBag.ReporteProduccionNavLink = "active";
 }
 
 @if(reporte==null)
@@ -19,7 +27,7 @@ else
             <!-- Card header -->
             <div class="card-header">
                 <p class="text-sm mb-0">
-                    <a asp-action="Crear" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
+                    <a asp-action="Crear" class="btn btn-success btn-round" ><i class="fa-regular fa-file-excel"></i></a>
                 </p>
                 <h4 class="mb-0 card-title">Reporte De Produccion</h4>
                 <h5 class="mb-1 card-text text-muted">Periodo del @reporte.Inicio.ToString("dd/MM/yyyy") al @reporte.Fin.ToString("dd/MM/yyyy")</h5>

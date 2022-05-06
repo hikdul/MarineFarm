@@ -75,5 +75,18 @@ namespace MarineFarm.Controllers
         }
         #endregion
 
+        #region excel
+        /// <summary>
+        /// para exportar el reporte en un excel
+        /// </summary>
+        /// <param name="ins"></param>
+        /// <returns></returns>
+        public async Task<FileResult> Excel(AllReportDTO_in ins)
+        {
+            return null;
+        }
+
+        #endregion
+
     }
 }
