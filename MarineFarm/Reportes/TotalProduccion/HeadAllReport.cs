@@ -54,7 +54,7 @@ namespace MarineFarm.Reportes.TotalProduccion
 
             if (marisco == null || produccion == null || produccion.Count < 1)
             {
-                this.Mensaje = $"no hay elementos de produccion para este {marisco.Marisco.Name}";
+                this.Mensaje = $"no hay elementos producidos";
                 return;
             }
             else

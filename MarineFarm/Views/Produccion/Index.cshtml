@@ -136,9 +136,6 @@
        let ein = document.getElementsByName('Empaquetadoid')
        let sin = document.getElementsByName('solicitado')
 
-       console.log(gastado)
-
-       
        let usado=[]
        let pedido=[]
 
@@ -174,14 +171,17 @@
      // esta funcion es la que guarda los datos
    const Guardar = () => {
         let data = ObtenerValores()
-             $.ajax({
+        console.log(data)
+        
+        $.ajax({
                 data: data,
                 url:   'Produccion/SeeData', //archivo que recibe la peticion
                 type:  'post', //método de envio
                 success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                    
                     if(response){
                         AlertSuccess("Elemento Almacenado Correctamente")
-                        setTimeout( function() { window.location.href = "/Produccion"; }, 1500 );
+                       // setTimeout( function() { window.location.href = "/Produccion"; }, 1500 );
                     }else{
                         AlertError("Upps, Error Inesperado","algo no esta bien intente de nuevo mas tarde")
                     }

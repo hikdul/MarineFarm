@@ -1,0 +1,93 @@
+﻿
+@using MarineFarm.Reportes.TotalProduccion
+
+
+@{
+    ReporteTotalProduccion reporte = ViewBag.Reporte;    
+}
+
+@if(reporte==null)
+{
+    
+    <p>upps, algo salio mal al generar el reporte. Intente de nuevo mas tarde.</p>
+}
+else
+{
+    <div class="row mt-4">
+    <div class="col-12">
+        <div class="card p-3">
+            <!-- Card header -->
+            <div class="card-header">
+                <p class="text-sm mb-0">
+                    <a asp-action="Crear" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
+                </p>
+                <h4 class="mb-0 card-title">Reporte De Produccion</h4>
+                <h5 class="mb-1 card-text text-muted">Periodo del @reporte.Inicio.ToString("dd/MM/yyyy") al @reporte.Fin.ToString("dd/MM/yyyy")</h5>
+            </div>
+            <div class="card-body">
+                <h5 class="card-subtitle">
+                    Estudio del periodo
+                </h5>
+                @foreach (var estudio in reporte.Estudio)
+                @if(estudio.Mensaje==string.Empty){
+                   <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="card-subtitle">@estudio.Marisco.Name</h6>    
+                        </div>
+                        <div class="col-md-6">
+                            <p class="card-text text-muted">@estudio.Mensaje</p>    
+                        </div>
+                        <div class="col-md-6">
+                            <p class="card-text">Cantidad Gastada: @estudio.CantidadUtilizada Kg</p>    
+                        </div>
+                        <div class="col-md-6">
+                            <p class="card-text">Merma: @estudio.Merma Kg</p>    
+                        </div>
+                   </div>
+                   <div class="table table-responsive">
+                       <table>
+                           <thead>
+                               <tr>
+                                   <th>
+                                       Tipo Produccion
+                                   </th>
+                                   <th>
+                                       Calibre
+                                   </th>
+                                   <th>
+                                       Total Producido
+                                   </th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                           @foreach (var loop in estudio.loop)
+                           {
+                            <tr>
+                                <td>
+                                    @loop.TipoProd.Name
+                                </td>
+                                <td>
+                                    @loop.Calibre.Name
+                                </td>
+                                <td>
+                                    @loop.TotalProducido
+                                </td>
+                            </tr>                           
+                           }
+                           </tbody>
+                       </table>
+                   </div>
+                }
+            </div>
+            <div class="card-footer">
+                <p class="card-subtitle text-muted">
+                    Reporte Generado: @reporte.fechaGenerado.ToString("dd/MM/yyyy")
+                </p>
+            </div>
+            </div>
+        </div>
+     </div>
+
+}
+
+

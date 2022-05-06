@@ -23,12 +23,14 @@ namespace MarineFarm.Helpers
         public static async Task<List<SelectListItem>> ToSelectITipo<T>(ApplicationDbContext context, int select = 0) where T : class, ITipo
         {
             List<SelectListItem> ret = new();
-            ret.Add(new()
-            {
-                Selected = select <= 0,
-                Text = "=== SELECCIONE UN ELEMENTO ===",
-                Value = ""
-            });
+            
+            if(select==0)
+                ret.Add(new()
+                {
+                    Selected = select <= 0,
+                    Text = "=== SELECCIONE UN ELEMENTO ===",
+                    Value = ""
+                });
 
             try
             {

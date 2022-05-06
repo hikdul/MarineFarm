@@ -9,7 +9,7 @@ namespace MarineFarm.Controllers
     /// <summary>
     /// para generar los reportes de produccion
     /// </summary>
-    public class ReporteProduccion : Controller
+    public class ReporteProduccionController : Controller
     {
         #region ctor
 
@@ -18,7 +18,7 @@ namespace MarineFarm.Controllers
         /// ctor
         /// </summary>
         /// <param name="context"></param>
-        public ReporteProduccion(ApplicationDbContext context)
+        public ReporteProduccionController(ApplicationDbContext context)
         {
             this.context = context;
         }
@@ -35,7 +35,7 @@ namespace MarineFarm.Controllers
         {
             try
             {
-                ViewBag.Mariscos = await ToSelect.ToSelectITipo<Marisco>(context);
+                ViewBag.Mariscos = await ToSelect.ToSelectITipo<Marisco>(context,-5);
             }
             catch (Exception ee)
             {
@@ -57,15 +57,21 @@ namespace MarineFarm.Controllers
             ViewBag.GenerarReporte = ins;
             try
             {
+                if(!ins.validate())
+                {
+                    ViewBag.Err = "Datos Ingresados no validos";
+                    return View("Index", ins);
+                }
 
                 await reporte.Generate(ins, context);
             }
             catch (Exception ee)
             {
                 Console.WriteLine(ee.Message);
+                return View("Index", ins);
             }
-
-            return View(reporte);
+            ViewBag.Reporte = reporte;
+            return View();
         }
         #endregion
 

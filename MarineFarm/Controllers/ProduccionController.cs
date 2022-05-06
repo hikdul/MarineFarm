@@ -63,9 +63,9 @@ namespace MarineFarm.Controllers
         /// <summary>
         /// para obtener los datos desde la vista
         /// </summary>
-        /// <param name="ins"></param>
+        /// <param name="insert"></param>
         /// <returns></returns>
-        [HttpPost]
+        
         public async Task<IActionResult> SeeData(ProduccionDTOView_in insert)
         {
 

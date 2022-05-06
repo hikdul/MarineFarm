@@ -20,10 +20,23 @@ namespace MarineFarm.Reportes.TotalProduccion
         /// <summary>
         /// marisca que se desea buscar. si es menor que 1 se envian todos los datos validos
         /// </summary>
-        [ModelBinder(BinderType = typeof(TypeBinder<List<int>>))]
+      //  [ModelBinder(BinderType = typeof(TypeBinder<List<int>>))]
         public List<int> Mariscoid { get; set; }
 
 
+        #endregion
+
+
+        #region ctor
+
+        /// <summary>
+        /// empty ctor
+        /// </summary>
+        public AllReportDTO_in()
+        {
+            Inicio = Fin = DateTime.Now;
+            this.Mariscoid = new();
+        }
         #endregion
 
         #region validate
@@ -33,7 +46,7 @@ namespace MarineFarm.Reportes.TotalProduccion
 
         public bool validate()
         {
-            return Inicio <= Fin && Mariscoid.Count > 0;
+            return Inicio <= Fin && Mariscoid!=null && Mariscoid.Count > 0;
         }
         
         #endregion
