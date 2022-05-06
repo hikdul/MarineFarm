@@ -3,6 +3,8 @@ using MarineFarm.Entitys;
 using MarineFarm.Helpers;
 using MarineFarm.Reportes.TotalProduccion;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace MarineFarm.Controllers
 {
@@ -55,6 +57,17 @@ namespace MarineFarm.Controllers
         {
             ReporteTotalProduccion reporte = new();
             ViewBag.GenerarReporte = ins;
+            ViewBag.fi = ins.Inicio;
+            ViewBag.ff = ins.Fin;
+            List<SelectListItem> listAux = new();
+
+            foreach (var id in ins.Mariscoid)
+            {
+                listAux.Add(new(id.ToString(), id.ToString(), true));
+            }
+
+            ViewBag.ids = listAux;
+            
             try
             {
                 if(!ins.validate())
@@ -81,11 +94,27 @@ namespace MarineFarm.Controllers
         /// </summary>
         /// <param name="ins"></param>
         /// <returns></returns>
-        public async Task<FileResult> Excel(AllReportDTO_in ins)
+        public async System.Threading.Tasks.Task<FileResult> Excel(AllReportDTO_in ins)
         {
-            return null;
-        }
+            try
+            {
+                if (ins == null )
+                    return File(new byte[0], "application/vnd.ms-excel", "AlMenosSeleccioneUnEmpleado.xlsx");
 
+                ReporteTotalProduccion reporte = new();
+                await reporte.Generate(ins, context);
+                var buffer = await reporte.Excel();
+                return File(buffer, "application/vnd.ms-excel", "Reporte Produccion" + "-" + ins.Inicio.ToString("dd/MM/yyyy") + "-al-" + ins.Fin.ToString("dd/MM/yyyy") + ".xlsx");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception Catch!!");
+                Console.WriteLine("Exception msn: {0}", ex.Message);
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+
+            }
+        }
         #endregion
 
     }

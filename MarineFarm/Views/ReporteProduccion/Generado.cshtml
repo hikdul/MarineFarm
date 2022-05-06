@@ -4,8 +4,8 @@
 
 @{
     ReporteTotalProduccion reporte = ViewBag.Reporte;    
-  
-     ViewData["Title"] = ViewBag.heading = "Reporte De Produccion";
+
+    ViewData["Title"] = ViewBag.heading = "Reporte De Produccion";
     // => este es sobre el boton para expandir y el grupo de botones
     ViewBag.ReporteProduccionAriaExpanded = "true";
     ViewBag.ReporteProduccionGroupActive = "active";
@@ -27,7 +27,15 @@ else
             <!-- Card header -->
             <div class="card-header">
                 <p class="text-sm mb-0">
-                    <a asp-action="Crear" class="btn btn-success btn-round" ><i class="fa-regular fa-file-excel"></i></a>
+                    <form asp-controller="ReporteProduccion" method="post" asp-action="Excel" >
+    
+                          <select hidden id="Mariscoid" multiple name="Mariscoid" asp-items=@ViewBag.ids>
+                          </select>
+                         <input hidden class="form-control" type="date" aria-describedby="addon-wrapping1" value=@ViewBag.fi name="Inicio" id="Inicio" />
+                         <input hidden class="form-control" type="date" aria-describedby="addon-wrapping2" value=@ViewBag.ff name="Fin" id="Fin" />
+    
+                         <button type="submit" class="btn btn-success"><i class="fa-solid fa-file-excel"></i></button>
+                    </form>
                 </p>
                 <h4 class="mb-0 card-title">Reporte De Produccion</h4>
                 <h5 class="mb-1 card-text text-muted">Periodo del @reporte.Inicio.ToString("dd/MM/yyyy") al @reporte.Fin.ToString("dd/MM/yyyy")</h5>

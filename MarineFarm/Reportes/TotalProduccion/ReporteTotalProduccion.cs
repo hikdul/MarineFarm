@@ -1,6 +1,7 @@
 ﻿using MarineFarm.Data;
 using MarineFarm.Entitys;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 namespace MarineFarm.Reportes.TotalProduccion
 {
@@ -164,7 +165,47 @@ namespace MarineFarm.Reportes.TotalProduccion
             
         }
         #endregion
-        
+
+
+        #region excel
+        /// <summary>
+        /// para generar un excel con los datos ya cargados de la clase
+        /// </summary>
+        /// <returns></returns>
+        public async Task<byte[]> Excel()
+        {
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    using (ExcelPackage ep = new ExcelPackage())
+                    {
+                        ep.Workbook.Worksheets.Add("Reporte Por Asistencia");
+                        ExcelWorksheet ew = ep.Workbook.Worksheets[0];
+
+                        ew.Cells.Style.Font.Size = 10;
+                        ew.Cells.Style.Font.Name = "Arial";
+
+
+                        ew.Cells[3, 3].Value = "hola mundo";
+
+                        ep.SaveAs(ms);
+                        return ms.ToArray();
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                Console.Write(ee.Message);
+            }
+
+            return new byte[0];
+        }
+
+
+        #endregion
+
 
     }
 
