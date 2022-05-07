@@ -181,14 +181,49 @@ namespace MarineFarm.Reportes.TotalProduccion
                     ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                     using (ExcelPackage ep = new ExcelPackage())
                     {
-                        ep.Workbook.Worksheets.Add("Reporte Por Asistencia");
+                        ep.Workbook.Worksheets.Add("Reporte Poduccion Entre Periodos");
                         ExcelWorksheet ew = ep.Workbook.Worksheets[0];
 
                         ew.Cells.Style.Font.Size = 10;
                         ew.Cells.Style.Font.Name = "Arial";
 
+                        ew.Cells[1, 1].Value = "Reporte Generado ";
+                        ew.Cells[1, 2].Value = this.fechaGenerado.ToString("dd/MM/yyyy HH:mm:ss");
 
-                        ew.Cells[3, 3].Value = "hola mundo";
+                        ew.Cells[2, 1].Value = "Periodo de estudio";
+                        ew.Cells[3, 1].Value = "Inicio Periodo";
+                        ew.Cells[3, 2].Value = this.Inicio.ToString("dd/MM/yyyy");
+                        ew.Cells[3, 3].Value = "Fin Periodo";
+                        ew.Cells[3, 4].Value = this.Fin.ToString("dd/MM/yyyy");
+
+                        ew.Cells[5, 2].Value = "Periodo de estudio";
+
+
+                        int columna = 7;
+
+                        foreach (var head in this.Estudio)
+                        {
+                            ew.Cells[columna, 1].Value = head.Marisco.Name;
+                            columna++;
+                            ew.Cells[columna, 1].Value = "Cantidad Utilizado";
+                            ew.Cells[columna, 2].Value = head.CantidadUtilizada;
+                            ew.Cells[columna, 3].Value = "Merma Generada";
+                            ew.Cells[columna, 4].Value = head.Merma;
+                            columna+=2;
+                            ew.Cells[columna, 1].Value = "Tipo Produccion";
+                            ew.Cells[columna, 2].Value = "Calibre";
+                            ew.Cells[columna, 3].Value = "Total Producido";
+                            columna++;
+                            foreach (var item in head.loop)
+                            {
+                                ew.Cells[columna, 1].Value = item.TipoProd.Name;
+                                ew.Cells[columna, 2].Value = item.Calibre.Name;
+                                ew.Cells[columna, 3].Value = item.TotalProducido.ToString();
+
+                                columna++;
+                            }
+                            columna+=3;
+                        }
 
                         ep.SaveAs(ms);
                         return ms.ToArray();

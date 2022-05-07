@@ -31,8 +31,8 @@ else
     
                           <select hidden id="Mariscoid" multiple name="Mariscoid" asp-items=@ViewBag.ids>
                           </select>
-                         <input hidden class="form-control" type="date" aria-describedby="addon-wrapping1" value=@ViewBag.fi name="Inicio" id="Inicio" />
-                         <input hidden class="form-control" type="date" aria-describedby="addon-wrapping2" value=@ViewBag.ff name="Fin" id="Fin" />
+                         <input hidden class="form-control" type="date" aria-describedby="addon-wrapping1" value=@ViewBag.fi.ToString("yyyy-MM-dd") name="Inicio" id="Inicio" />
+                         <input hidden class="form-control" type="date" aria-describedby="addon-wrapping2" value=@ViewBag.ff.ToString("yyyy-MM-dd") name="Fin" id="Fin" />
     
                          <button type="submit" class="btn btn-success"><i class="fa-solid fa-file-excel"></i></button>
                     </form>
