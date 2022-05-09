@@ -38,7 +38,7 @@ namespace MarineFarm.Controllers
         #region Listado inicial   
         /// <summary>
         /// Vista Inicia para ver el listado de Bonos activos
-        /// </summary>
+        /// </summar
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {
@@ -106,8 +106,10 @@ namespace MarineFarm.Controllers
             {
                 var ent=await context.Bonos
                 .FirstOrDefaultAsync(y=>y.id==id);   
-                
-                return View(mapper.Map<BonoDTO_out>(ent));
+                var dto= mapper.Map<BonoDTO_Edit>(ent);
+                dto.id = id;
+                return View(dto);
+
             }
             catch (Exception ee)
             {
@@ -147,7 +149,7 @@ namespace MarineFarm.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Eliminar(int id)
         {
                 try
                 {

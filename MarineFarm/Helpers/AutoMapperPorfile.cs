@@ -555,6 +555,8 @@ namespace MarineFarm.Helpers
                 CreateMap<BonoDTO_Edit,Bono>()
                 .ForMember(y=>y.act,o=>o.MapFrom(y=>true));
 
+                CreateMap<Bono,BonoDTO_Edit>();
+
             }
         #endregion
     }

@@ -1,0 +1,70 @@
+﻿
+@using MarineFarm.DTO;
+@model IEnumerable<BonoDTO_out>
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Listado De Bonos";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.MariscosAriaExpanded = "true";
+    ViewBag.MariscosGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.MariscosColapseGroup = "show";
+    ViewBag.BonoNavLink = "active";
+
+}
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card p-3">
+            <!-- Card header -->
+            <div class="card-header">
+                <p class="text-sm mb-0">
+                    <a asp-action="Crear" class="btn btn-primary btn-round" ><i class="fa fa-plus"></i></a>
+                </p>
+                <h5 class="mb-0">Listado de bonos</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="MarineTable">
+                    <thead class="thead-dark">
+                        <tr class="text-center">
+                            <th>Nombre</th>
+                            <th>Desc</th>
+                            <th>Kilogramos</th>
+                            <th>Pago </th>
+                            <th><i class="text-dark fa fa-gears"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count() > 0)
+                            @foreach (var item in Model)
+                            {                          
+                                <tr class="text-center">
+                                    <td class=" text-sm font-weight-bold">@item.Name</td>
+                                    <td class="text-sm font-weight-normal">@item.Desc</td>
+                                    <td class="text-sm font-weight-normal">@item.Kilogramos</td>
+                                    <td class="text-sm font-weight-normal">@item.Pago</td>
+                                    <td class="text-sm font-weight-light">
+                                        <a asp-action="Editar" asp-route-id="@item.id" asp-controller="Bono" class="btn btn-primary btn-round"><i class="fa fa-edit "></i></a>
+                                        <a asp-action="Eliminar" asp-controller="Bono" asp-route-id="@item.id" class="btn btn-danger btn-round"><i class="fa fa-trash "></i></a>
+                                    </td>
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
+        searchable: true,
+        fixedHeight: true
+    });
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
