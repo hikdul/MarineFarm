@@ -52,16 +52,13 @@ namespace MarineFarm.DTO
         /// <param name="TotalAProducir"></param>
         /// <param name="diasLaborales"></param>
         /// <param name="month"></param>
+        /// <param name="KpProduccion"></param>
         /// <returns></returns>
-        public async Task Up(ApplicationDbContext context, double TotalAProducir, int month)
+        public async Task Up(ApplicationDbContext context, double TotalAProducir, int month, double KpProduccion =0)
         {
             var config = await context.Config.FirstOrDefaultAsync();
-            var costos = await CostoEnTurno.CalcularCostosMm(context, config.DiasHabiles, month);
+            var costos = await CostoEnTurno.CalcularCostosMm(context, config.DiasHabiles, month, KpProduccion);
 
-            if (config == null || config.PagoBono < 1 || config.KgBono < 1 || TotalAProducir < config.KgBono)
-                this.bono = 0;
-            else
-                this.bono = config.PagoBono * (int)(TotalAProducir / config.KgBono);
 
             foreach (var calculo in costos)
             {

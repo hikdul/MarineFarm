@@ -30,5 +30,13 @@
         /// Costo por operario
         /// </summary>
         public double CostoOperario { get; set; }
+        /// <summary>
+        /// nav prop
+        /// </summary>
+        public Bono? Bono { get; set; }
+        /// <summary>
+        /// Bono de pago
+        /// </summary>
+        public int? Bonoid { get; set; }
     }
 }

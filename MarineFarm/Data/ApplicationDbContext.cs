@@ -114,6 +114,10 @@ namespace MarineFarm.Data
         /// tabla de equipos
         /// </summary>
         public DbSet<Equipo> Equipos { get; set; }
+        /// <summary>
+        /// Bonos
+        /// </summary>
+        public DbSet<Bono> Bonos { get; set; }
 
         // ## == Manejo de Pedidos
         // ## =====================================

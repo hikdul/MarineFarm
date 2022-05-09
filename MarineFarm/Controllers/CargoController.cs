@@ -14,8 +14,11 @@ namespace MarineFarm.Controllers
     [Authorize]
     public class CargoController : Controller
     {
-        #region ctor
         private readonly ApplicationDbContext context;
+        #region ctor
+        /// <summary>
+        /// para el mapeo de datos
+        /// </summary>
         private readonly IMapper mapper;
         /// <summary>
         /// ctor
@@ -27,6 +30,7 @@ namespace MarineFarm.Controllers
             this.context = context;
             this.mapper = mapper;
         }
+
         #endregion
 
         #region vista inicial

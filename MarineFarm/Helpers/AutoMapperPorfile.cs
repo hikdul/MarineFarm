@@ -33,6 +33,7 @@ namespace MarineFarm.Helpers
             UsMap();
             UsClienteMap();
             ConfigurationMap();
+            BonoMap();
         }
 
         #region mapeo Generica elementos de interface ITipo
@@ -539,6 +540,22 @@ namespace MarineFarm.Helpers
         {
             CreateMap<Configuraciones, ConfigurcionDTO>().ReverseMap();
         }
+        #endregion
+
+        
+        #region  mapeo para los bonos
+
+            private void BonoMap()
+            {
+                CreateMap<Bono,BonoDTO_out>();
+                
+                CreateMap<BonoDTO_in,Bono>()
+                .ForMember(y=>y.act,o=>o.MapFrom(y=>true));
+
+                CreateMap<BonoDTO_Edit,Bono>()
+                .ForMember(y=>y.act,o=>o.MapFrom(y=>true));
+
+            }
         #endregion
     }
 }

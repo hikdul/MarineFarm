@@ -29,19 +29,6 @@ namespace MarineFarm.Entitys
         /// </summary>
         public double ProduccionDefaultPorDia { get; set; }
 
-        // ================= ##
-        // Bono de produccion
-        // ================= ##
-
-        /// <summary>
-        /// cantidad de kg para el bono
-        /// </summary>
-        public double KgBono { get; set; }
-        /// <summary>
-        /// cantidad a pagar por los kilogramos producidos
-        /// </summary>
-        public double PagoBono { get; set; }
-
-
+        
     }
 }

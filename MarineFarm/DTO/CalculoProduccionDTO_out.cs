@@ -105,8 +105,7 @@ namespace MarineFarm.DTO
                     {
                         DiasHabiles = 5,
                         ProduccionDefaultPorDia = 10000,
-                        KgBono = 100000,
-                        PagoBono = 100
+                       
                     };
 
                 double valorDefaultDia = config.ProduccionDefaultPorDia; 
@@ -116,7 +115,7 @@ namespace MarineFarm.DTO
                 {
                     CalcularCostoDTO_out costos = new();
 
-                    await costos.Up(context,item.Cantidad, DateTime.Now.Month);
+                    await costos.Up(context,item.Cantidad, DateTime.Now.Month,item.Cantidad);
                     
 
                     var muestra = await context.MuestrasDiarias

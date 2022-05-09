@@ -45,10 +45,9 @@ namespace MarineFarm.Controllers
                 {
                     ent = new()
                     {
-                        PagoBono = 1,
                         ProduccionDefaultPorDia = 5000,
                         DiasHabiles = 5,
-                        KgBono = 100000
+                        
                     };
                     context.Add(ent);
                     await context.SaveChangesAsync();
@@ -77,9 +76,6 @@ namespace MarineFarm.Controllers
         {
             try
             {
-
-
-
                 var ent = await context.Config.Where(y => y.id == ins.id).FirstOrDefaultAsync();
                 ent = mapper.Map(ins, ent);
 

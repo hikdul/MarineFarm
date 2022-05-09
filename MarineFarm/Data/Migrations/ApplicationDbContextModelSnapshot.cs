@@ -17,7 +17,7 @@ namespace MarineFarm.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -100,6 +100,36 @@ namespace MarineFarm.Data.Migrations
                     b.HasIndex("Productoid");
 
                     b.ToTable("Almacen");
+                });
+
+            modelBuilder.Entity("MarineFarm.Entitys.Bono", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<string>("Desc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Kilogramos")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Pago")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("act")
+                        .HasColumnType("bit");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Bonos");
                 });
 
             modelBuilder.Entity("MarineFarm.Entitys.Calibre", b =>
@@ -199,12 +229,6 @@ namespace MarineFarm.Data.Migrations
                     b.Property<int>("DiasHabiles")
                         .HasColumnType("int");
 
-                    b.Property<double>("KgBono")
-                        .HasColumnType("float");
-
-                    b.Property<double>("PagoBono")
-                        .HasColumnType("float");
-
                     b.Property<double>("ProduccionDefaultPorDia")
                         .HasColumnType("float");
 
@@ -246,6 +270,9 @@ namespace MarineFarm.Data.Migrations
                     b.Property<int>("Cargoid")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Bonoid")
+                        .HasColumnType("int");
+
                     b.Property<int>("CantCubierta")
                         .HasColumnType("int");
 
@@ -253,6 +280,8 @@ namespace MarineFarm.Data.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Turnoid", "Cargoid");
+
+                    b.HasIndex("Bonoid");
 
                     b.HasIndex("Cargoid");
 
@@ -845,6 +874,10 @@ namespace MarineFarm.Data.Migrations
 
             modelBuilder.Entity("MarineFarm.Entitys.Equipo", b =>
                 {
+                    b.HasOne("MarineFarm.Entitys.Bono", "Bono")
+                        .WithMany()
+                        .HasForeignKey("Bonoid");
+
                     b.HasOne("MarineFarm.Entitys.Cargos", "Cargo")
                         .WithMany()
                         .HasForeignKey("Cargoid")
@@ -856,6 +889,8 @@ namespace MarineFarm.Data.Migrations
                         .HasForeignKey("Turnoid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Bono");
 
                     b.Navigation("Cargo");
 

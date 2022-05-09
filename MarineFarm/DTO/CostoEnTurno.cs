@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MarineFarm.DTO
 {
+    /// <summary>
+    /// para enviar los valores de los costos de produccion en un turno
+    /// </summary>
     public class CostoEnTurno
     {
         #region props
@@ -44,8 +47,9 @@ namespace MarineFarm.DTO
         /// <param name="context"></param>
         /// <param name="laborables"></param>
         /// <param name="month"></param>
+        /// <param name="kgProducir"> cantidad de kilogramos que se van a producir de X producto</param>
         /// <returns></returns>
-        public static async Task<List<CostoEnTurno>> CalcularCostosMm(ApplicationDbContext context,int laborables,int month)
+        public static async Task<List<CostoEnTurno>> CalcularCostosMm(ApplicationDbContext context,int laborables,int month,double kgProducir=0)
         {
             List<CostoEnTurno> ret = new();
             CostoEnTurno mayor = new(0,false);
@@ -60,12 +64,17 @@ namespace MarineFarm.DTO
 
             foreach (var item in turnos)
             {
-                var ent = await context.Equipos.Where(x => x.Turnoid == item.id).ToListAsync();
+                var ent = await context.Equipos
+                    .Include(y=>y.Bono)
+                    .Where(x => x.Turnoid == item.id)
+                    .ToListAsync();
                 double costo = 0;
 
                 if (ent != null && ent.Count != 0)
                     foreach (var emp in ent)
                     {
+                        if (emp.Bono != null && emp.Bono.id > 0)
+                            costo += emp.Bono.Calcular(kgProducir) * emp.CantCubierta;
                         costo += emp.CostoOperario * emp.CantCubierta;
                         costo = costo / DiasHabiles;
                     }
