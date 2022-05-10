@@ -1,30 +1,34 @@
-﻿namespace MarineFarm.DTO
+using MarineFarm.Auth;
+using MarineFarm.Entitys;
+
+namespace MarineFarm.DTO
 {
     /// <summary>
-    /// datos del producto sin mucho detalle
+    /// para mostar los datos de un pedido en su historico
     /// </summary>
-    public class PedidoDTOS_out
+    public class HistoricoPedidoDTO
     {
+
         /// <summary>
-        /// id
+        ///  id del pedido
         /// </summary>
         public int id { get; set; }
         /// <summary>
-        /// si el elemento se encuentra activo o no
-        /// </summary>
-        public bool act { get; set; }
-        /// <summary>
-        /// Cliente al que pertenece el pedido
-        /// </summary>
-        public int Clienteid { get; set; }
-        /// <summary>
-        /// Nombre Cliente
+        ///  Nombre del clente que tiene este pedido
         /// </summary>
         public string Cliente { get; set; }
         /// <summary>
-        /// Nombre Solicitante
+        /// rut del cliente
         /// </summary>
-        public string Solicitante { get; set; }
+        public string Rut { get; set; }
+        /// <summary>
+        /// nombre de quien lo solicito
+        /// </summary>
+        public string SolicitanteNombre { get; set; }
+        /// <summary>
+        /// Rut de quien lo solicito
+        /// </summary>
+        public string SolicitanteRut { get; set; }
         /// <summary>
         /// fecha en que se genero la solicitud
         /// </summary>
@@ -38,15 +42,16 @@
         /// </summary>
         public DateTime FechaEntregaPosible { get; set; }
         /// <summary>
-        /// estado del pedido
-        /// 0 => solicitado
-        /// 1 => completado
-        /// 2 => cancelado
+        /// si el elemento se encuentra activo o no
         /// </summary>
-        public int estado { get; set; }
+        public bool act { get; set; }
         /// <summary>
-        /// descripcion del estado
+        /// para verificar el estado del pedido
+        /// 0 => Solicitado 
+        /// 1 => Completado
+        /// 2 => Cancelado
         /// </summary>
-        public string EstadoDesc { get; set; }=string.Empty;
+        public int estado { get; set; } = 0;
+
     }
 }

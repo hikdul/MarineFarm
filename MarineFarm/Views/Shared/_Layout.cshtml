@@ -68,6 +68,7 @@
                                     </a>
                                 </li> 
                             </ul>
+                            
                             @if (!User.IsInRole("Superv"))
                             {
                                 <ul class="nav ms-4 ps-3">
@@ -75,6 +76,15 @@
                                         <a class="nav-link @ViewBag.GPedidoNavLink" asp-controller="Pedido" asp-action="Generar">
                                             <span class="sidenav-mini-icon"> <i class="fa-solid fa-plus"></i>  </span>
                                             <span class="sidenav-normal"> Generar </span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <ul class="nav ms-4 ps-3">
+                                    <li class="nav-item ">
+                                        <a class="nav-link @ViewBag.hpNavLink" asp-controller="Pedido" asp-action="Historico">
+                                            <span class="sidenav-mini-icon"> <i class="fa-solid fa-timeline"></i>  </span>
+                                            <span class="sidenav-normal"> Historial </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -91,7 +101,7 @@
                             <a data-bs-toggle="collapse" href="#ProduccionPage" class="nav-link @ViewBag.ProduccionGroupActive" aria-controls="ProduccionPage" role="button" aria-expanded="false">
                                 <div class="icon icon-shape icon-sm shadow border-radius-md  bg-blue text-center d-flex align-items-center justify-content-center  me-2">
                                     <i class="fa-solid fa-clipboard-check"></i>
-                                </div>
+                               </div>
                                 <span class="nav-link-text ms-1">Produccion</span>
                             </a>
                             <div class="collapse @ViewBag.ProduccionColapseGroup" id="ProduccionPage">

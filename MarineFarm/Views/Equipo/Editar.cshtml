@@ -48,12 +48,11 @@
                     <div class="CargoGoup row">
                         <input type="hidden" value="@item.Cargoid" name="idCargo" />
                         
-                         <div class="form-group col-md-4 col-xs-12">
+                         <div class="form-group col-md-3 col-xs-12">
                             <label  class="control-label">Cargo </label>
                             <input disabled value="@item.CargoName" class="form-control text-to-upper-alau" />
                         </div>
-                        
-                         <div class="form-group col-md-4 col-xs-12">
+                         <div class="form-group col-md-3 col-xs-12">
                             <label  class="control-label">Cantidad Cubierta </label>
                             <input max=@item.CantOperadoresNecesario min='0' 
                             type="number" value="@item.CantCubierta" 
@@ -61,16 +60,18 @@
                             name="cantCubierta"
                             />
                         </div>
-                         <div class="form-group col-md-4 col-xs-12">
+                         <div class="form-group col-md-3 col-xs-12">
                             <label  class="control-label">Costo Mensual Por operario </label>
                             <input type="number" 
                             value=@item.CostoOperario
                             name="Coperativos" 
                             class="form-control" />
                         </div>
+                         <div class="form-group col-md-3 col-xs-12">
+                            <label  class="control-label">Seleccione Bono </label>
+                            <select name="Cbono" asp-items=@ViewBag.Bonos class="form-control"></select>
+                        </div>
                     </div>
-                    
-                    
                 }    
 
 
@@ -137,6 +138,7 @@
         const idCargos = document.getElementsByName('idCargo')
         const CantCubiertas = document.getElementsByName('cantCubierta')
         const Coperativos = document.getElementsByName('Coperativos')
+        const Cbono = document.getElementsByName('Cbono')
 
         console.log(idCargos.length)
        
@@ -148,7 +150,8 @@
                 cargos.push({
                     Cargoid: idCargos[i].value,
                     CantCubierta: CantCubiertas[i].value,
-                    CostoOperario: Coperativos[i].value
+                    CostoOperario: Coperativos[i].value,
+                    Bonoid: Cbono[i].value
                 })
             }
         }
@@ -157,3 +160,4 @@
     }
 
 </script>
+

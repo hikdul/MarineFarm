@@ -2,6 +2,7 @@
 using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
+using MarineFarm.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -87,7 +88,7 @@ namespace MarineFarm.Controllers
                     });
                 }
                 ViewBag.Cargos = cargosVista;   
-
+                ViewBag.Bonos= await ToSelect.ToSelectITipo<Bono>(context,1);
             }
             catch (Exception ex)
             {
@@ -120,7 +121,8 @@ namespace MarineFarm.Controllers
                         CantCubierta = item.CantCubierta,
                         Cargoid = item.Cargoid,
                         CostoOperario = item.CostoOperario,
-                        Turnoid = entT.id
+                        Turnoid = entT.id,
+                        Bonoid= item.Bonoid 
                     };
 
                     context.Add(ent);
@@ -172,17 +174,17 @@ namespace MarineFarm.Controllers
 
                     int cantCubierta = eq==null? 0: eq.CantCubierta;
                     double costo =eq==null? 0:eq.CostoOperario;
-
                     cargosVista.Add(new()
                     {
                         CantCubierta = cantCubierta,
                         Cargoid = item.id,
                         CargoName = item.Name,
                         CostoOperario = costo,
-                        CantOperadoresNecesario = item.CantOperadoresNecesario
+                        CantOperadoresNecesario = item.CantOperadoresNecesario,
                     });
                 }
 
+                ViewBag.Bonos= await ToSelect.ToSelectITipo<Bono>(context,1);
                 ViewBag.Cargos = cargosVista;
                 ViewBag.turno = turno;
             }
@@ -228,6 +230,7 @@ namespace MarineFarm.Controllers
                     {
                         item.CantCubierta = cambio.CantCubierta;
                         item.CostoOperario = cambio.CostoOperario;
+                        item.Bonoid = cambio.Bonoid;
                         await context.SaveChangesAsync();
                     }
                     

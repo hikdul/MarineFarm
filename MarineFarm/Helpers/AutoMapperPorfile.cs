@@ -278,6 +278,12 @@ namespace MarineFarm.Helpers
                 .ForMember(ee => ee.EstadoDesc, opt => opt.MapFrom(EstadoPedidoStr))
                 .ForMember(ee => ee.Productos, opt => opt.MapFrom(ProductosEnPedido));
 
+            CreateMap<Pedido, HistorialPedidoDTO_Details>()
+                .ForMember(ee => ee.Cliente, opt => opt.MapFrom(PedidoNombreCliente))
+                .ForMember(ee => ee.Solicitante, opt => opt.MapFrom(PedidoNombreSolicitante))
+                .ForMember(ee => ee.EstadoDesc, opt => opt.MapFrom(EstadoPedidoStr))
+                .ForMember(ee => ee.Productos, opt => opt.MapFrom(ProductosEnPedido));
+
             CreateMap<PedidoDTO_in, Pedido>()
                 .ForMember(ee => ee.act, opt => opt.MapFrom(y => true))
                 .ForMember(ee => ee.FechaEntrega, opt => opt.Ignore())

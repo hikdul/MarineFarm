@@ -20,6 +20,12 @@ namespace MarineFarm.Reportes.TotalProduccion
         /// merma generada durante el periodo
         /// </summary>
         public double Merma { get; set; }
+        /// <summary>
+        /// Para indicar el rendimiento en baso a la produccion
+        /// este valor se da porcentual
+        /// </summary>
+        /// <value></value>
+        public double Rendimiento { get; set; }
 
         /// <summary>
         /// cantidad de elementos obtenidos
@@ -70,7 +76,7 @@ namespace MarineFarm.Reportes.TotalProduccion
             }
 
             this.Merma = marisco.CantidadUtilizada - AcumProducido < 0 ? 0 : marisco.CantidadUtilizada - AcumProducido;
-
+            this.Rendimiento = AcumProducido*100 / this.CantidadUtilizada;
         }
 
         #endregion

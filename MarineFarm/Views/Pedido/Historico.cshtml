@@ -1,0 +1,96 @@
+@using MarineFarm.DTO;
+@model Periodo
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Historial Pedido";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.hpAriaExpanded = "true";
+    ViewBag.hpGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.hpColapseGroup = "show";
+    ViewBag.hpNavLink = "active";   
+    List<PedidoDTOS_out> modelo = ViewBag.Model;
+}
+<form asp-action="Historico" method="post" >
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <div class="card">
+            <div class="card-header">
+                Rango de busqueda
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                         <label for="Inicio" class="control-label" >Inicio </label>   
+                         <input asp-for="Inicio" name="Inicio" id="Inicio" class="form-control" type="date" value="@ViewBag.Inicio"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="Fin" class="control-label">fin </label>
+                        <input asp-for="Fin" name="Fin" id="Fin" class="form-control" type="date" value="@ViewBag.Fin"/>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <input type="submit" class="btn btn-primary" value="filtrar"/>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
+
+@if(modelo==null || modelo.Count < 1)
+{
+    <div class="row mt-2">
+       <div class="col-12">
+        <div class="card">
+            <h5 class="card-subtitle m-2">
+                No Hay Pedidos en el periodo seleccionado
+            </h5>
+          </div>
+        </div>
+    </div>
+}
+
+@if(modelo!=null && modelo.Count > 0)
+{
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="card p-2">
+                <!-- Card header -->
+                <div class="card-header">
+                  
+                    <h5 class="mb-0">Historico de Pedidos</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-flush" id="MarineTable">
+                        <thead class="thead-dark">
+                            <tr class="text-center">
+                                <th>Fecha Solicitud</th>
+                                <th>Fecha Posible Entrega</th>
+                                <th>Solicitante</th>
+                                <th>Cliente</th>
+                                <th>Estado</th>
+                                <th><i class="text-dark fa fa-gears"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @foreach (var item in modelo)
+                                {
+                                    <tr class="text-center">
+                                        <td class=" text-sm font-weight-bold">@item.FechaEntregaPosible.ToString("dd/MM/yyyy")</td>
+                                        <td class=" text-sm font-weight-bold">@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
+                                        <td class="text-sm font-weight-normal">@item.Solicitante </td>
+                                        <td class="text-sm font-weight-normal">@item.Cliente </td>
+                                        <td class="text-sm font-weight-normal">@item.EstadoDesc </td>
+                                        <td class="text-sm font-weight-light">
+                                            <a asp-action="Detalle" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa-solid fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}

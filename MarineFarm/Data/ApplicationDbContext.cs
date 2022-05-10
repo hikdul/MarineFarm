@@ -183,9 +183,6 @@ namespace MarineFarm.Data
 
         #endregion
 
-
-
-
         #region Seed Data
         /// <summary>
         /// para crear el listado de roles y un super usuario para iniciar la partida

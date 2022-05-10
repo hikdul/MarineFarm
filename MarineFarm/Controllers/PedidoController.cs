@@ -15,7 +15,13 @@ namespace MarineFarm.Controllers
     public class PedidoController : Controller
     {
         #region ctor
+        /// <summary>
+        /// campo para el contexto de datos
+        /// </summary>
         private readonly ApplicationDbContext context;
+        /// <summary>
+        /// Campo para el AutoMapper
+        /// </summary>
         private readonly IMapper mapper;
         /// <summary>
         /// ctor
@@ -208,6 +214,36 @@ namespace MarineFarm.Controllers
             }
             return View(model);
         }
+        /// <summary>
+        ///  Para ver los detalles de un pedido
+        /// </summary>
+        /// <param name="id"></param>
+        public async Task<IActionResult> Detalle(int id)
+        {
+            var model= new HistorialPedidoDTO_Details();
+            
+            try
+            {
+                
+                var ent = await context.Pedidos
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Marisco)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.TipoProduccion)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Calibre)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Empaquetado)
+                    .Include(ee => ee.Solicitante)
+                    .Include(ee => ee.Cliente)
+                    .Where(y => y.id == id).FirstOrDefaultAsync();
+                model = mapper.Map<HistorialPedidoDTO_Details>(ent);
+                await model.Completar(context);
+                
+            }
+            catch (Exception ee)
+            {
+              Console.WriteLine(ee.Message);  
+            }
+
+            return View(model);
+        }
 
         #endregion
 
@@ -354,6 +390,59 @@ namespace MarineFarm.Controllers
 
         }
 
+
+        #endregion
+
+        #region  Historico de pedidos
+        /// <summary>
+        /// Para ver el historial producciones en base al periodo ingresado
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> Historico(Periodo periodo)
+        {
+            try
+            {
+                if(!periodo.Validate())
+                {
+                    periodo = new();
+                }
+
+                ViewBag.Inicio=periodo.Inicio.ToString("yyyy-MM-dd");
+                ViewBag.Fin=periodo.Fin.ToString("yyyy-MM-dd");
+
+                var ents = await context.Pedidos
+                    .Include(ee => ee.Solicitante)
+                    .Include(ee => ee.Cliente)
+                    .Where(x=>
+                    x.FechaSolicitud >= periodo.Inicio.AddDays(-1)
+                    && x.FechaSolicitud <= periodo.Fin.AddDays(1))
+                    .ToListAsync();
+
+                if(User.IsInRole("Cliente"))
+                {
+                    var us= await context.UsuarioClientes
+                    .Include(y=>y.Usuario)
+                    .Where(y=>y.Usuario.Email==User.Identity.Name)
+                    .FirstOrDefaultAsync();
+
+                    if(us.Clienteid>0)
+                        ents= ents.Where(x=>x.Clienteid==us.Clienteid).ToList();
+                    else
+                        ents.Clear();
+                }
+                ViewBag.Model = mapper.Map<List<PedidoDTOS_out>>(ents);
+                
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+
+
+                return View();
+
+        }
 
         #endregion
     }

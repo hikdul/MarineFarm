@@ -34,6 +34,12 @@ namespace MarineFarm.DTO
         /// Costo por operario
         /// </summary>
         public double CostoOperario { get; set; }
+
+        /// <summary>
+        ///  Para indicar que bono le pertenece
+        /// </summary>
+        public int Bonoid { get; set; } 
+
     }
 
 }
