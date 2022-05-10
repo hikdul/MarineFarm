@@ -31,8 +31,6 @@ namespace MarineFarm.Controllers
         }
         #endregion
 
-
-
         #region vista principal 
 
         /// <summary>

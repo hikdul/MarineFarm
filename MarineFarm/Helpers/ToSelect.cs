@@ -57,9 +57,55 @@ namespace MarineFarm.Helpers
         }
 
 
+
         #endregion
 
+        #region  to select con valor selec para todos
 
+        /// <summary>
+        /// para generar una lista amigable para el uso en la vista y en los selects
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="context"></param>
+        /// <param name="select"> es el valor que se generara con el texto "todos" </param>
+        /// <returns></returns>
+        public static async Task<List<SelectListItem>> ToSelectITipoStringEnter<T>(ApplicationDbContext context, string select) where T : class, ITipo
+        {
+            List<SelectListItem> ret = new();
+            
+                ret.Add(new()
+                {
+                    Selected = true,
+                    Text = "=== SELECCIONE UN ELEMENTO ===",
+                    Value = select
+                });
+
+            try
+            {
+                var ents = await context.Set<T>().Where(tt => tt.act == true).ToListAsync();
+
+                if (ents != null && ents.Count > 0)
+                    foreach (var item in ents)
+                        ret.Add(new()
+                        {
+                            Text = item.Name,
+                            Value = item.id.ToString(),
+                            Selected = false
+
+                        });
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine(ee.Message);
+            }
+
+
+            return ret;
+
+        }
+        #endregion
+        
 
 
 
