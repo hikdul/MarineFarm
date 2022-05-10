@@ -21,9 +21,14 @@ namespace MarineFarm.Reportes
         [Range(0,int.MaxValue)]
         public int Mariscoid { get; set; }
         /// <summary>
+        /// Tipo produccion para seleccionar que se desea.
+        /// </summary>
+        [Range(0,int.MaxValue)]
+        public int TipoProduccionid { get; set; }
+        /// <summary>
         /// Calibre al que se le quiere hacer el estudio
         /// </summary>
         [Range(0,int.MaxValue)]
-        public int Calibre { get; set; }
+        public int Calibreid { get; set; }
     }
 }
