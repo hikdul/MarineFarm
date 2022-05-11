@@ -1,0 +1,113 @@
+﻿
+@using MarineFarm.Reportes.ReporteXPais
+
+
+@{
+    ReportePorPais reporte = ViewBag.Reporte;    
+
+    ViewData["Title"] = ViewBag.heading = "Reporte De Por Pais";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.ReporteProduccionAriaExpanded = "true";
+    ViewBag.ReporteProduccionGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.ReporteProduccionColapseGroup = "show";
+    ViewBag.ReportePorDiaNavLink = "active";
+}
+@if(reporte==null)
+{
+    
+    <p>upps, algo salio mal al generar el reporte. Intente de nuevo mas tarde.</p>
+}
+else
+{
+    if (reporte.Valid)
+    {
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card p-3">
+                    <!-- Card header -->
+            <div class="card-header">
+                        <p class="text-sm mb-0">
+                            <form asp-controller="ReportePorPais" method="post" asp-action="Excel" >
+
+                                <select hidden id="Mariscoid" multiple name="Mariscoid" asp-items=@ViewBag.ids>
+                                </select>
+                                <input hidden class="form-control" type="date" aria-describedby="addon-wrapping1" value=@ViewBag.fi.ToString("yyyy-MM-dd") name="Inicio" id="Inicio" />
+                                <input hidden class="form-control" type="date" aria-describedby="addon-wrapping2" value=@ViewBag.ff.ToString("yyyy-MM-dd") name="Fin" id="Fin" />
+                                <input hidden class="form-control" value=@ViewBag.pais name="Pais" id="Pais" />
+                                <input hidden class="form-control" value=@ViewBag.Mariscoid name="Mariscoid" id="Mariscoid" />
+                                <input hidden class="form-control" value=@ViewBag.Calibreid name="Calibreid" id="Calibreid" />
+
+                                <button type="submit" class="btn btn-success"><i class="fa-solid fa-file-excel"></i></button>
+                            </form>
+                        </p>
+                        <h4 class="mb-0 card-title">Reporte Por Pais</h4>
+                        <h5 class="mb-1 card-text text-muted">Periodo del @reporte.Inicio.ToString("dd/MM/yyyy") al @reporte.Fin.ToString("dd/MM/yyyy")</h5>
+                        <h6 class="mb-1 card-subtitle"> Pais De Estudio: @reporte.Pais </h6>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text  bg-blue text-white" id="basic-addon1">Marisco</span>
+                                    <input type="text" class="form-control" disabled value=@reporte.Marisco aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text  bg-blue text-white" id="basic-addon1">Calibre</span>
+                                    <input type="text" class="form-control" disabled value=@reporte.Calibre  aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text  bg-blue text-white" id="basic-addon1">Cantidad Producida</span>
+                                    <input type="text" class="form-control" disabled value=@reporte.CantidadProducido aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text  bg-blue text-white" id="basic-addon1">Pedidos Completados</span>
+                                    <input type="text" class="form-control" disabled value=@reporte.PedidosCompletados aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text  bg-blue text-white" id="basic-addon1">Pedidos Rechazados</span>
+                                    <input type="text" class="form-control" disabled value=@reporte.PedidosRechazados aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text  bg-blue text-white" id="basic-addon1">Cantidad Con Retrazo</span>
+                                    <input type="text" class="form-control" disabled value=@reporte.PedidosConRetrazo aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <p class="card-subtitle text-muted">
+                            Reporte Generado: @DateTime.Now.ToString("dd/MM/yyyy")
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Los Datos suministrados generan un reporte vacio.</p>
+    }
+
+    <div class="text-center">
+        <a class="btn btn-primary" asp-action="Index" asp-controller="ReportePorPais">Volver</a>
+    </div>
+}

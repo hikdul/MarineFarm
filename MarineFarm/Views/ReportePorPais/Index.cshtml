@@ -1,0 +1,63 @@
+
+@using MarineFarm.Reportes.ReporteXPais;
+@model RepotePorPaisDTO_in
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Reporte De Produccion";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.ReporteProduccionAriaExpanded = "true";
+    ViewBag.ReporteProduccionGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.ReporteProduccionColapseGroup = "show";
+    ViewBag.ReportePorDiaNavLink = "active";
+    string date = DateTime.Now.ToString("yyyy-MM-dd");
+}
+
+
+<div class="card">
+  <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
+    <h3 class="card-title">
+        Generar Reporte Por Pais
+    </h3>
+  </div>
+
+  <div class="card-body pt-2">
+    <form asp-action="Generar" method="post">
+         <div class="row">
+            <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="Inicio" class="control-label"> Inicio</label>
+                <input type="date" asp-for="Inicio" value=@date class="form-control text-to-upper-alau" />
+                <span asp-validation-for="Inicio" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6 col-xs-12">
+                <label asp-for="Fin" class="control-label"> Fin </label>
+                <input type="date" asp-for="Fin" value=@date class="form-control text-to-upper-alau" />
+                <span asp-validation-for="Fin" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4 text-center">
+                <label asp-for="Pais" class="control-label"> Seleccione Pais </label>
+                <select asp-items=@ViewBag.Paises asp-for="Pais"  class="form-control select2" ></select>
+                <span asp-validation-for="Pais" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4 text-center">
+                <label asp-for="Mariscoid" class="control-label"> Seleccione Marisco </label>
+                <select asp-items=@ViewBag.Marisco asp-for="Mariscoid"  class="form-control select2" ></select>
+                <span asp-validation-for="Mariscoid" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4 text-center">
+                <label asp-for="Calibreid" class="control-label"> Seleccione Calibre </label>
+                <select asp-items=@ViewBag.Calibre asp-for="Calibreid"  class="form-control select2" ></select>
+                <span asp-validation-for="Calibreid" class="text-danger"></span>
+            </div>
+        </div>
+         <div class="card-footer form-group text-center m-0">
+             <input type="submit" value="Generar" class="btn btn-primary rounded-pill" />
+         </div>
+    </form>
+  
+  </div>
+</div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

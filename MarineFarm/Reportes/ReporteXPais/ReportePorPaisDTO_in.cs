@@ -4,7 +4,7 @@
 using System.ComponentModel.DataAnnotations;
 using MarineFarm.DTO;
 
-namespace MarineFarm.Reportes
+namespace MarineFarm.Reportes.ReporteXPais
 {
     /// <summary>
     ///     Para Enviar los datos al controlador y generar el reporte 
@@ -20,11 +20,6 @@ namespace MarineFarm.Reportes
         /// </summary>
         [Range(0,int.MaxValue)]
         public int Mariscoid { get; set; }
-        /// <summary>
-        /// Tipo produccion para seleccionar que se desea.
-        /// </summary>
-        [Range(0,int.MaxValue)]
-        public int TipoProduccionid { get; set; }
         /// <summary>
         /// Calibre al que se le quiere hacer el estudio
         /// </summary>

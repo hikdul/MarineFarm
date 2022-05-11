@@ -12,11 +12,9 @@
 
 }
 
-
-    <form asp-action="Editar" method="post">
+<form asp-action="Editar" method="post">
           
-       <input class="hidden" type="hidden" asp-for="id" />
-
+  <input class="hidden" type="hidden" asp-for="id" />
        
 <div class="card">
   <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
@@ -40,33 +38,9 @@
   </div>
 </div>
 
-<div class="card mt-2">
-  <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
-    <h3 class="card-title">
-        Bono Produccion
-    </h3>
-  </div>
-  <div class="card-body pt-2">
-         <div class="row">
-            <div class="form-group col-md-6 col-xs-12">
-                <label asp-for="KgBono" class="control-label"> Kg. por bono</label>
-                <input asp-for="KgBono" class="form-control text-to-upper-alau" />
-                <span asp-validation-for="KgBono" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6 col-xs-12">
-                <label asp-for="PagoBono" class="control-label"> Pago del bono</label>
-                <input asp-for="PagoBono" class="form-control text-to-upper-alau" />
-                <span asp-validation-for="PagoBono" class="text-danger"></span>
-            </div>
-        </div>
-  </div>
-</div>
-
-
-
 <div class="card-footer form-group text-center mt-2">
-             <input type="submit" value="Guardar" class="btn btn-primary rounded-pill" />
-             <a class="btn btn-danger rounded-pill" asp-action="Index">Volver</a>
-         </div>
+     <input type="submit" value="Guardar" class="btn btn-primary rounded-pill" />
+     <a class="btn btn-danger rounded-pill" asp-action="Index">Volver</a>
+ </div>
 
-    </form>
+</form>
