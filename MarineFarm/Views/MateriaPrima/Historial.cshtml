@@ -44,6 +44,11 @@
         <div class="card p-3">
             <!-- Card header -->
             <div class="card-header">
+                <form asp-action="ExcelHistoria" method="post" >
+                   <input hidden name="Inicio" id="Inicio" class="form-control" type="date" value="@ViewBag.fi"/>
+                   <input hidden name="Fin" id="Fin" class="form-control" type="date" value="@ViewBag.ff"/>
+                    <button type="submit" class="btn btn-success" > <i class="fa-solid fa-file-excel"></i> </button>
+                </form>
                 <h5 class="mb-0">Historial De Ingreso y Egresos de la materia prima</h5>
             </div>
             <div class="table-responsive">

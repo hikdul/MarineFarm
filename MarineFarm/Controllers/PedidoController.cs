@@ -148,39 +148,34 @@ namespace MarineFarm.Controllers
             List<PedidoDTOS_out> list = new();
             try
             {
-                List<Pedido> ent = new();
-                if (User.IsInRole("Cliente"))
-                {
-                    var client = await context.UsuarioClientes
-                        .Include(x=>x.Usuario)
-                        .Where(x => x.Usuario.Email == User.Identity.Name)
-                        .FirstOrDefaultAsync();
-
-                    ent = await context.Pedidos
-                     .Include(ee => ee.Solicitante)
-                    .Include(ee => ee.Cliente)
-                    .Where(y => y.Clienteid== client.Clienteid  && y.act == true && y.estado == 0)
-                    .ToListAsync();
-
-                }
-                else
-                    ent = await context.Pedidos
-                     .Include(ee => ee.Solicitante)
-                    .Include(ee => ee.Cliente)
-                    .Where(y => y.act == true && y.estado==0)
-                    .ToListAsync();
-                
-                list = mapper.Map<List<PedidoDTOS_out>>(ent);
+                list=await PedidoDTOS_out.Listado(context,User,mapper);
             }
             catch (Exception ee)
             {
                 Console.Error.WriteLine(ee.Message);
-                throw;
             }
 
             return View(list);
         }
 
+        /// <summary>
+        ///  para exportar el excel del listado actual de pedidos activos
+        /// </summary>
+        /// <returns></returns>
+        public async Task<FileResult> ExcelActuales()
+        {
+            try
+            {
+                var list= await PedidoDTOS_out.Listado(context,User,mapper);
+                var buffer= PedidoDTO_out.excel(list);
+                return File(buffer, "application/vnd.ms-excel", "Listado Pedido Actuales" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ".xlsx");
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+        }
         #endregion
 
         #region details
@@ -241,6 +236,39 @@ namespace MarineFarm.Controllers
             }
 
             return View(model);
+        }  
+
+        /// <summary>
+        /// Para exportar el excel con los detalles de un pedido
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<FileResult> ExcelDetalle(int id)
+        {
+            try
+            {
+                var data=new HistorialPedidoDTO_Details();
+
+                var ent = await context.Pedidos
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Marisco)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.TipoProduccion)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Calibre)
+                    .Include(y => y.PedidoProductos).ThenInclude(y => y.Producto).ThenInclude(y => y.Empaquetado)
+                    .Include(ee => ee.Solicitante)
+                    .Include(ee => ee.Cliente)
+                    .Where(y => y.id == id).FirstOrDefaultAsync();
+                data = mapper.Map<HistorialPedidoDTO_Details>(ent);
+                await data.Completar(context);
+
+                var buffer = data.Excel(User.IsInRole("Superv"));
+                return File(buffer, "application/vnd.ms-excel", "Detalles Pedido" + "-" + DateTime.Now.ToString("dd/MM/yyyy  HH:mm:ss") + ".xlsx");
+               
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+            }
         }
 
         #endregion
@@ -442,6 +470,57 @@ namespace MarineFarm.Controllers
 
         }
 
+
+        /// <summary>
+        /// obtener el excel de los historicos actuales
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public async Task<FileResult> ExcelHistorico(Periodo periodo)
+        {
+            try
+            {
+
+                if (!periodo.Validate())
+                {
+                    periodo = new();
+                }
+
+                ViewBag.Inicio = periodo.Inicio.ToString("yyyy-MM-dd");
+                ViewBag.Fin = periodo.Fin.ToString("yyyy-MM-dd");
+
+                var ents = await context.Pedidos
+                    .Include(ee => ee.Solicitante)
+                    .Include(ee => ee.Cliente)
+                    .Where(x =>
+                    x.FechaSolicitud >= periodo.Inicio.AddDays(-1)
+                    && x.FechaSolicitud <= periodo.Fin.AddDays(1))
+                    .ToListAsync();
+
+                if (User.IsInRole("Cliente"))
+                {
+                    var us = await context.UsuarioClientes
+                    .Include(y => y.Usuario)
+                    .Where(y => y.Usuario.Email == User.Identity.Name)
+                    .FirstOrDefaultAsync();
+
+                    if (us.Clienteid > 0)
+                        ents = ents.Where(x => x.Clienteid == us.Clienteid).ToList();
+                    else
+                        ents.Clear();
+                }
+                var list = mapper.Map<List<PedidoDTOS_out>>(ents);
+                var buffer= PedidoDTO_out.excel(list);
+                return File(buffer, "application/vnd.ms-excel", "Listado Pedido Actuales" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ".xlsx");
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+        }
         #endregion
+
+
     }
 }

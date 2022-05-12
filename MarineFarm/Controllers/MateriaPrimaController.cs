@@ -88,8 +88,29 @@ namespace MarineFarm.Controllers
             return false;
         }
 
-
-
+        /// <summary>
+        /// Para exportar un archivo con la data actual
+        /// </summary>
+        /// <returns></returns>
+        public async Task<FileResult> ExcelMateriaPrimaActual()
+        {
+            
+            try
+            {
+                var ents = await context.MateriasPrimas
+                    .Include(x => x.Marisco)
+                    .Where(x => x.Marisco.act == true)
+                    .ToListAsync();
+                var data = mapper.Map<List<MateriaPrimaDTO_out>>(ents);
+                var buffer= MateriaPrimaDTO_out.Excel(data);
+                return File(buffer, "application/vnd.ms-excel", "Materia Prima actual" + "-" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") +  ".xlsx");
+            }
+            catch (Exception ee)
+            {
+                Console.Error.WriteLine(ee.Message);
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+            }
+        }
         #endregion
 
 
@@ -178,8 +199,36 @@ namespace MarineFarm.Controllers
             return View(list);
 
         }
+        /// <summary>
+        /// Para exportar un archivo excel con el historial de un periodo dado
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public async Task<FileResult> ExcelHistoria(Periodo periodo)
+        {
+            try
+            {
 
+            if (!periodo.Validate())
+                periodo = new();
 
+                var hs = await context
+                    .HistorialMateriaPrima
+                    .Include(x => x.Usuario)
+                    .Include(x => x.Marisco)
+                    .Where(x => x.Fecha >= periodo.Inicio.AddDays(-1) && x.Fecha <= periodo.Fin.AddDays(1))
+                    .ToListAsync();
+                var data = mapper.Map<List<HistorialMateriaPrimaDTO_out>>(hs);
+                var buffer = HistorialMateriaPrimaDTO_out.Excel(data,periodo);
+                return File(buffer, "application/vnd.ms-excel", "Hestorial Materia Prima" +  ".xlsx");
+            }
+            catch (Exception ee)
+            {
+                
+                Console.WriteLine(ee.Message);
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+            }
+        }
 
         #endregion
 

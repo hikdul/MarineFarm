@@ -59,6 +59,13 @@ else{
                 <!-- Card header -->
                 <div class="card-header">
                   
+                 <form asp-action="ExcelHistorial" method="post" >
+                        <input hidden name="Inicio" id="Inicio" class="form-control" type="date" value="@inicio"/>
+                        <input hidden name="Fin" id="Fin" class="form-control" type="date" value="@fin"/>
+                        <button type="submit" class="btn btn-success"> <i class="fa-solid fa-file-excel"></i> </button>
+
+                 </form>
+
                     <h5 class="mb-0">Historial De Produccion</h5>
                 </div>
                 <div class="table-responsive">
@@ -77,7 +84,7 @@ else{
                                         <td class=" text-sm font-weight-bold">@item.Fecha.ToString("dd/MM/yyyy")</td>
                                         <td class="text-sm font-weight-normal">@item.SupervName || @item.SupervEmail</td>
                                         <td class="text-sm font-weight-light">
-                                            <a asp-action="Details" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa fa-see "></i></a>
+                                            <a asp-action="Details" asp-route-id="@item.id" class="btn btn-primary btn-round"><i class="fa-solid fa-eye"></i></a>
                                         </td>
                                     </tr>
                                 }

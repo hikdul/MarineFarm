@@ -80,10 +80,27 @@ namespace MarineFarm.Controllers
         /// Para generar el excel del reporte actual
         /// </summary>
         /// <param name="ins"></param>
-        public void Excel(RepotePorPaisDTO_in ins)
+        public async Task<FileResult> Excel(RepotePorPaisDTO_in ins)
         {
 
-            return; 
+            try
+            {
+                if (ins == null )
+                    return File(new byte[0], "application/vnd.ms-excel", "AlMenosSeleccioneUnEmpleado.xlsx");
+
+                ReportePorPais reporte = new();
+                await reporte.Up(ins, context);
+                var buffer = reporte.Excel();
+                return File(buffer, "application/vnd.ms-excel", "Reporte Produccion" + "-" + ins.Inicio.ToString("dd/MM/yyyy") + "-al-" + ins.Fin.ToString("dd/MM/yyyy") + ".xlsx");
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception Catch!!");
+                Console.WriteLine("Exception msn: {0}", ex.Message);
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+
+            }
         }
 
     }

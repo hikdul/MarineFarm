@@ -43,17 +43,8 @@ namespace MarineFarm.Controllers
             try
             {
 
-                var ents = await context.Almacen
-                     .Include(a => a.Producto).ThenInclude(x => x.Marisco)
-                     .Include(a => a.Producto).ThenInclude(x => x.TipoProduccion)
-                     .Include(a => a.Producto).ThenInclude(x => x.Calibre)
-                     .Include(a => a.Producto).ThenInclude(x => x.Empaquetado)
-                     .Where(x => x.Cantidad > 0)
-                     .ToListAsync();
-
+                var ents = await AlmacenDTO_out.Listar(context,mapper);
                 list = mapper.Map<List<AlmacenDTO_out>>(ents);
-
-
             }
             catch (Exception ee)
             {
@@ -67,7 +58,28 @@ namespace MarineFarm.Controllers
 
         #endregion
 
-      
+      #region  excel
+
+        /// <summary>
+        /// Para exportar los datos del almacen actualr en un excel
+        /// </summary>
+        /// <returns></returns>
+        public async Task<FileResult> Excel()
+        {
+            try
+            {
+                var data= await AlmacenDTO_out.Listar(context,mapper);
+                var buffer= AlmacenDTO_out.Excel(data);
+                return File(buffer, "application/vnd.ms-excel", "Almacen Actual" + "-" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ".xlsx");
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+            }
+        }
+
+      #endregion
 
 
     }

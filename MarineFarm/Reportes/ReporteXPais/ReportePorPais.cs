@@ -3,6 +3,7 @@ using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 namespace MarineFarm.Reportes.ReporteXPais
 {
@@ -192,8 +193,68 @@ namespace MarineFarm.Reportes.ReporteXPais
         }
 
 
-       
+
         #endregion
 
+        #region excel
+        /// <summary>
+        /// Para gererar el excel del informe actual
+        /// </summary>
+        /// <returns>array de bites con los datos del informe </returns>
+        public byte[] Excel()
+        {
+            try
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    using (ExcelPackage ep = new ExcelPackage())
+                    {
+                        ep.Workbook.Worksheets.Add("Reporte Poduccion Entre Periodos");
+                        ExcelWorksheet ew = ep.Workbook.Worksheets[0];
+
+                        ew.Cells.Style.Font.Size = 10;
+                        ew.Cells.Style.Font.Name = "Arial";
+
+                        ew.Cells[1, 1].Value = "Reporte Generado ";
+                        ew.Cells[1, 2].Value = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+
+                        ew.Cells[2, 1].Value = "Periodo de estudio";
+                        ew.Cells[3, 1].Value = "Inicio Periodo";
+                        ew.Cells[3, 2].Value = this.Inicio.ToString("dd/MM/yyyy");
+                        ew.Cells[3, 3].Value = "Fin Periodo";
+                        ew.Cells[3, 4].Value = this.Fin.ToString("dd/MM/yyyy");
+
+                        ew.Cells[4,1].Value= "Pais de estudio";
+                        ew.Cells[4,2].Value= this.Pais;
+
+                        ew.Cells[5,1].Value="Marisco";
+                        ew.Cells[5,2].Value=this.Marisco;
+                        ew.Cells[5,3].Value="Calibre";
+                        ew.Cells[5,4].Value=this.Calibre;
+                        ew.Cells[5,5].Value="Cantidad Total Producida";
+                        ew.Cells[5,6].Value=this.CantidadProducido;
+
+                        ew.Cells[6,1].Value="Pedidos Completados";
+                        ew.Cells[6,2].Value= this.PedidosCompletados;
+                        ew.Cells[6,3].Value="Pedidos Rechazados";
+                        ew.Cells[6,4].Value= this.PedidosRechazados;
+                        ew.Cells[6,5].Value="Pedidos Con Retrazo";
+                        ew.Cells[6,6].Value= this.PedidosConRetrazo;
+
+                        ep.SaveAs(ms);
+                        return ms.ToArray();
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                Console.Write(ee.Message);
+            }
+
+            return new byte[0];
+        }
+
+        #endregion
     }
 }

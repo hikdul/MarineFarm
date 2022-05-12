@@ -269,7 +269,39 @@ namespace MarineFarm.Controllers
 
             return View();
         }
+        /// <summary>
+        /// Para generar el excel del historial entregando fechas validas.
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public async Task<FileResult> ExcelHistorial(Periodo periodo)
+        {
+            try
+            {
+                if(!periodo.Validate())   
+                    periodo=new();
 
+                var ent = await context.Produccion
+                    .Include(y => y.Superv)
+                    .Include(y=>y.MariscosProduccion).ThenInclude(m=>m.Marisco)
+                    .Include(y=>y.ProductoProduccion).ThenInclude(a=>a.Producto).ThenInclude(e=>e.Marisco)
+                    .Include(y=>y.ProductoProduccion).ThenInclude(a=>a.Producto).ThenInclude(e=>e.TipoProduccion)
+                    .Include(y=>y.ProductoProduccion).ThenInclude(a=>a.Producto).ThenInclude(e=>e.Calibre)
+                    .Include(y=>y.ProductoProduccion).ThenInclude(a=>a.Producto).ThenInclude(e=>e.Empaquetado)
+                    .Where(y => y.Fecha>= periodo.Inicio.AddDays(-1)
+                    && y.Fecha <= periodo.Fin.AddDays(1))
+                    .ToListAsync();
+                var data = mapper.Map<List<ProduccionDTO_out>>(ent);
+                var buffer = ProduccionDTO_out.Excel(data,periodo);
+                return File(buffer, "application/vnd.ms-excel", "Historial Produccion" + "-" + periodo.Inicio.ToString("dd/MM/yyyy") + "-al-" + periodo.Fin.ToString("dd/MM/yyyy") + ".xlsx");
+            }
+            catch (Exception ee)
+            {
+                
+                Console.WriteLine(ee.Message);
+            }
+                return File(new byte[0], "application/vnd.ms-excel", "Empty.xlsx");
+        }
 
         #endregion
 

@@ -172,7 +172,7 @@ namespace MarineFarm.Reportes.TotalProduccion
         /// para generar un excel con los datos ya cargados de la clase
         /// </summary>
         /// <returns></returns>
-        public async Task<byte[]> Excel()
+        public byte[] Excel()
         {
             try
             {

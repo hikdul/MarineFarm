@@ -103,7 +103,7 @@ namespace MarineFarm.Controllers
 
                 ReporteTotalProduccion reporte = new();
                 await reporte.Generate(ins, context);
-                var buffer = await reporte.Excel();
+                var buffer = reporte.Excel();
                 return File(buffer, "application/vnd.ms-excel", "Reporte Produccion" + "-" + ins.Inicio.ToString("dd/MM/yyyy") + "-al-" + ins.Fin.ToString("dd/MM/yyyy") + ".xlsx");
 
             }
