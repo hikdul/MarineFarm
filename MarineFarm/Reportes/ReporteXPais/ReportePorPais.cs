@@ -109,6 +109,7 @@ namespace MarineFarm.Reportes.ReporteXPais
 
             foreach (var pedido in pedidos)
             {
+                
                 if(pedido.estado==1)
                     Ccompletado++;
                 if(pedido.estado==2)
@@ -139,42 +140,59 @@ namespace MarineFarm.Reportes.ReporteXPais
         private async Task<List<Pedido>> ObtenerListaActual(RepotePorPaisDTO_in data,  ApplicationDbContext context)
         {
 
-                var request = context.Pedidos
-                .Include(x=>x.Cliente)
-                .Include(x=>x.PedidoProductos).ThenInclude(x=>x.Producto).ThenInclude(m=>m.Marisco)
-                .Include(x=>x.PedidoProductos).ThenInclude(x=>x.Producto).ThenInclude(m=>m.Calibre)
-                .Where(y=>y.FechaSolicitud > data.Inicio.AddDays(-1) && y.FechaSolicitud<data.Fin.AddDays(1));
+          var request = context.Pedidos
+          .Include(x=>x.Cliente)
+          .Include(x=>x.PedidoProductos).ThenInclude(x=>x.Producto).ThenInclude(m=>m.Marisco)
+          .Include(x=>x.PedidoProductos).ThenInclude(x=>x.Producto).ThenInclude(m=>m.Calibre)
+          .Where(y=>y.FechaSolicitud > data.Inicio.AddDays(-1) && y.FechaSolicitud<data.Fin.AddDays(1));
 
-                request= request.Where(p=>p.Cliente.Desc==data.Pais);
-                 
-                 var pedidos= await request.ToListAsync();
+          request= request.Where(p=>p.Cliente.Desc==data.Pais);
+           
+           var pedidos= await request.ToListAsync();
 
-                if(data.Calibreid>0)
+          if(data.Mariscoid>0)
                 {
                  List<Pedido> band=new();
                    foreach (var item in pedidos)
-                        if(item.PedidoProductos.Select(y=>y.Producto.Calibreid==data.Calibreid).Any())
-                        {
-                            band.Add(item);
-                        }   
-                 pedidos.Clear();
-                 pedidos=band;
+                   {
+                        Pedido aux = new(item);
+                        aux.PedidoProductos= new();
+
+                        foreach (var elemento in item.PedidoProductos)
+                            if (elemento.Producto.Mariscoid == data.Mariscoid)
+                            {
+                                aux.PedidoProductos.Add(elemento);
+                                band.Add(aux);
+                            }
+                   }
+                pedidos = band;
                 }
-
-                if(data.Mariscoid>0)
+          
+          if(data.Calibreid>0)
                 {
                  List<Pedido> band=new();
                    foreach (var item in pedidos)
-                        if(item.PedidoProductos.Select(y=>y.Producto.Mariscoid==data.Mariscoid).Any())
-                        {
-                            band.Add(item);
-                        }   
-                 pedidos.Clear();
-                 pedidos=band;
-                } 
+                   {
 
-                return pedidos;
+                        Pedido aux = new(item);
+                        aux.PedidoProductos = new();
+
+                    foreach (var elemento in item.PedidoProductos)
+                        if (elemento.Producto.Calibreid == data.Calibreid)
+                        {
+                            aux.PedidoProductos.Add(elemento);
+                            band.Add(aux);
+                        }
+                    }
+                pedidos = band;
+                } 
+          
+          return pedidos;
+    
         }
+
+
+       
         #endregion
 
     }

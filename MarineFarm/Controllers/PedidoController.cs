@@ -35,7 +35,6 @@ namespace MarineFarm.Controllers
         }
         #endregion
 
-
         #region Generar Pedido
         /// <summary>
         /// vista para generar los pedidos
@@ -138,7 +137,6 @@ namespace MarineFarm.Controllers
         }
 
         #endregion
-
 
         #region ver pedidos actuales
         /// <summary>

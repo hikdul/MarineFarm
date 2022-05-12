@@ -60,6 +60,37 @@ namespace MarineFarm.Entitys
         public int estado { get; set; } = 0;
         #endregion
 
+
+        #region ctor
+        
+        /// <summary>
+        /// empty
+        /// </summary>
+        public Pedido()
+        {
+
+        }
+        /// <summary>
+        /// copy ctor
+        /// </summary>
+        public Pedido(Pedido p)
+        {
+            this.id = p.id;
+            this.Clienteid = p.Clienteid;
+            this.Cliente = p.Cliente;
+            this.estado = p.estado;
+            this.FechaEntrega = p.FechaEntrega;
+            this.FechaEntregaPosible = p.FechaEntregaPosible;
+            this.FechaSolicitud = p.FechaSolicitud;
+            this.Solicitante = p.Solicitante;
+            this.Solicitanteid = p.Solicitanteid;
+            this.PedidoProductos = p.PedidoProductos;
+                
+        }
+
+        #endregion
+
+
         #region completar pedido
         /// <summary>
         /// para que me reste del almacen lo que se uso en este pedido
