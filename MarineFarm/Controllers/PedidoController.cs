@@ -83,13 +83,13 @@ namespace MarineFarm.Controllers
         /// <returns></returns>
         public async Task<CalculoDTO_out> Calcular(PedidoDTO_in ins)
         {
-
             var list = await CalculoProduccionDTO_out.Calcular(ins, context, mapper);
-            var mayor = CalculoProduccionDTO_out.VerMayor(list);
+            var mayor = CalculoProduccionDTO_out.DiasEntrega(list);
+            var fechaEntrega= ins.fecha.AddDays(mayor);
 
             return new()
             {
-                EntregaPedido = mayor,
+                EntregaPedido = fechaEntrega,
                 CalculoPorElemento = list
             };
         }

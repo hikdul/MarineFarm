@@ -272,6 +272,43 @@ namespace MarineFarm.DTO
             return mayor;
         }
 
+        /// <summary>
+        /// Dias totales para entregar un producto
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static double DiasEntrega(List<CalculoProduccionDTO_out> list)
+        {
+
+            double dias=0;
+            try
+            {
+                Dictionary<int,double> maricos= new();
+                //lleno el diccionario con el mayor de los valores
+                foreach (var calc in list)
+                {
+                   if(maricos.ContainsKey(Int32.Parse(calc.Mariscoid)))
+                   {
+                       if(maricos[Int32.Parse(calc.Mariscoid)]<calc.dias)
+                            maricos[Int32.Parse(calc.Mariscoid)]=calc.dias;
+                   }
+                   else
+                   {
+                       maricos.Add(Int32.Parse(calc.Mariscoid),calc.dias);
+                   }
+                }
+                // me paseo el diccionario y acumulo todos los dias presentes
+                foreach (var dic in maricos)
+                    dias+=dic.Value;
+
+            }
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+            }
+            return dias;
+        }
+
         #endregion
 
         #region calcular costo produccion

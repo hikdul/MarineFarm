@@ -8,7 +8,7 @@ namespace MarineFarm.DTO
     public class UsuarioDTO_in
     {
 
-        #region props
+       #region props
        
         /// <summary>
         /// nombre del usuario
