@@ -96,7 +96,6 @@ namespace MarineFarm.DTO
             int year = DateTime.Now.Year;
             List<CalculoProduccionDTO_out> resp = new();
 
-
             try
             {
                 var config = await context.Config.FirstOrDefaultAsync();
@@ -131,7 +130,7 @@ namespace MarineFarm.DTO
                    && y.Calibreid == item.Calibreid
                    && y.Empaquetadoid == item.Empaquetadoid)
                         .ToListAsync();
-
+                    
                     if (muestra.Count() > 0)
                     {
                         var dto = mapper.Map<CalculoProduccionDTO_out>(muestra[0]);
@@ -311,13 +310,5 @@ namespace MarineFarm.DTO
 
         #endregion
 
-        #region calcular costo produccion
-
-        private async Task<double> CalcularCostoProduccion(ApplicationDbContext context)
-        {
-            return 0;
-        }
-        
-        #endregion
     }
 }

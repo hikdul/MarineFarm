@@ -1,0 +1,72 @@
+
+@using MarineFarm.DTO;
+@model IEnumerable<PedidoDTO_out>
+
+@{
+    ViewData["Title"] = ViewBag.heading = "Reporte Pedidos Actuales";
+    // => este es sobre el boton para expandir y el grupo de botones
+    ViewBag.RPAAriaExpanded = "true";
+    ViewBag.RPAnGroupActive = "active";
+    // => este es simplemente para que se vea la poscicion actual
+    ViewBag.RPAColapseGroup = "show";
+    ViewBag.RPAnNavLink = "active";
+
+}
+
+<div class="row mt-4">
+    <div class="col-12">
+            <!-- Card header -->
+            <div class="card-header mb-3">
+                    <a asp-action="Excel" class="btn btn-success btn-round"><i class="fa-solid fa-file-excel"></i></a>
+                <h5 class="mb-0">Pedidos En Proceso</h5>
+            </div>
+
+           @if (Model != null && Model.Count() > 0)
+           @foreach (var item in Model)
+           {
+        <div class="card p-3 mt-2">
+            <div class="card-header">
+                <h3 class="card-title">
+                    Cliente: @item.Cliente
+                </h3>
+                <h4 class="card-subtitle"> Fecha Posible Entrega: @item.FechaEntregaPosible.ToString("dd/MM/yyyy") </h4>
+                <h6 class="card-text text-muted"> Solicitante: @item.Solicitante </h6>
+                <h6 class="card-text text-muted"> Fecha Genero Pedido: @item.FechaSolicitud.ToString("dd/MM/yyyy") </h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-flush" id="MarineTable">
+                    <thead class="thead-dark">
+                        <tr class="text-center">
+                            <th>Marisco</th>
+                            <th>Tipo De Producto</th>
+                            <th>Calibre</th>
+                            <th>Empaquetado</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Count() > 0)
+                            @foreach (var prod in item.Productos)
+                            {
+                                string name = $"cant{item.id}";
+
+                                <tr class="text-center">
+                                    <td class=" text-sm font-weight-bold">@prod.Marisco</td>
+                                    <td class="text-sm font-weight-normal">@prod.TipoProduccion</td>
+                                    <td class="text-sm font-weight-normal">@prod.Calibre</td>
+                                    <td class="text-sm font-weight-normal">@prod.Empaquetado</td>
+                                    <td class="text-sm font-weight-normal">@prod.Cantidad</td>
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
