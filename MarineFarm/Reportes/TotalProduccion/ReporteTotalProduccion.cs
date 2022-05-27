@@ -207,8 +207,8 @@ namespace MarineFarm.Reportes.TotalProduccion
                             columna++;
                             ew.Cells[columna, 1].Value = "Cantidad Utilizado";
                             ew.Cells[columna, 2].Value = head.CantidadUtilizada;
-                            ew.Cells[columna, 3].Value = "Merma Generada";
-                            ew.Cells[columna, 4].Value = head.Merma;
+                            ew.Cells[columna, 3].Value = "Rendimiento";
+                            ew.Cells[columna, 4].Value = $"{head.Merma}%";
                             columna+=2;
                             ew.Cells[columna, 1].Value = "Tipo Produccion";
                             ew.Cells[columna, 2].Value = "Calibre";

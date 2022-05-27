@@ -78,7 +78,7 @@ namespace MarineFarm.Reportes.TotalProduccion
 
             this.Merma = marisco.CantidadUtilizada - AcumProducido < 0 ? 0 : marisco.CantidadUtilizada - AcumProducido;
             double flagRendimiento=(AcumProducido * 100) / this.CantidadUtilizada; 
-            this.Rendimiento = flagRendimiento < 0 ? 0 :flagRendimiento;
+            this.Rendimiento = flagRendimiento > 0 ? flagRendimiento : -flagRendimiento;
         }
 
         #endregion
