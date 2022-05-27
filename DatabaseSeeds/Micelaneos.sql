@@ -41,8 +41,6 @@ insert into TiposProduccion([Name],[Desc],act) values ('Industrial','Industrial'
 GO
 insert into TiposProduccion([Name],[Desc],act) values ('1/2 Valva','1/2 Valva',1)
 GO
-insert into TiposProduccion([Name],[Desc],act) values ('Carne IQE','Carne IQE',1)
-GO
 insert into TiposProduccion([Name],[Desc],act) values ('Carne','Carne',1)
 GO
 insert into TiposProduccion([Name],[Desc],act) values ('Entera Crudo','Entera Crudo',1)
@@ -81,3 +79,8 @@ insert into Empaquetados([Name],[Desc],act) values('1 X 9', '1 X 9', 1)
 GO
 insert into Empaquetados([Name],[Desc],act) values('8 X 1', '8 X 1', 1)
 GO
+
+-- agrego mi propio super usuario
+
+ insert into AspNetUsuario(Nombre,rut,Email,Telefono,Rol,act,Userid)
+ values ('Hector Contreras','0','hikdul.dev@gmail.com','0','Administrador Del Sistema',1,'445f6fc1-5dd4-4c32-af61-19a91b8f1367')

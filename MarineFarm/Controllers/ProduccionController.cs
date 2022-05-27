@@ -4,6 +4,7 @@ using MarineFarm.Data;
 using MarineFarm.DTO;
 using MarineFarm.Entitys;
 using MarineFarm.Helpers;
+using MarineFarm.Helpers.Alertas;
 using MarineFarm.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -66,22 +67,19 @@ namespace MarineFarm.Controllers
         /// <param name="insert"></param>
         /// <returns></returns>
         
-        public async Task<IActionResult> SeeData(ProduccionDTOView_in insert)
+        public async Task<bool> SeeData(ProduccionDTOView_in insert)
         {
 
             ProduccionDTO_in ins = new(insert);
 
             try
             {
-                //valida y en caso de no ser valido retorna la data
-                var valid = await ins.inValid(context);
-
-                if (valid == null || valid.Count == 0)
+                if (await ins.IsValid(context))
                 {
                     var flagUs = await Usuario.GetByEmail(User.Identity.Name, context);
 
                     if (flagUs == null || flagUs.id < 1)
-                        return BadRequest("Usuario no valida para ejecutar esta accion");
+                        return false;
 
                     //generar entidad
                     var ent = await Produccion.Up(ins, flagUs.id, context);
@@ -139,18 +137,22 @@ namespace MarineFarm.Controllers
 
 
                     // da respuesta con el resultado obtenido pero mapeado a otro elemento
-                    return RedirectToAction("Index");
+                    return true;
                 }
                 else
                 {
-                    ViewData["errores"] = valid;
-                    return View("Index", ins);
+                    //   ViewData["Alert"] = new Alert("Imposible Generar produccion", "No Hay suficiente Materia Prima para generar la produccion suministrada", AlertType.Error).SerializeAlert();
+                    ViewBag.Err = "No Hay Materia Prima Para generar la produccion Solicitada.";
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex);
-                return View("Index", ins);
+                //TempData["Alert"] = new Alert("Error Inesperado", $"Imposible generar esta accion en este momento. Intente de nuevo mas tarde.", AlertType.Error).SerializeAlert();
+                ViewBag.Err = "No Hay Materia Prima Para generar la produccion Solicitada.";
+
+                return false;
 
             }
 

@@ -1,0 +1,16 @@
+@using MarineFarm.Helpers.Alertas;
+@model Alert
+
+@{
+
+}
+
+<div class="alert round @Model.Color alert-icon-left alert-dismissible mb-1 ml-3 mr-3" role="alert">
+    <span class="alert-icon">
+        <i class="@Model.Icon"></i>
+    </span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    <strong>@Model.Title</strong><br />@Model.Message
+</div>

@@ -55,10 +55,9 @@ namespace MarineFarm.DTO
                         {
                             Calibreid = item.calibre,
                             TipoProduccionid = item.tipoproduccion,
-                            CantProduccida = item.producido,
-                            Empaquetadoid = item.empaquetado
+                            Empaquetadoid = item.empaquetado,
+                            CantProduccida = item.producido
                         });
-
                     }
 
                 this.ProduccionIn.Add(aux);
@@ -115,6 +114,48 @@ namespace MarineFarm.DTO
             return errores;
         }
 
+                /// <summary>
+                /// Indica si un elemento es valido o no
+                /// </summary>
+                /// <param name="context"></param>
+                /// <returns></returns>
+             
+        public async Task<bool> IsValid(ApplicationDbContext context)
+        {
+            
+
+            try
+            {
+                foreach (var marisco in this.ProduccionIn)
+                {
+                    double SUM = 0;
+                    var almacen = await context.MateriasPrimas
+                       .Include(x => x.Marisco)
+                       .Where(x => x.Mariscoid == marisco.Mariscoid)
+                       .FirstOrDefaultAsync();
+
+                    if (almacen != null && almacen.id > 0 && almacen.Cantidad>0)
+                    {
+
+                        if (almacen.Cantidad < marisco.CantidadUtilizada)
+                            return false;
+
+                        foreach (var item in marisco.Productos)
+                            SUM += item.CantProduccida;
+                        if (SUM > marisco.CantidadUtilizada)
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+            }
+
+            return true;
+        }
 
         #endregion
 
