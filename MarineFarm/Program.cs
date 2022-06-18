@@ -12,8 +12,18 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var Config = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
+// Para que me inicio con el uso obligatorio de mis datos json
+var configBuilder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+    .AddEnvironmentVariables()
+    .Build();
+builder.WebHost.UseConfiguration(configBuilder); 
 
+
+
+var Config = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
 
 // Add services to the container.
 
@@ -177,6 +187,7 @@ builder.Services.AddScoped<ISaveMuestrasDiarias, SaveMuestrasDiarias>();
 // ## === ##
 // ## === ##
 
+
 // ==> arranca la app y construccion en pipeline
 
 var app = builder.Build();
@@ -193,8 +204,8 @@ else
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+   
 }
-
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
@@ -204,7 +215,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapControllers();
 app.MapControllerRoute(
