@@ -238,8 +238,6 @@ namespace MarineFarm.Auth
                 var temp = await context.AspNetUsuario.Where(y => y.Email == Email).FirstOrDefaultAsync();
                 if (temp == null)
                     return false;
-
-                
                  
                 return temp.act;
 
