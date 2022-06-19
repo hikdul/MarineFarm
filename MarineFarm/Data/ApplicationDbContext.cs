@@ -158,7 +158,7 @@ namespace MarineFarm.Data
         /// <param name="builder"></param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
-          //  RolesYSU(builder);
+            //RolesYSU(builder);
 
             BuildKey(builder);
 
@@ -178,7 +178,6 @@ namespace MarineFarm.Data
             builder.Entity<PedidosProductos>().HasKey(x => new { x.pedidoid, x.Productoid });
             builder.Entity<MuestraDiaria>().HasKey(x => new { x.ano, x.mes, x.Mariscoid, x.TipoProduccionid, x.Calibreid, x.Empaquetadoid });
             builder.Entity<UsuarioCliente>().HasKey(x => new { x.Clienteid, x.Usuarioid});
-            // builder.Entity<CostosMes>().HasKey(x => new { x.Equipoid, x.Mariscoid, x.TipoProduccionid, x.Calibreid });
         }
 
         #endregion
@@ -206,6 +205,19 @@ namespace MarineFarm.Data
 
             };
 
+            var SuperAdminReal = new IdentityUser()
+            {
+                Id = "1e20113c-7fef-4c00-90b7-c286fba79757",
+                Email = "comercial.granjamar@gmail.com",
+                NormalizedEmail = "comercial.granjamar@gmail.com".ToUpper(),
+                UserName = "comercial.granjamar@gmail.com",
+                NormalizedUserName = "comercial.granjamar@gmail.com".ToUpper(),
+                EmailConfirmed = true,
+                PhoneNumber = "+56 9 9842 9393",
+                PhoneNumberConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "Alau123#")
+
+            };
             var RoleSistAdmin = new IdentityRole()
             {
 
@@ -248,14 +260,21 @@ namespace MarineFarm.Data
                 RoleId = RoleSistAdmin.Id,
                 UserId = SuperAdmin.Id
             };
+            var angel = new IdentityUserRole<string>()
+            {
+                RoleId = RoleSistAdmin.Id,
+                UserId = SuperAdminReal.Id
+            };
 
             builder.Entity<IdentityUser>().HasData(SuperAdmin);
+            builder.Entity<IdentityUser>().HasData(SuperAdminReal);
             builder.Entity<IdentityRole>().HasData(RoleSistAdmin);
             builder.Entity<IdentityRole>().HasData(RoleGtePlanta);
             builder.Entity<IdentityRole>().HasData(RoleCliente);
             builder.Entity<IdentityRole>().HasData(RoleSuperv);
 
             builder.Entity<IdentityUserRole<string>>().HasData(hikdul);
+            builder.Entity<IdentityUserRole<string>>().HasData(angel);
 
         }
 

@@ -385,5 +385,37 @@ namespace MarineFarm.Controllers
 
         #endregion
 
+        #region cambiarContrena
+
+        public async Task<IActionResult> ChangePsw()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePsw(NewPsw ins)
+        {
+            try
+            {
+                var Us = await userManager.GetUserAsync(User);
+                if (Us == null)
+                {
+                    ViewBag.Err = "Los Datos suministrados no son validos";
+                    return View("logout");
+                }
+                var changePasswordResult = await userManager.ChangePasswordAsync(Us, ins.OPsw, ins.Npsw);
+                await signInManager.RefreshSignInAsync(Us);
+                ViewBag.Err = "Contraseña Cambiada Exitosamente...";
+                return View("ChangePsw");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            ViewBag.Err = "Erro en los datos suministrados...";
+            return View("ChangePsw");
+        }
+        #endregion
+
     }
 }
