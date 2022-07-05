@@ -46,7 +46,7 @@ namespace MarineFarm.Controllers
             {
                 var ents = await context.MateriasPrimas
                     .Include(x => x.Marisco)
-                    .Where(x => x.Marisco.act == true)
+                    .Where(x => x.Marisco.act == true && x.Cantidad > 0)
                     .ToListAsync();
                 ret = mapper.Map<List<MateriaPrimaDTO_out>>(ents);
             }
